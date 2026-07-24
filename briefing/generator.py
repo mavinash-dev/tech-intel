@@ -1,35 +1,32 @@
 import json
 import ollama
-from datetime import date, datetime
+from datetime import datetime
 from db.connection import get_connection
 from config import OLLAMA_MODEL, OLLAMA_HOST, BRIEFING_STYLE
 
-DOMAIN_EMOJI = {
-    "Capital":        "💰",
-    "Talent":         "👥",
-    "Technology":     "🔬",
-    "Power":          "⚡",
-    "Infrastructure": "🏗️",
-    "Narrative":      "📰",
+DOMAIN_LABEL = {
+    "Capital":        "CAPITAL",
+    "Talent":         "TALENT",
+    "Technology":     "TECHNOLOGY",
+    "Power":          "POWER",
+    "Infrastructure": "INFRASTRUCTURE",
+    "Narrative":      "NARRATIVE",
+    "Security":       "SECURITY",
 }
 
 GIANT_WATCH = [
-    ("🍎", "Apple"),
-    ("🔵", "Meta"),
-    ("Ⓜ️", "Microsoft"),
-    ("🔴", "Google"),
-    ("🟠", "Amazon"),
-    ("🟢", "Nvidia"),
-    ("🔵", "OpenAI"),
-    ("🤖", "Anthropic"),
-    ("🚗", "Tesla"),
-    ("🇨🇳", "Baidu"),
-    ("💾", "TSMC"),
-    ("📱", "Samsung"),
+    "Apple", "Meta", "Microsoft", "Google", "Amazon",
+    "Nvidia", "OpenAI", "Anthropic", "Tesla", "Baidu", "TSMC", "Samsung",
 ]
 
 TOP_SIGNALS_LIMIT = 8
 PREDICTION_BATCH_LIMIT = 10
+SINCE_HOURS = 1.5
+
+
+def _h(text: str) -> str:
+    """Escape special HTML chars in user-generated text."""
+    return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
 
 def _ollama(prompt: str, system: str = "") -> str:
@@ -46,7 +43,7 @@ def _ollama(prompt: str, system: str = "") -> str:
         return ""
 
 
-def _load_top_signals(today: str) -> list:
+def _load_top_signals() -> list:
     conn = get_connection()
     rows = conn.execute(
         """SELECT e.id, e.domain, e.relevance_score, e.plain_explanation,
@@ -54,10 +51,10 @@ def _load_top_signals(today: str) -> list:
                   r.title, r.url, r.source
            FROM signals_enriched e
            JOIN signals_raw r ON r.id = e.raw_id
-           WHERE e.enriched_at >= datetime('now', '-24 hours')
+           WHERE e.enriched_at >= datetime('now', ?)
            ORDER BY e.relevance_score DESC
            LIMIT ?""",
-        (TOP_SIGNALS_LIMIT,),
+        (f"-{SINCE_HOURS} hours", TOP_SIGNALS_LIMIT),
     ).fetchall()
     conn.close()
     return [dict(r) for r in rows]
@@ -67,10 +64,8 @@ def _load_watching_predictions() -> list:
     conn = get_connection()
     rows = conn.execute(
         """SELECT id, briefing_date, prediction_text, related_entities, domain
-           FROM predictions
-           WHERE status = 'watching'
-           ORDER BY made_at DESC
-           LIMIT ?""",
+           FROM predictions WHERE status = 'watching'
+           ORDER BY made_at DESC LIMIT ?""",
         (PREDICTION_BATCH_LIMIT,),
     ).fetchall()
     conn.close()
@@ -78,11 +73,8 @@ def _load_watching_predictions() -> list:
 
 
 def _resolve_predictions(watching: list, signals: list) -> list:
-    """Ask Ollama whether today's signals confirm/contradict any watching predictions.
-    Returns list of dicts with keys: id, status, note, emoji."""
     if not watching or not signals:
         return []
-
     signals_summary = "\n".join(
         f"- [{s['domain']}] {s['title']}: {s['plain_explanation'][:200]}"
         for s in signals
@@ -91,45 +83,30 @@ def _resolve_predictions(watching: list, signals: list) -> list:
         f"[ID:{p['id']} | {p['briefing_date']}] {p['prediction_text']}"
         for p in watching
     )
+    prompt = f"""Today's signals:\n{signals_summary}\n\nWatching predictions:\n{predictions_block}
 
-    prompt = f"""Today's signals:
-{signals_summary}
-
-Watching predictions:
-{predictions_block}
-
-For each prediction, decide: confirmed / wrong / still_watching.
-Return JSON array:
-[{{"id": <int>, "status": "confirmed|wrong|still_watching", "note": "<one sentence on what happened or why still watching>"}}]
-Only include predictions you can make a clear call on. Omit if truly uncertain."""
-
+For each prediction decide: confirmed / wrong / still_watching.
+Return JSON array: [{{"id": <int>, "status": "confirmed|wrong|still_watching", "note": "<one sentence>"}}]
+Only include predictions you can make a clear call on."""
     raw = _ollama(prompt, system="You are a prediction resolution analyst. Return only valid JSON.")
     try:
-        results = json.loads(raw)
-        resolutions = []
-        for r in results:
-            emoji = {"confirmed": "✅", "wrong": "❌", "still_watching": "⏳"}.get(r.get("status", ""), "⏳")
-            resolutions.append({
-                "id": r["id"],
-                "status": r.get("status", "still_watching"),
-                "note": r.get("note", ""),
-                "emoji": emoji,
-            })
-        return resolutions
+        return [
+            {**r, "emoji": {"confirmed": "✅", "wrong": "❌"}.get(r.get("status", ""), "⏳")}
+            for r in json.loads(raw)
+        ]
     except Exception:
         return []
 
 
-def _apply_prediction_resolutions(resolutions: list):
+def _apply_resolutions(resolutions: list):
     if not resolutions:
         return
     conn = get_connection()
     for r in resolutions:
         if r["status"] in ("confirmed", "wrong"):
             conn.execute(
-                """UPDATE predictions
-                   SET status = ?, resolved_at = datetime('now'), resolution_note = ?
-                   WHERE id = ?""",
+                """UPDATE predictions SET status=?, resolved_at=datetime('now'), resolution_note=?
+                   WHERE id=?""",
                 (r["status"], r["note"], r["id"]),
             )
     conn.commit()
@@ -138,151 +115,144 @@ def _apply_prediction_resolutions(resolutions: list):
 
 def _generate_question(signals: list) -> str:
     summary = "\n".join(f"- [{s['domain']}] {s['title']}" for s in signals)
-    prompt = f"""Today's top signals:
-{summary}
-
-Write ONE sharp question that cuts across these signals — structural, strategic, worth sitting with.
-Not a news question. A question about how power, money, or technology is shifting.
-One sentence. No preamble."""
-    return _ollama(prompt)
+    return _ollama(
+        f"Today's signals:\n{summary}\n\nOne sharp strategic question across these signals. "
+        "Not a news question. About how power, money, or technology is shifting. One sentence, no preamble."
+    )
 
 
 def _why_it_matters(title: str, explanation: str, domain: str) -> str:
-    prompt = f"""Signal: {title}
-Domain: {domain}
-Explanation: {explanation}
+    raw = _ollama(
+        f"Signal: {title}\nDomain: {domain}\nExplanation: {explanation}\n\n"
+        "In exactly 2 sentences, explain why this matters to someone new to the tech ecosystem. "
+        "Start your response directly with 'Why it matters:' — no preamble, no meta-commentary.",
+        system="You are a plain-language explainer. Output only the explanation. Start with 'Why it matters:'",
+    )
+    # Strip any preamble lines Llama adds before the actual content
+    for line in raw.splitlines():
+        if line.strip().lower().startswith("why it matters"):
+            return line.strip()
+    return raw.strip()
 
-Write 2-3 sentences starting with "Why it matters to you:" explaining why this signal is personally relevant
-to someone new to the tech ecosystem who is building their understanding. Use "you" language. Be direct."""
-    return _ollama(prompt)
+
+def _format_signal_html(i: int, s: dict, beginner: bool) -> str:
+    domain = DOMAIN_LABEL.get(s["domain"], s["domain"].upper())
+    entities = [e.get("name", "") for e in json.loads(s.get("entities_json") or "[]")]
+    title = _h(s["title"])
+    explanation = _h(s["plain_explanation"])
+    url = s.get("url", "")
+
+    lines = []
+    lines.append(f'<b>#{i} — {domain}</b>')
+    if url:
+        lines.append(f'<a href="{url}">{title}</a>')
+    else:
+        lines.append(f'<b>{title}</b>')
+
+    lines.append("")
+    lines.append(explanation)
+
+    if beginner:
+        why = _why_it_matters(s["title"], s["plain_explanation"], s["domain"])
+        if why:
+            lines.append("")
+            lines.append(f"<i>{_h(why)}</i>")
+
+    pred = (s.get("prediction") or "").strip()
+    if pred:
+        lines.append("")
+        lines.append(f"<b>Prediction:</b> {_h(pred)}")
+
+    if entities:
+        lines.append("")
+        lines.append(f"<i>Entities: {' · '.join(_h(e) for e in entities if e)}</i>")
+
+    return "\n".join(lines)
 
 
-def _giant_watch_line(emoji: str, company: str, signals: list, professional: bool) -> str:
-    matching = [
-        s for s in signals
-        if company.lower() in s["title"].lower()
-        or company.lower() in s.get("entities_json", "").lower()
-    ]
-    if matching:
-        s = matching[0]
-        ref = f"Signal #{signals.index(s) + 1} above" if not professional else s["title"][:60]
-        return f"{emoji} {company} — {ref}."
-    return f"{emoji} {company} — No major news today."
+def _format_giant_watch(signals: list) -> str:
+    mentioned = []
+    not_mentioned = []
+    for company in GIANT_WATCH:
+        found = next(
+            (s for s in signals
+             if company.lower() in s["title"].lower()
+             or company.lower() in (s.get("entities_json") or "").lower()),
+            None,
+        )
+        if found:
+            idx = signals.index(found) + 1
+            mentioned.append(f"<b>{company}</b> — see signal #{idx}")
+        else:
+            not_mentioned.append(company)
+
+    lines = ["<b>COMPANY WATCH</b>"]
+    lines.extend(mentioned)
+    if not_mentioned:
+        lines.append(f"No signals today: {', '.join(not_mentioned)}")
+    return "\n".join(lines)
 
 
 def generate_briefing() -> str:
-    today = date.today().isoformat()
-    day_str = datetime.now().strftime("%A, %d %b %Y")
-    professional = (BRIEFING_STYLE == "professional")
+    now_str = datetime.now().strftime("%d %b %Y, %H:%M")
+    beginner = (BRIEFING_STYLE != "professional")
 
-    signals = _load_top_signals(today)
+    signals = _load_top_signals()
     if not signals:
-        return f"Tech Intel — {day_str}\n\nNo signals ingested yet. Run the daemon first: python daemon.py"
+        return (
+            f"<b>Tech Intel · {now_str}</b>\n\n"
+            "No new signals in the last 90 minutes.\n"
+            "Run <code>python daemon.py</code> to start ingestion."
+        )
 
     watching = _load_watching_predictions()
     resolutions = _resolve_predictions(watching, signals)
-    _apply_prediction_resolutions(resolutions)
-
+    _apply_resolutions(resolutions)
     question = _generate_question(signals)
 
-    lines = []
+    parts = []
 
-    # Header
-    if professional:
-        lines.append(f"Tech Intel — {day_str}\n")
-    else:
-        lines.append(f"🧠 Tech Intel Briefing — {day_str}\n")
-        lines.append("━━━━━━━━━━━━━━━━━━━━━━━━━━━\n")
-        confirmed = sum(1 for r in resolutions if r["status"] == "confirmed")
-        new_preds = sum(1 for s in signals if s.get("prediction", "").strip())
-        lines.append(
-            f"TODAY'S PICTURE\n{len(signals)} signals · {len(resolutions)} history callbacks"
-            f" · {confirmed} confirmed · {new_preds} new predictions\n"
-        )
+    # ── Header ────────────────────────────────────────────────────────
+    parts.append(
+        f"<b>Tech Intel · {now_str}</b>\n"
+        f"{len(signals)} signals · Ollama ✓"
+    )
 
-    # Prediction callbacks
-    if resolutions or watching:
-        sep = "---" if professional else "━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-        lines.append(sep)
-        header = "CALLBACKS" if professional else "BEFORE YOU READ — WHAT WE CALLED"
-        lines.append(f"\n{header}")
-
+    # ── Prediction callbacks ──────────────────────────────────────────
+    if resolutions:
         resolved_ids = {r["id"] for r in resolutions}
-        watching_map = {p["id"]: p for p in watching}
-
+        watch_map = {p["id"]: p for p in watching}
+        callback_lines = ["<b>WHAT WE CALLED</b>"]
         for r in resolutions:
-            p = watching_map.get(r["id"])
+            p = watch_map.get(r["id"])
             if not p:
                 continue
-            lines.append(
-                f"\n{r['emoji']} {r['status'].upper().replace('_',' ')} ({p['briefing_date']})\n"
-                f"We said: {p['prediction_text']}\n"
-                f"Today: {r['note']}"
+            callback_lines.append(
+                f"{r['emoji']} <b>{r['status'].upper().replace('_',' ')}</b> ({p['briefing_date']})\n"
+                f"We said: {_h(p['prediction_text'])}\n"
+                f"Today: {_h(r['note'])}"
             )
+        still = [p for p in watching if p["id"] not in resolved_ids]
+        for p in still[:2]:
+            callback_lines.append(f"⏳ Still watching ({p['briefing_date']}): {_h(p['prediction_text'][:100])}")
+        parts.append("\n".join(callback_lines))
 
-        still_watching = [p for p in watching if p["id"] not in resolved_ids]
-        for p in still_watching[:3]:
-            lines.append(
-                f"\n⏳ WATCHING ({p['briefing_date']}) — {p['prediction_text'][:120]}"
-            )
-
-        if not professional:
-            total = len(watching)
-            lines.append(f"\nRunning prediction accuracy: tracking {total} predictions")
-
-    # Signals
-    sep = "---" if professional else "━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    # ── Signals ───────────────────────────────────────────────────────
     for i, s in enumerate(signals, 1):
-        lines.append(f"\n{sep}\n")
-        emoji = DOMAIN_EMOJI.get(s["domain"], "📌")
-        entities = [e.get("name", "") for e in json.loads(s.get("entities_json") or "[]")]
+        parts.append(_format_signal_html(i, s, beginner))
 
-        if professional:
-            lines.append(f"{emoji} {s['domain'].upper()} · #{i}")
-            lines.append(s["title"])
-            if s.get("url"):
-                lines.append(s["url"])
-            lines.append(f"\n{s['plain_explanation']}")
-            if s.get("prediction", "").strip():
-                lines.append(f"Prediction: {s['prediction']}")
-            if entities:
-                lines.append(f"Entities: {' · '.join(entities)}")
-        else:
-            lines.append(f"{emoji} {s['domain'].upper()} · Signal #{i}")
-            lines.append(s["title"])
-            if s.get("url"):
-                lines.append(s["url"])
-            lines.append(f"\nWhat this means:\n{s['plain_explanation']}")
-            why = _why_it_matters(s["title"], s["plain_explanation"], s["domain"])
-            if why:
-                lines.append(f"\n{why}")
-            if s.get("prediction", "").strip():
-                lines.append(f"\nWhat we predict next:\n{s['prediction']}")
-            if entities:
-                lines.append(f"\nEntities: {' · '.join(entities)}")
+    # ── Company watch ─────────────────────────────────────────────────
+    parts.append(_format_giant_watch(signals))
 
-    # Giant Watch
-    lines.append(f"\n{sep}\n")
-    watch_header = "GIANT WATCH" if professional else "GIANT WATCH\nCompanies we always track, regardless of whether they made the top signals today."
-    lines.append(watch_header + "\n")
-    for emoji, company in GIANT_WATCH:
-        lines.append(_giant_watch_line(emoji, company, signals, professional))
+    # ── One question ──────────────────────────────────────────────────
+    parts.append(f"<b>QUESTION TO SIT WITH</b>\n{_h(question)}")
 
-    # One Question
-    lines.append(f"\n{sep}\n")
-    if professional:
-        lines.append(question)
-    else:
-        lines.append(f"ONE QUESTION WORTH SITTING WITH\n{question}")
-
-    # Footer
+    # ── Footer ────────────────────────────────────────────────────────
     conn = get_connection()
-    total_today = conn.execute(
+    total = conn.execute(
         "SELECT COUNT(*) FROM signals_raw WHERE ingested_at >= datetime('now', '-24 hours')"
     ).fetchone()[0]
     conn.close()
+    parts.append(f"<i>{total} signals ingested in last 24h · {len(signals)} surfaced</i>")
 
-    lines.append(f"\n{sep}")
-    lines.append(f"{total_today} ingested · {len(signals)} surfaced · Ollama ✓")
-
-    return "\n".join(lines)
+    return "\n\n——————————————————\n\n".join(parts)

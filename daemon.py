@@ -66,13 +66,14 @@ def main():
 
     scheduler.add_job(
         run_briefing,
-        trigger=CronTrigger(hour=BRIEFING_HOUR, minute=0),
+        trigger=IntervalTrigger(hours=1),
         id="briefing",
-        name="Daily briefing generation + Telegram delivery",
+        name="Hourly briefing generation + Telegram delivery",
         max_instances=1,
+        coalesce=True,
     )
 
-    print(f"[daemon] scheduler running — ingestion every {INGESTION_INTERVAL_MINUTES}min, briefing at {BRIEFING_HOUR}:00")
+    print(f"[daemon] scheduler running — ingestion every {INGESTION_INTERVAL_MINUTES}min, briefing every 1h")
     print("[daemon] press Ctrl+C to stop\n")
 
     try:
