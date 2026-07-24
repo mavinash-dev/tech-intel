@@ -104,6 +104,21 @@ signals_enriched
   - enriched_at: DATETIME
 ```
 
+### SQLite — Predictions Table
+```
+predictions
+  - id: INTEGER PRIMARY KEY
+  - made_at: DATETIME (when Ollama generated this prediction)
+  - briefing_date: DATE (which day's briefing it appeared in)
+  - prediction_text: TEXT (the forward-looking statement)
+  - related_entities: TEXT (JSON array of entity names involved)
+  - domain: TEXT (Capital / Talent / Technology / Power / Infrastructure / Narrative)
+  - status: TEXT DEFAULT 'watching' (watching / confirmed / wrong / expired)
+  - resolved_at: DATETIME (when status changed from watching)
+  - resolution_note: TEXT (what actually happened — written by Ollama on resolution)
+  - signal_id: INTEGER → signals_enriched.id (signal that triggered this prediction)
+```
+
 ### Neo4j — Graph Model
 ```
 Node: Company
@@ -145,9 +160,10 @@ Relationship: SIGNAL
 |---|---|---|---|
 | Hacker News Firebase API | Top/new stories, item details | None (Firebase realtime) | Free, no key needed |
 | Reddit API (public) | r/technology, r/programming, r/MachineLearning top posts | 60 req/min without auth | Use read-only OAuth for higher limits |
-| RSS (TechCrunch, MIT Tech Review, arXiv CS) | Article headlines and summaries | None | Parse with feedparser |
+| RSS (TechCrunch, MIT Tech Review, arXiv CS, TLDR, Crunchbase News, YC Blog) | Article headlines and summaries | None | Parse with feedparser |
 | GitHub Trending (scrape) | Trending repos daily | No official API — scrape HTML | Use github-trending-api wrapper or scrape |
 | Dev.to API | Articles by tag (ai, tech, programming) | 1000 req/day free | No key needed for public |
+| Product Hunt API | New product launches, emerging tools | 100 req/min | No key needed for public posts endpoint |
 | Telegram Bot API | Send briefing to personal chat | No meaningful limit for personal use | Free, create bot via @BotFather |
 | Ollama (local) | LLM inference for classification + briefing | No limits — runs locally | Must be installed on Mac separately |
 

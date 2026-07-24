@@ -102,7 +102,26 @@ Returns synthesized answer with source signals
 
 ---
 
-## 4. Design Decisions
+## 4. Briefing Format (Locked)
+
+Two styles — same signals, different depth. Controlled by `BRIEFING_STYLE` in `.env`.
+
+**Style A — Professional (Brief):** Dense, analytical, no hand-holding. Entities named without introduction. ~400 words per briefing.
+
+**Style B — Beginner Friendly:** Every entity introduced on first mention. "What this means" + "Why it matters to you" per signal. ~1,200 words per briefing.
+
+Both styles include:
+- **BEFORE YOU READ** — prediction callback block (confirmed / watching / wrong)
+- **Signal blocks** — domain tag, headline, URL, explanation, history connection, forward prediction, entity list
+- **GIANT WATCH** — fixed list of tracked companies, one line each, every day
+- **ONE QUESTION** — Ollama-synthesized structural question from the day's signals
+- **Footer** — ingestion count, Ollama status, prediction accuracy score
+
+Full templates and end-to-end examples: `docs/briefing-templates.md`
+
+---
+
+## 5. Design Decisions (formerly Section 4)
 
 ### Plain language first
 - **Chose:** Every signal card shows Ollama-generated plain explanation by default, with original headline secondary

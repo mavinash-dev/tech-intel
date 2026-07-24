@@ -97,8 +97,12 @@
 | TechCrunch | RSS (feedparser) | Headlines + summaries |
 | MIT Tech Review | RSS (feedparser) | Headlines + summaries |
 | arXiv CS | RSS (feedparser) | Research paper titles |
+| TLDR Newsletter | RSS (feedparser) — tldr.tech/rss | Curated tech + AI + infosec daily |
+| Crunchbase News | RSS (feedparser) | Funding rounds, acquisitions |
+| Y Combinator Blog | RSS (feedparser) | Startup ecosystem signals |
 | GitHub Trending | HTML scrape | Daily trending repos |
 | Dev.to | REST API (no key) | Articles by tag |
+| Product Hunt | REST API (no key) — public posts endpoint | New product launches, emerging tools |
 
 ---
 
@@ -107,6 +111,7 @@
 **SQLite:**
 - `signals_raw` — source, source_id (dedup key), title, url, body, published_at, processed flag
 - `signals_enriched` — domain, relevance_score, plain_explanation, entities_json, enriched_at
+- `predictions` — prediction_text, domain, related_entities, status (watching/confirmed/wrong/expired), made_at, resolved_at, resolution_note, signal_id
 
 **Neo4j:**
 - Nodes: Company, Person, Technology, Country, Organization
