@@ -41,9 +41,8 @@ def run_ingestion():
 
 def run_briefing():
     print("\n[daemon] === briefing generation start ===")
-    text = generate_briefing()
-    print(text[:500] + "...\n")
-    send_briefing(text)
+    path, signals = generate_briefing()
+    send_briefing(path, signals)
     print("[daemon] === briefing complete ===\n")
 
 

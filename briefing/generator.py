@@ -121,10 +121,9 @@ def generate_briefing() -> str:
 
     signals = _load_top_signals()
     if not signals:
-        # Return a minimal HTML file
         now_str = datetime.now().strftime("%d %b %Y %H:%M")
         html = f"""<!DOCTYPE html><html><head><meta charset="UTF-8">
-        <style>body{{background:#0a0a0f;color:#6b7280;font-family:sans-serif;
+        <style>body{{background:#07070d;color:#6b7280;font-family:sans-serif;
         padding:40px;text-align:center;}}</style></head>
         <body><h2 style="color:#e2e8f0">Tech Intel · {now_str}</h2>
         <p>No new signals in the last 90 minutes.<br>
@@ -132,7 +131,7 @@ def generate_briefing() -> str:
         path = os.path.join(BRIEFING_DIR, f"briefing_{datetime.now().strftime('%Y%m%d_%H%M')}.html")
         with open(path, "w") as f:
             f.write(html)
-        return path
+        return path, []
 
     watching = _load_watching_predictions()
     resolutions = _resolve_predictions(watching, signals)
@@ -166,4 +165,4 @@ def generate_briefing() -> str:
         f.write(html)
 
     print(f"[briefing] saved to {path}")
-    return path
+    return path, signals

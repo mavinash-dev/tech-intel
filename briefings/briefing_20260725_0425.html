@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tech Intel · Saturday, 25 July 2026 · 04:25</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #0a0a0f;
+    color: #e2e8f0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    padding: 16px;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  a { color: #a78bfa; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* Header */
+  .header {
+    padding: 24px 0 16px;
+    border-bottom: 1px solid #1e1e2e;
+    margin-bottom: 24px;
+  }
+  .header-label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: #6b7280;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .header-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #f8fafc;
+  }
+  .header-meta {
+    font-size: 12px;
+    color: #6b7280;
+    margin-top: 6px;
+  }
+
+  /* Section */
+  .section { margin-bottom: 32px; }
+  .section-title {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: #6b7280;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #1e1e2e;
+  }
+
+  /* Signal cards */
+  .card {
+    background: #111118;
+    border: 1px solid #1e1e2e;
+    border-radius: 10px;
+    padding: 18px;
+    margin-bottom: 16px;
+  }
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .domain-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    padding: 3px 8px;
+    border-radius: 4px;
+  }
+  .signal-num {
+    font-size: 12px;
+    color: #4b5563;
+    margin-left: auto;
+  }
+  .signal-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #f1f5f9;
+    margin-bottom: 10px;
+    line-height: 1.4;
+  }
+  .signal-title a { color: #f1f5f9; }
+  .signal-title a:hover { color: #a78bfa; }
+  .explanation {
+    color: #94a3b8;
+    margin-bottom: 12px;
+    font-size: 14px;
+  }
+
+  /* Entity & number highlights */
+  .entity {
+    color: #c4b5fd;
+    font-weight: 600;
+  }
+  .number {
+    color: #34d399;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Why it matters box */
+  .why-box {
+    background: #0f172a;
+    border-left: 3px solid #7c3aed;
+    border-radius: 0 6px 6px 0;
+    padding: 12px 14px;
+    margin: 12px 0;
+  }
+  .why-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #7c3aed;
+    display: block;
+    margin-bottom: 6px;
+  }
+  .why-box p {
+    font-size: 13px;
+    color: #94a3b8;
+  }
+
+  /* Prediction */
+  .prediction {
+    font-size: 13px;
+    color: #6b7280;
+    font-style: italic;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #1e1e2e;
+  }
+
+  /* Entity chips */
+  .entities {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 12px;
+  }
+  .chip {
+    font-size: 11px;
+    font-weight: 600;
+    color: #a78bfa;
+    background: #1e1b4b;
+    border: 1px solid #312e81;
+    padding: 2px 8px;
+    border-radius: 20px;
+  }
+
+  /* Callbacks */
+  .callback-row {
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    background: #111118;
+    border-radius: 0 6px 6px 0;
+  }
+  .callback-status {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .callback-said, .callback-result {
+    font-size: 13px;
+    color: #6b7280;
+    margin-top: 3px;
+  }
+  .callback-result { color: #94a3b8; }
+
+  /* Company watch */
+  .watch-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 8px;
+  }
+  .watch-row {
+    background: #111118;
+    border: 1px solid #1e1e2e;
+    border-radius: 8px;
+    padding: 10px 12px;
+  }
+  .watch-row.active { border-color: #7c3aed40; background: #1e1b4b20; }
+  .watch-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #e2e8f0;
+    display: block;
+  }
+  .watch-ref { font-size: 11px; color: #a78bfa; }
+  .watch-quiet { font-size: 11px; color: #374151; }
+
+  /* Question */
+  .question-box {
+    background: #111118;
+    border: 1px solid #7c3aed40;
+    border-radius: 10px;
+    padding: 20px;
+    font-size: 16px;
+    color: #c4b5fd;
+    font-style: italic;
+    line-height: 1.6;
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 32px;
+    padding-top: 16px;
+    border-top: 1px solid #1e1e2e;
+    font-size: 12px;
+    color: #374151;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-label">Signal Intelligence</div>
+  <div class="header-title">Tech Intel</div>
+  <div class="header-meta">Saturday, 25 July 2026 · 04:25 &nbsp;·&nbsp; 5 signals surfaced</div>
+</div>
+
+
+
+<section class="section">
+  <h3 class="section-title">Top Signals</h3>
+  
+    <div class="card">
+        <div class="card-header">
+            <span class="domain-tag" style="background:#a855f720; color:#a855f7; border:1px solid #a855f740">
+                🔵 TECHNOLOGY
+            </span>
+            <span class="signal-num">#1</span>
+        </div>
+
+        <h2 class="signal-title">
+            <a href='https://www.anthropic.com/news/claude-opus-5' target='_blank'>Claude Opus 5</a>
+        </h2>
+
+        <p class="explanation">A new AI system called <span class="entity">Claude Opus 5</span> has been announced by Anthropic, a company known for its work on language models. This is a significant development in the field of natural language processing and may have implications for future AI research.</p>
+
+        <div class='why-box'><span class='why-label'>Why it matters</span><p>Why it matters: As artificial intelligence continues to advance, understanding how it works and its potential applications is crucial for both tech enthusiasts and non-experts alike. The development of <span class="entity">Claude Opus 5</span>, a cutting-edge AI system, offers insights into the future of natural language processing and may have significant implications for various industries and aspects of life.</p></div>
+
+        
+
+        <div class='entities'><span class="chip">Claude Opus 5</span></div>
+    </div>
+    
+
+    <div class="card">
+        <div class="card-header">
+            <span class="domain-tag" style="background:#a855f720; color:#a855f7; border:1px solid #a855f740">
+                🔵 TECHNOLOGY
+            </span>
+            <span class="signal-num">#2</span>
+        </div>
+
+        <h2 class="signal-title">
+            <a href='https://www.dbos.dev/blog/postgres-listen-notify-scalability' target='_blank'>Postgres LISTEN/NOTIFY actually scales</a>
+        </h2>
+
+        <p class="explanation">A popular <span class="entity">PostgreSQL</span> community blog post reports that the LISTEN/NOTIFY mechanism in Postgres can scale well with increased traffic, contrary to initial concerns. This means that larger-scale applications built on top of Postgres might not be as limited by this feature as previously thought.</p>
+
+        <div class='why-box'><span class='why-label'>Why it matters</span><p>Why it matters: When building a large-scale application, understanding the scalability limitations of underlying technologies is crucial for planning and optimization. Postgres's ability to handle increased traffic without performance degradation makes it a more viable option for complex systems, giving developers more flexibility in their architecture choices.</p></div>
+
+        
+
+        <div class='entities'><span class="chip">PostgreSQL</span></div>
+    </div>
+    
+
+    <div class="card">
+        <div class="card-header">
+            <span class="domain-tag" style="background:#eab30820; color:#eab308; border:1px solid #eab30840">
+                🔒 SECURITY
+            </span>
+            <span class="signal-num">#3</span>
+        </div>
+
+        <h2 class="signal-title">
+            <a href='https://hhh.hn/hanwha-github-token/' target='_blank'>My security camera shipped a GitHub admin token in its login page</a>
+        </h2>
+
+        <p class="explanation">A security camera company, <span class="entity">Hanwha</span>, found a major vulnerability in their product. The login page contained a GitHub admin token, which can be used to access and control other GitHub accounts. This is a significant security concern for users of the camera's login feature.</p>
+
+        <div class='why-box'><span class='why-label'>Why it matters</span><p>Why it matters: A GitHub admin token can be used to access sensitive information and perform actions on behalf of other users, which could potentially lead to unauthorized changes or theft of valuable data. In this case, a security camera company's careless handling of sensitive credentials puts their customers at risk of having their own accounts compromised.</p></div>
+
+        
+
+        <div class='entities'><span class="chip">Hanwha</span></div>
+    </div>
+    
+
+    <div class="card">
+        <div class="card-header">
+            <span class="domain-tag" style="background:#a855f720; color:#a855f7; border:1px solid #a855f740">
+                🔵 TECHNOLOGY
+            </span>
+            <span class="signal-num">#4</span>
+        </div>
+
+        <h2 class="signal-title">
+            <a href='https://www.cnbc.com/2026/07/24/nvidia-microsoft-meta-open-weight-ai-models.html' target='_blank'>Nvidia, Microsoft, Meta warn against overregulating open-weight models</a>
+        </h2>
+
+        <p class="explanation"><span class="entity">Nvidia</span>, <span class="entity">Microsoft</span>, and <span class="entity">Meta</span>, three major technology companies, have signed an open letter warning against overregulating AI models with 'open weights'. This refers to AI models that use transparent and explainable architectures. The letter emphasizes the importance of allowing these models to operate freely, without excessive regulation, to maintain American leadership in AI. The authors argue that overly restrictive regulations could stifle innovation and harm the US economy. The letter is part of a growing debate about the need for responsible AI development and regulation.</p>
+
+        <div class='why-box'><span class='why-label'>Why it matters</span><p>Why it matters: Understanding the concerns around open-weight models and regulation in AI is crucial, as it impacts how technology is developed and used, potentially affecting various industries and the overall economy. The debate highlights the need for a balance between ensuring responsible AI development and maintaining innovation, which can have significant implications for the future of technology and American leadership in AI.</p></div>
+
+        
+
+        <div class='entities'><span class="chip">Nvidia</span><span class="chip">Microsoft</span><span class="chip">Meta</span></div>
+    </div>
+    
+
+    <div class="card">
+        <div class="card-header">
+            <span class="domain-tag" style="background:#a855f720; color:#a855f7; border:1px solid #a855f740">
+                🔵 TECHNOLOGY
+            </span>
+            <span class="signal-num">#5</span>
+        </div>
+
+        <h2 class="signal-title">
+            <a href='https://arstechnica.com/space/2026/07/indias-first-privately-developed-rocket-reaches-orbit-on-dramatic-debut-launch/' target='_blank'>India's first privately-developed rocket reaches orbit on debut launch</a>
+        </h2>
+
+        <p class="explanation">India's private space company, <span class="entity">Spacemart India</span>, successfully launched its first privately-developed rocket, called SLV-140, into orbit. This achievement marks a significant milestone in India's growing space industry, which is driven by companies like Isro (Indian Space Research Organisation) and startups like <span class="entity">Spacemart India</span>. The successful launch demonstrates the capabilities of Indian private sector players in space technology.</p>
+
+        <div class='why-box'><span class='why-label'>Why it matters</span><p>Why it matters: This milestone is significant because it showcases the potential for innovation and entrepreneurship in the space industry, demonstrating that private companies can play a substantial role in advancing technology and pushing boundaries. As India's space industry continues to grow, this achievement sets a precedent for other startups and small-scale players to make their mark on the global stage.</p></div>
+
+        
+
+        <div class='entities'><span class="chip">Spacemart India</span></div>
+    </div>
+    
+</section>
+
+<section class="section">
+  <h3 class="section-title">Company Watch</h3>
+  <div class="watch-grid">
+    <div class="watch-row quiet"><span class="watch-name">Apple</span><span class="watch-quiet">quiet today</span></div>
+<div class="watch-row active"><span class="watch-name">Meta</span><span class="watch-ref">→ Signal #4</span></div>
+<div class="watch-row active"><span class="watch-name">Microsoft</span><span class="watch-ref">→ Signal #4</span></div>
+<div class="watch-row quiet"><span class="watch-name">Google</span><span class="watch-quiet">quiet today</span></div>
+<div class="watch-row quiet"><span class="watch-name">Amazon</span><span class="watch-quiet">quiet today</span></div>
+<div class="watch-row active"><span class="watch-name">Nvidia</span><span class="watch-ref">→ Signal #4</span></div>
+<div class="watch-row quiet"><span class="watch-name">OpenAI</span><span class="watch-quiet">quiet today</span></div>
+<div class="watch-row quiet"><span class="watch-name">Anthropic</span><span class="watch-quiet">quiet today</span></div>
+<div class="watch-row quiet"><span class="watch-name">Tesla</span><span class="watch-quiet">quiet today</span></div>
+<div class="watch-row quiet"><span class="watch-name">Baidu</span><span class="watch-quiet">quiet today</span></div>
+<div class="watch-row quiet"><span class="watch-name">TSMC</span><span class="watch-quiet">quiet today</span></div>
+<div class="watch-row quiet"><span class="watch-name">Samsung</span><span class="watch-quiet">quiet today</span></div>
+  </div>
+</section>
+
+<section class="section">
+  <h3 class="section-title">Question to sit with</h3>
+  <div class="question-box">The increasing adoption of private ventures and innovation by companies like Nvidia, Microsoft, and Meta suggests a shift in the balance of technological power from traditional public sectors to private industry.</div>
+</section>
+
+<div class="footer">
+  30 signals ingested (24h) · tech-intel · running locally on your Mac
+</div>
+
+</body>
+</html>
