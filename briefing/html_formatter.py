@@ -152,9 +152,9 @@ def _watch_card(company: str, signal=None, signal_idx: int = 0) -> str:
         domain_color = DOMAIN_COLOR.get(domain, "#94a3b8")
         title_short = signal["title"][:55] + ("…" if len(signal["title"]) > 55 else "")
         return f"""
-<div class="wcard active" style="border:1px solid {c}30;background:{bg};">
+<div class="wcard active" style="border:1px solid {c}; background:{bg};">
   <div class="wcard-top">
-    <span class="wdot" style="background:{c};box-shadow:0 0 6px {c}80;"></span>
+    <span class="wdot" style="background:{c}; box-shadow:0 0 8px {c};"></span>
     <span class="wname" style="color:{c};">{company}</span>
   </div>
   <div class="wcard-signal">
@@ -166,13 +166,13 @@ def _watch_card(company: str, signal=None, signal_idx: int = 0) -> str:
     else:
         last = _last_seen(company)
         return f"""
-<div class="wcard quiet" style="border:1px solid {c}15;">
+<div class="wcard quiet" style="border:1px solid #2a2a3a;">
   <div class="wcard-top">
-    <span class="wdot quiet-dot" style="background:{c}40;"></span>
-    <span class="wname" style="color:{c}80;">{company}</span>
+    <span class="wdot" style="background:#2a2a3a; border:1px solid {c};"></span>
+    <span class="wname" style="color:#6b7280;">{company}</span>
   </div>
   <div class="wcard-signal">
-    <span class="wlast">{last}</span>
+    <span class="wlast" style="color:#4b5563;">{last}</span>
   </div>
 </div>"""
 

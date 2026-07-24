@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Tech Intel · Saturday, 25 July 2026 · 04:39</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:#07070d;color:#cbd5e1;
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  font-size:15px;line-height:1.75;
+  padding:20px 16px 60px;max-width:740px;margin:0 auto;
+}
+a{color:#c4b5fd;text-decoration:underline;text-underline-offset:3px;}
+a:hover{color:#fff;}
+
+/* Header */
+.header{padding:28px 0 20px;border-bottom:1px solid #1a1a2a;margin-bottom:28px;}
+.eyebrow{font-size:10px;letter-spacing:3px;color:#3d3d55;text-transform:uppercase;margin-bottom:8px;}
+.brand{font-size:28px;font-weight:800;color:#f8fafc;letter-spacing:-0.5px;}
+.brand em{color:#7c3aed;font-style:normal;}
+.dateline{font-size:12px;color:#3d3d55;margin-top:6px;}
+.stats{display:flex;gap:12px;margin-top:16px;flex-wrap:wrap;}
+.stat{background:#0f0f18;border:1px solid #1a1a2a;border-radius:8px;padding:8px 14px;}
+.stat strong{font-size:20px;font-weight:800;color:#e2e8f0;display:block;line-height:1.2;}
+.stat span{font-size:11px;color:#3d3d55;}
+
+/* Section */
+.section{margin-bottom:36px;}
+.sec-title{font-size:10px;letter-spacing:3px;color:#3d3d55;text-transform:uppercase;
+  margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid #1a1a2a;}
+
+/* Signal card */
+.card{border-radius:12px;padding:20px;margin-bottom:14px;border:1px solid #1a1a2a;}
+.card-top{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.tags{display:flex;gap:6px;flex-wrap:wrap;flex:1;}
+.tag{font-size:10px;font-weight:700;letter-spacing:0.5px;}
+.tag-entity{color:#3d3d55;}
+.score-wrap{width:60px;height:3px;background:#1a1a2a;border-radius:2px;overflow:hidden;flex-shrink:0;}
+.score-fill{height:100%;border-radius:2px;}
+.sig-title{font-size:17px;font-weight:700;color:#f1f5f9;margin-bottom:10px;line-height:1.35;}
+.sig-title a{color:#f1f5f9;text-decoration:underline;text-decoration-color:#ffffff20;text-underline-offset:4px;}
+.sig-title a:hover{color:#c4b5fd;text-decoration-color:#c4b5fd;}
+.ext{font-size:13px;color:#3d3d55;}
+.explanation{color:#8892a4;font-size:14px;margin-bottom:14px;}
+
+/* Highlights */
+.entity{color:#c4b5fd;font-weight:600;}
+.num{color:#34d399;font-weight:700;}
+
+/* Why it matters — no border, consistent orange heading */
+.why-block{margin:14px 0;}
+.why-heading{
+  font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;
+  color:#f97316;display:block;margin-bottom:6px;
+}
+.why-text{font-size:13px;color:#6b7280;}
+
+.prediction{font-size:13px;color:#4b5563;font-style:italic;
+  margin-top:12px;padding-top:12px;border-top:1px solid #1a1a2a;}
+
+/* Entity chips → Wikipedia */
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px;}
+.chip{font-size:11px;font-weight:600;color:#a78bfa;background:#1e1b4b;
+  border:1px solid #312e81;padding:3px 10px;border-radius:20px;
+  text-decoration:none!important;}
+.chip:hover{background:#312e81;color:#fff;}
+
+/* Callbacks */
+.cb-row{border-radius:0 8px 8px 0;padding:12px 16px;margin-bottom:10px;}
+.cb-status{font-size:11px;font-weight:800;letter-spacing:1px;display:block;margin-bottom:4px;}
+.cb-said,.cb-result{font-size:13px;color:#4b5563;margin-top:3px;}
+.cb-result{color:#8892a4;}
+
+/* Company watch grid */
+.watch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;}
+.wcard{border-radius:10px;padding:12px 14px;}
+.wcard-top{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.wdot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.quiet-dot{}
+.wname{font-size:13px;font-weight:700;}
+.wcard-signal{font-size:12px;}
+.wtag{font-weight:700;margin-right:4px;}
+.wtitle{color:#6b7280;}
+.wref{font-size:11px;color:#3d3d55;margin-top:4px;}
+.wlast{color:#3d3d55;font-size:11px;}
+
+/* Question */
+.q-box{
+  background:#0f0f18;border:1px solid #7c3aed30;
+  border-left:4px solid #7c3aed;border-radius:0 10px 10px 0;
+  padding:20px 22px;font-size:16px;font-style:italic;
+  color:#c4b5fd;line-height:1.65;
+}
+
+/* Footer */
+.footer{margin-top:40px;padding-top:20px;border-top:1px solid #1a1a2a;
+  font-size:11px;color:#1e1e2e;text-align:center;letter-spacing:0.5px;}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="eyebrow">Signal Intelligence</div>
+  <div class="brand">Tech <em>Intel</em></div>
+  <div class="dateline">Saturday, 25 July 2026 · 04:39</div>
+  <div class="stats">
+    <div class="stat"><strong>5</strong><span>Surfaced</span></div>
+    <div class="stat"><strong>30</strong><span>Ingested (24h)</span></div>
+    <div class="stat"><strong>0</strong><span>Predictions hit</span></div>
+  </div>
+</div>
+
+
+
+<section class="section">
+  <h3 class="sec-title">Top Signals</h3>
+  
+<div class="card" style="border-left:4px solid #a855f7; background:linear-gradient(135deg,#a855f709 0%,#0f0f18 55%);">
+  <div class="card-top">
+    <div class="tags"><span class="tag" style="color:#a855f7;">#technology</span> <span class="tag tag-entity">#claudeopus5</span></div>
+    <div class="score-wrap" title="Relevance 90%">
+      <div class="score-fill" style="width:90%;background:#a855f7;"></div>
+    </div>
+  </div>
+
+  <h2 class="sig-title">
+    <a href='https://www.anthropic.com/news/claude-opus-5' target='_blank'>Claude Opus 5 <span class='ext'>↗</span></a>
+  </h2>
+
+  <p class="explanation">A new AI system called <span class="entity">Claude Opus 5</span> has been announced by Anthropic, a company known for its work on language models. This is a significant development in the field of natural language processing and may have implications for future AI research.</p>
+
+  <div class="why-block">
+    <span class="why-heading">Why it matters</span>
+    <p class="why-text">Why it matters: <span class="entity">Claude Opus 5</span> is a groundbreaking AI system that could revolutionize how computers understand and generate human-like language, which has numerous applications in fields like customer service chatbots, content moderation, and even creative writing.</p>
+  </div>
+
+  
+
+  <div class='chips'><a class="chip" href="https://en.wikipedia.org/wiki/Claude Opus 5" target="_blank">Claude Opus 5</a></div>
+</div>
+
+<div class="card" style="border-left:4px solid #a855f7; background:linear-gradient(135deg,#a855f709 0%,#0f0f18 55%);">
+  <div class="card-top">
+    <div class="tags"><span class="tag" style="color:#a855f7;">#technology</span> <span class="tag tag-entity">#postgresql</span></div>
+    <div class="score-wrap" title="Relevance 70%">
+      <div class="score-fill" style="width:70%;background:#a855f7;"></div>
+    </div>
+  </div>
+
+  <h2 class="sig-title">
+    <a href='https://www.dbos.dev/blog/postgres-listen-notify-scalability' target='_blank'>Postgres LISTEN/NOTIFY actually scales <span class='ext'>↗</span></a>
+  </h2>
+
+  <p class="explanation">A popular <span class="entity">PostgreSQL</span> community blog post reports that the LISTEN/NOTIFY mechanism in Postgres can scale well with increased traffic, contrary to initial concerns. This means that larger-scale applications built on top of Postgres might not be as limited by this feature as previously thought.</p>
+
+  <div class="why-block">
+    <span class="why-heading">Why it matters</span>
+    <p class="why-text">Why it matters: Knowing about the scalability of <span class="entity">PostgreSQL</span>'s LISTEN/NOTIFY mechanism can help you build more robust and efficient applications, especially those that rely on real-time communication between different parts of the system. By understanding this aspect of Postgres, you can design your projects with confidence, knowing that they can handle increased traffic without being bottlenecked by this feature.</p>
+  </div>
+
+  
+
+  <div class='chips'><a class="chip" href="https://en.wikipedia.org/wiki/PostgreSQL" target="_blank">PostgreSQL</a></div>
+</div>
+
+<div class="card" style="border-left:4px solid #eab308; background:linear-gradient(135deg,#eab30809 0%,#0f0f18 55%);">
+  <div class="card-top">
+    <div class="tags"><span class="tag" style="color:#eab308;">#security</span> <span class="tag tag-entity">#hanwha</span></div>
+    <div class="score-wrap" title="Relevance 70%">
+      <div class="score-fill" style="width:70%;background:#eab308;"></div>
+    </div>
+  </div>
+
+  <h2 class="sig-title">
+    <a href='https://hhh.hn/hanwha-github-token/' target='_blank'>My security camera shipped a GitHub admin token in its login page <span class='ext'>↗</span></a>
+  </h2>
+
+  <p class="explanation">A security camera company, <span class="entity">Hanwha</span>, found a major vulnerability in their product. The login page contained a GitHub admin token, which can be used to access and control other GitHub accounts. This is a significant security concern for users of the camera's login feature.</p>
+
+  <div class="why-block">
+    <span class="why-heading">Why it matters</span>
+    <p class="why-text">Why it matters: The GitHub admin token was meant to help the company manage its own GitHub account, but instead, it's a security risk that can be exploited by malicious actors. In simple terms, this means that any unauthorized person who gains access to the camera's login feature could also gain control over other people's GitHub accounts, which contain sensitive information like code and project data.</p>
+  </div>
+
+  
+
+  <div class='chips'><a class="chip" href="https://en.wikipedia.org/wiki/Hanwha" target="_blank">Hanwha</a></div>
+</div>
+
+<div class="card" style="border-left:4px solid #a855f7; background:linear-gradient(135deg,#a855f709 0%,#0f0f18 55%);">
+  <div class="card-top">
+    <div class="tags"><span class="tag" style="color:#a855f7;">#technology</span> <span class="tag tag-entity">#nvidia</span> <span class="tag tag-entity">#microsoft</span></div>
+    <div class="score-wrap" title="Relevance 70%">
+      <div class="score-fill" style="width:70%;background:#a855f7;"></div>
+    </div>
+  </div>
+
+  <h2 class="sig-title">
+    <a href='https://www.cnbc.com/2026/07/24/nvidia-microsoft-meta-open-weight-ai-models.html' target='_blank'>Nvidia, Microsoft, Meta warn against overregulating open-weight models <span class='ext'>↗</span></a>
+  </h2>
+
+  <p class="explanation"><span class="entity">Nvidia</span>, <span class="entity">Microsoft</span>, and <span class="entity">Meta</span>, three major technology companies, have signed an open letter warning against overregulating AI models with 'open weights'. This refers to AI models that use transparent and explainable architectures. The letter emphasizes the importance of allowing these models to operate freely, without excessive regulation, to maintain American leadership in AI. The authors argue that overly restrictive regulations could stifle innovation and harm the US economy. The letter is part of a growing debate about the need for responsible AI development and regulation.</p>
+
+  <div class="why-block">
+    <span class="why-heading">Why it matters</span>
+    <p class="why-text">Why it matters: Overregulating open-weight models could hinder the US's ability to maintain its competitive edge in the rapidly evolving field of artificial intelligence, potentially harming the country's economy and technological advancements.</p>
+  </div>
+
+  
+
+  <div class='chips'><a class="chip" href="https://en.wikipedia.org/wiki/Nvidia" target="_blank">Nvidia</a><a class="chip" href="https://en.wikipedia.org/wiki/Microsoft" target="_blank">Microsoft</a><a class="chip" href="https://en.wikipedia.org/wiki/Meta" target="_blank">Meta</a></div>
+</div>
+
+<div class="card" style="border-left:4px solid #a855f7; background:linear-gradient(135deg,#a855f709 0%,#0f0f18 55%);">
+  <div class="card-top">
+    <div class="tags"><span class="tag" style="color:#a855f7;">#technology</span> <span class="tag tag-entity">#spacemartindia</span></div>
+    <div class="score-wrap" title="Relevance 50%">
+      <div class="score-fill" style="width:50%;background:#a855f7;"></div>
+    </div>
+  </div>
+
+  <h2 class="sig-title">
+    <a href='https://arstechnica.com/space/2026/07/indias-first-privately-developed-rocket-reaches-orbit-on-dramatic-debut-launch/' target='_blank'>India's first privately-developed rocket reaches orbit on debut launch <span class='ext'>↗</span></a>
+  </h2>
+
+  <p class="explanation">India's private space company, <span class="entity">Spacemart India</span>, successfully launched its first privately-developed rocket, called SLV-140, into orbit. This achievement marks a significant milestone in India's growing space industry, which is driven by companies like Isro (Indian Space Research Organisation) and startups like <span class="entity">Spacemart India</span>. The successful launch demonstrates the capabilities of Indian private sector players in space technology.</p>
+
+  <div class="why-block">
+    <span class="why-heading">Why it matters</span>
+    <p class="why-text">Why it matters: This achievement marks an important step towards democratizing access to space technology, as it shows that a private company can successfully develop and launch a rocket capable of reaching orbit.</p>
+  </div>
+
+  
+
+  <div class='chips'><a class="chip" href="https://en.wikipedia.org/wiki/Spacemart India" target="_blank">Spacemart India</a></div>
+</div>
+</section>
+
+<section class="section">
+  <h3 class="sec-title">Company Watch</h3>
+  <div class="watch-grid">
+<div class="wcard quiet" style="border:1px solid #2a2a3a;">
+  <div class="wcard-top">
+    <span class="wdot" style="background:#2a2a3a; border:1px solid #a2aaad;"></span>
+    <span class="wname" style="color:#6b7280;">Apple</span>
+  </div>
+  <div class="wcard-signal">
+    <span class="wlast" style="color:#4b5563;">monitoring</span>
+  </div>
+</div>
+
+<div class="wcard active" style="border:1px solid #0082fb; background:#0082fb12;">
+  <div class="wcard-top">
+    <span class="wdot" style="background:#0082fb; box-shadow:0 0 8px #0082fb;"></span>
+    <span class="wname" style="color:#0082fb;">Meta</span>
+  </div>
+  <div class="wcard-signal">
+    <span class="wtag" style="color:#a855f7;">#technology</span>
+    <span class="wtitle">Nvidia, Microsoft, Meta warn against overregulating ope…</span>
+  </div>
+  <div class="wref">→ Signal #4</div>
+</div>
+
+<div class="wcard active" style="border:1px solid #0078d4; background:#0078d412;">
+  <div class="wcard-top">
+    <span class="wdot" style="background:#0078d4; box-shadow:0 0 8px #0078d4;"></span>
+    <span class="wname" style="color:#0078d4;">Microsoft</span>
+  </div>
+  <div class="wcard-signal">
+    <span class="wtag" style="color:#a855f7;">#technology</span>
+    <span class="wtitle">Nvidia, Microsoft, Meta warn against overregulating ope…</span>
+  </div>
+  <div class="wref">→ Signal #4</div>
+</div>
+
+<div class="wcard quiet" style="border:1px solid #2a2a3a;">
+  <div class="wcard-top">
+    <span class="wdot" style="background:#2a2a3a; border:1px solid #4285f4;"></span>
+    <span class="wname" style="color:#6b7280;">Google</span>
+  </div>
+  <div class="wcard-signal">
+    <span class="wlast" style="color:#4b5563;">monitoring</span>
+  </div>
+</div>
+
+<div class="wcard quiet" style="border:1px solid #2a2a3a;">
+  <div class="wcard-top">
+    <span class="wdot" style="background:#2a2a3a; border:1px solid #ff9900;"></span>
+    <span class="wname" style="color:#6b7280;">Amazon</span>
+  </div>
+  <div class="wcard-signal">
+    <span class="wlast" style="color:#4b5563;">monitoring</span>
+  </div>
+</div>
+
+<div class="wcard active" style="border:1px solid #76b900; background:#76b90012;">
+  <div class="wcard-top">
+    <span class="wdot" style="background:#76b900; box-shadow:0 0 8px #76b900;"></span>
+    <span class="wname" style="color:#76b900;">Nvidia</span>
+  </div>
+  <div class="wcard-signal">
+    <span class="wtag" style="color:#a855f7;">#technology</span>
+    <span class="wtitle">Nvidia, Microsoft, Meta warn against overregulating ope…</span>
+  </div>
+  <div class="wref">→ Signal #4</div>
+</div>
+
+<div class="wcard quiet" style="border:1px solid #2a2a3a;">
+  <div class="wcard-top">
+    <span class="wdot" style="background:#2a2a3a; border:1px solid #10a37f;"></span>
+    <span class="wname" style="color:#6b7280;">OpenAI</span>
+  </div>
+  <div class="wcard-signal">
+    <span class="wlast" style="color:#4b5563;">monitoring</span>
+  </div>
+</div>
+
+<div class="wcard quiet" style="border:1px solid #2a2a3a;">
+  <div class="wcard-top">
+    <span class="wdot" style="background:#2a2a3a; border:1px solid #d97757;"></span>
+    <span class="wname" style="color:#6b7280;">Anthropic</span>
+  </div>
+  <div class="wcard-signal">
+    <span class="wlast" style="color:#4b5563;">monitoring</span>
+  </div>
+</div>
+
+<div class="wcard quiet" style="border:1px solid #2a2a3a;">
+  <div class="wcard-top">
+    <span class="wdot" style="background:#2a2a3a; border:1px solid #e82127;"></span>
+    <span class="wname" style="color:#6b7280;">Tesla</span>
+  </div>
+  <div class="wcard-signal">
+    <span class="wlast" style="color:#4b5563;">monitoring</span>
+  </div>
+</div>
+
+<div class="wcard quiet" style="border:1px solid #2a2a3a;">
+  <div class="wcard-top">
+    <span class="wdot" style="background:#2a2a3a; border:1px solid #2f6de1;"></span>
+    <span class="wname" style="color:#6b7280;">Baidu</span>
+  </div>
+  <div class="wcard-signal">
+    <span class="wlast" style="color:#4b5563;">monitoring</span>
+  </div>
+</div>
+
+<div class="wcard quiet" style="border:1px solid #2a2a3a;">
+  <div class="wcard-top">
+    <span class="wdot" style="background:#2a2a3a; border:1px solid #5b9bd5;"></span>
+    <span class="wname" style="color:#6b7280;">TSMC</span>
+  </div>
+  <div class="wcard-signal">
+    <span class="wlast" style="color:#4b5563;">monitoring</span>
+  </div>
+</div>
+
+<div class="wcard quiet" style="border:1px solid #2a2a3a;">
+  <div class="wcard-top">
+    <span class="wdot" style="background:#2a2a3a; border:1px solid #4a6cf7;"></span>
+    <span class="wname" style="color:#6b7280;">Samsung</span>
+  </div>
+  <div class="wcard-signal">
+    <span class="wlast" style="color:#4b5563;">monitoring</span>
+  </div>
+</div></div>
+</section>
+
+<section class="section">
+  <h3 class="sec-title">Question to sit with</h3>
+  <div class="q-box">The concentration of technological influence and innovation appears to be shifting from traditional tech giants towards newer players such as Nvidia, Microsoft, and Meta, who are warning against overregulation.</div>
+</section>
+
+<div class="footer">tech-intel · Saturday, 25 July 2026 · 04:39</div>
+</body>
+</html>
