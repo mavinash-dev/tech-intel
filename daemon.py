@@ -9,6 +9,8 @@ from apscheduler.triggers.cron import CronTrigger
 
 from db.schema import init_db
 from config import INGESTION_INTERVAL_MINUTES, BRIEFING_HOUR
+from briefing.generator import generate_briefing
+from briefing.telegram import send_briefing
 from ingestion.hackernews import HackerNewsIngester
 from ingestion.reddit import RedditIngester
 from ingestion.rss import RSSIngester
@@ -37,6 +39,14 @@ def run_ingestion():
     print("[daemon] === cycle complete ===\n")
 
 
+def run_briefing():
+    print("\n[daemon] === briefing generation start ===")
+    text = generate_briefing()
+    print(text[:500] + "...\n")
+    send_briefing(text)
+    print("[daemon] === briefing complete ===\n")
+
+
 def main():
     print("[daemon] starting tech-intel...")
     init_db()
@@ -54,7 +64,15 @@ def main():
         coalesce=True,
     )
 
-    print(f"[daemon] scheduler running — ingestion every {INGESTION_INTERVAL_MINUTES}min")
+    scheduler.add_job(
+        run_briefing,
+        trigger=CronTrigger(hour=BRIEFING_HOUR, minute=0),
+        id="briefing",
+        name="Daily briefing generation + Telegram delivery",
+        max_instances=1,
+    )
+
+    print(f"[daemon] scheduler running — ingestion every {INGESTION_INTERVAL_MINUTES}min, briefing at {BRIEFING_HOUR}:00")
     print("[daemon] press Ctrl+C to stop\n")
 
     try:
