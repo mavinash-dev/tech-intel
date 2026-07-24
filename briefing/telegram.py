@@ -43,11 +43,10 @@ def send_briefing(text: str) -> bool:
 
     for i, chunk in enumerate(chunks):
         try:
-            resp = requests.post(url, json={
+            resp = requests.post(url, data={
                 "chat_id": TELEGRAM_CHAT_ID,
                 "text": chunk,
-                "disable_web_page_preview": False,
-                "parse_mode": None,
+                "disable_web_page_preview": "true",
             }, timeout=15)
             resp.raise_for_status()
             print(f"[telegram] chunk {i+1}/{len(chunks)} sent ({len(chunk)} chars)")
