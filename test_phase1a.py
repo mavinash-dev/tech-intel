@@ -146,7 +146,7 @@ try:
     import ollama as _ollama
     import config as _cfg
     client = _ollama.Client(host=_cfg.OLLAMA_HOST)
-    models = [m["name"] for m in client.list()["models"]]
+    models = [m.model for m in client.list().models]
     model_present = any(_cfg.OLLAMA_MODEL in m for m in models)
     check(f"ollama: model {_cfg.OLLAMA_MODEL} available", model_present,
           f"installed models: {', '.join(models) or 'none'}")
