@@ -10,7 +10,7 @@ POSTS_PER_SUB = 15
 class RedditIngester(BaseIngester):
     source_name = "reddit"
 
-    def fetch(self) -> list[dict]:
+    def fetch(self) -> list:
         if not REDDIT_CLIENT_ID or not REDDIT_CLIENT_SECRET:
             print("[reddit] skipped — REDDIT_CLIENT_ID/SECRET not set in .env")
             return []

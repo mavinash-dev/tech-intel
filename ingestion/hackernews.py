@@ -10,7 +10,7 @@ FETCH_LIMIT = 30
 class HackerNewsIngester(BaseIngester):
     source_name = "hackernews"
 
-    def fetch(self) -> list[dict]:
+    def fetch(self) -> list:
         ids = requests.get(HN_TOP_URL, timeout=10).json()[:FETCH_LIMIT]
         signals = []
         for item_id in ids:

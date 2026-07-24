@@ -10,7 +10,7 @@ HEADERS = {"User-Agent": "tech-intel/1.0"}
 class GitHubTrendingIngester(BaseIngester):
     source_name = "github_trending"
 
-    def fetch(self) -> list[dict]:
+    def fetch(self) -> list:
         resp = requests.get(TRENDING_URL, headers=HEADERS, timeout=15)
         resp.raise_for_status()
         soup = BeautifulSoup(resp.text, "html.parser")

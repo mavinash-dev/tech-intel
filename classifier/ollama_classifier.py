@@ -39,7 +39,7 @@ Body: {body}
 URL: {url}"""
 
 
-def classify_signal(raw_id: int, title: str, source: str, body: str, url: str) -> dict | None:
+def classify_signal(raw_id: int, title: str, source: str, body: str, url: str) -> dict:
     prompt = USER_PROMPT_TEMPLATE.format(
         title=title,
         source=source,

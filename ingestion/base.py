@@ -7,7 +7,7 @@ class BaseIngester(ABC):
     source_name: str = ""
 
     @abstractmethod
-    def fetch(self) -> list[dict]:
+    def fetch(self) -> list:
         """Return list of signal dicts matching signals_raw schema."""
         ...
 

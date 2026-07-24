@@ -33,7 +33,7 @@ QUERY = """
 class ProductHuntIngester(BaseIngester):
     source_name = "producthunt"
 
-    def fetch(self) -> list[dict]:
+    def fetch(self) -> list:
         try:
             resp = requests.post(
                 PH_GRAPHQL_URL,

@@ -9,7 +9,7 @@ PER_TAG = 10
 class DevToIngester(BaseIngester):
     source_name = "devto"
 
-    def fetch(self) -> list[dict]:
+    def fetch(self) -> list:
         signals = []
         for tag in TAGS:
             try:

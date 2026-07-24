@@ -16,7 +16,7 @@ RSS_FEEDS = {
 ENTRIES_PER_FEED = 20
 
 
-def _parse_date(entry) -> str | None:
+def _parse_date(entry):
     if hasattr(entry, "published"):
         try:
             return parsedate_to_datetime(entry.published).isoformat()
@@ -33,7 +33,7 @@ def _parse_date(entry) -> str | None:
 class RSSIngester(BaseIngester):
     source_name = "rss"
 
-    def fetch(self) -> list[dict]:
+    def fetch(self) -> list:
         signals = []
         for feed_key, feed_url in RSS_FEEDS.items():
             try:
