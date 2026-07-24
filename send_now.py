@@ -1,22 +1,19 @@
 """
-Manually trigger a briefing right now — useful for testing before 8am.
-Run with: python send_now.py
-Add --print to print to terminal without sending to Telegram.
+Manually trigger a briefing right now.
+  python send_now.py           — generate + send to Telegram
+  python send_now.py --open    — generate + open in browser (no Telegram send)
 """
 import sys
+import os
+import subprocess
 from briefing.generator import generate_briefing
 from briefing.telegram import send_briefing
 
-briefing = generate_briefing()
+path = generate_briefing()
+print(f"Briefing saved: {path}")
 
-if "--print" in sys.argv:
-    print(briefing)
+if "--open" in sys.argv:
+    subprocess.run(["open", path])
 else:
-    print(briefing)
-    print("\n" + "─" * 50)
-    confirm = input("Send to Telegram? [y/N] ").strip().lower()
-    if confirm == "y":
-        ok = send_briefing(briefing)
-        print("Sent!" if ok else "Send failed — check TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID in .env")
-    else:
-        print("Not sent.")
+    ok = send_briefing(path)
+    print("Sent to Telegram ✓" if ok else "Send failed — check .env")
