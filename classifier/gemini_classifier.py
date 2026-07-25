@@ -1,5 +1,4 @@
 import json
-import time
 from google import genai
 from config import GEMINI_API_KEY, GEMINI_MODEL
 from db.connection import get_connection
@@ -45,27 +44,17 @@ def _classify_batch(batch: list[dict]) -> list[dict] | None:
 
     prompt = SYSTEM_PROMPT + "\n\n" + "\n".join(lines) + "\n\nReturn JSON array only. No preamble."
 
-    for attempt in range(3):
-        try:
-            resp = _client.models.generate_content(model=GEMINI_MODEL, contents=prompt)
-            text = resp.text.strip()
-            # Strip markdown code fences if present
-            if text.startswith("```"):
-                text = text.split("```")[1]
-                if text.startswith("json"):
-                    text = text[4:]
-            return json.loads(text.strip())
-        except Exception as e:
-            msg = str(e)
-            if "429" in msg or "RESOURCE_EXHAUSTED" in msg:
-                wait = 15 * (attempt + 1)  # 15s, 30s, 45s
-                print(f"[gemini] rate limited ({msg[:120]}), waiting {wait}s (attempt {attempt+1}/3)...")
-                time.sleep(wait)
-            else:
-                print(f"[gemini] batch classify error: {e}")
-                return None
-    print("[gemini] batch failed after 3 retries (rate limit)")
-    return None
+    try:
+        resp = _client.models.generate_content(model=GEMINI_MODEL, contents=prompt)
+        text = resp.text.strip()
+        if text.startswith("```"):
+            text = text.split("```")[1]
+            if text.startswith("json"):
+                text = text[4:]
+        return json.loads(text.strip())
+    except Exception as e:
+        print(f"[gemini] batch error: {e}")
+        return None
 
 
 def run_classification_batch(batch_size: int = 30):
@@ -93,13 +82,12 @@ def run_classification_batch(batch_size: int = 30):
 
         if results is None or len(results) != len(batch):
             print(f"[gemini] batch {i//BATCH_SIZE + 1}: bad response, skipping {len(batch)} signals")
-            time.sleep(5)
             continue
 
         for signal, result in zip(batch, results):
             raw_id = signal["id"]
             try:
-                cursor = conn.execute(
+                conn.execute(
                     """INSERT INTO signals_enriched
                        (raw_id, domain, relevance_score, plain_explanation, entities_json, prediction)
                        VALUES (?, ?, ?, ?, ?, ?)""",
@@ -127,8 +115,6 @@ def run_classification_batch(batch_size: int = 30):
                 classified += 1
             except Exception as e:
                 print(f"[gemini] db write error for raw_id={raw_id}: {e}")
-
-        time.sleep(4)  # ~15 req/min free tier limit — 4s gap keeps us safely under
 
     conn.commit()
     conn.close()
