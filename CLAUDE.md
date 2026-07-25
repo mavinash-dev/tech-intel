@@ -10,7 +10,7 @@
 
 **Problem:** Most tech news is surface-level and developer-centric. The deeper signals — capital flows, talent movements, regulatory shifts, infrastructure control — require cross-domain pattern recognition across time and geography that no existing free tool provides. Avinash has 4 years in the industry but has never followed tech news and is building his understanding from scratch.
 
-**Solution:** A Python daemon running on Mac that ingests from free public APIs (Hacker News, Reddit, RSS, GitHub Trending), classifies signals using a local Ollama LLM, stores raw signals in SQLite, builds a connected entity graph in Neo4j, and delivers a daily briefing to Telegram + a local Next.js web app.
+**Solution:** A fully cloud-hosted signal intelligence pipeline (GitHub Actions + Gemini Flash + Turso) that ingests from free public APIs, classifies signals with AI, and delivers rich HTML briefings via Telegram. Nothing runs on Mac — Avinash only receives Telegram notifications on his phone.
 
 **Positioning:** Not a news aggregator. A signal intelligence layer — closer to what a VC analyst or geopolitical tech strategist uses, but personal, local, free, and self-explaining. The key differentiator is the AI explanation layer: every signal is explained in plain language for someone building their understanding, not just consuming headlines.
 
@@ -26,20 +26,25 @@
 
 ## Current Phase & Status
 
-**Phase:** Phase 1a — Core ingestion and classification  
-**Status:** Active  
+**Phase:** Phase 2 — Cloud migration
+**Status:** Active — migration in progress
 **Last worked on:** 2026-07-25
 
-**What's done:**
-- [x] Full brainstorm and system design
-- [x] PRD, ARCH, DESIGN, STATUS, CLAUDE.md, README written
-- [x] GitHub repo created: mavinash-dev/tech-intel
+**What's done (Phase 1b — complete):**
+- [x] Full ingestion pipeline: HN, Reddit, RSS (7 feeds), GitHub Trending, Dev.to
+- [x] Ollama + Llama3.2 classifier with domain/entities/score/explanation/prediction
+- [x] SQLite schema: signals_raw, signals_enriched, predictions
+- [x] Signal dedup: UNIQUE(source, source_id) + last_shown_at 7-day exclusion
+- [x] Briefing generator: pool of 60, diversity-selects 8 across watchlist companies
+- [x] HTML briefing: dark theme, signal cards, predictions accordion, 157-company watch accordion
+- [x] Telegram delivery: text summary + HTML file as sendDocument
+- [x] send_now.py: runs ingestion first then generates briefing
 
-**What's next:**
-- [ ] Scaffold Python project structure
-- [ ] SQLite schema (signals_raw + signals_enriched)
-- [ ] First ingestion source: Hacker News
-- [ ] Ollama classification pipeline
+**What's next (Phase 2 — cloud migration):**
+- [ ] Step 1: Replace Ollama with Gemini Flash (batch 5 signals/prompt)
+- [ ] Step 2: Replace SQLite with Turso (libSQL-compatible, zero SQL changes)
+- [ ] Step 3: GitHub Actions workflows (ingest.yml every 30min, briefing.yml every 1h)
+- [ ] Step 4: Add secrets to GitHub, test end-to-end, shut down Mac daemon
 
 ---
 
@@ -55,11 +60,11 @@
 
 ## Tech Stack
 
-- **Language:** Python 3.11 (backend/daemon), TypeScript (web UI)
-- **Ingestion:** APScheduler (daemon), feedparser (RSS), PRAW (Reddit), requests (HN/GitHub)
-- **AI:** Ollama running locally with Llama 3.2 — NO external API in Phase 1
-- **Raw DB:** SQLite (signals_raw, signals_enriched tables)
-- **Graph DB:** Neo4j Desktop (free, local) — added in Phase 1d
+- **Language:** Python 3.11 (backend), TypeScript (web UI — Phase 1c, not started)
+- **Ingestion:** GitHub Actions cron (replacing APScheduler daemon), feedparser (RSS), PRAW (Reddit), requests (HN/GitHub)
+- **AI:** Gemini 2.0 Flash API (replacing Ollama) — batch 5 signals per prompt, free 1500 req/day
+- **DB:** Turso (libSQL cloud, replacing local SQLite) — same SQL dialect, free 500MB
+- **Graph DB:** Neo4j AuraDB free tier (replacing Neo4j Desktop) — Phase 1d, not started
 - **API:** FastAPI (localhost:8000)
 - **Web UI:** Next.js App Router (localhost:3000)
 - **Notifications:** Telegram Bot API (free)
@@ -69,8 +74,9 @@
 
 ## Hard Constraints
 
-- Everything runs locally on Mac Air — no cloud services, no paid APIs in Phase 1
-- Ollama only for AI in Phase 1 — Claude API slot is wired but inactive until Phase 3
+- Everything must be free — no paid APIs, no paid hosting
+- Nothing should run on Mac Air — full cloud pipeline (GitHub Actions + Turso + Gemini)
+- Gemini Flash free tier: 1500 req/day — batch classification keeps us well under this
 - No WhatsApp (requires paid Meta Business API) — Telegram only
 - No user auth, no multi-user complexity — max 3 people, same machine or local network
 - All secrets in .env, gitignored — Telegram token is the only secret

@@ -5,90 +5,105 @@
 name: tech-intel
 slug: tech-intel
 status: Active
-phase: Phase 1b
+phase: Phase 2
 started: 2026-07-25
 last_updated: 2026-07-25
-summary: Local signal intelligence system — ingests global tech signals, classifies with Ollama, delivers HTML briefings via Telegram. Company watch with 157 companies across 14 categories. RAG-based company 360 analysis in design.
-current_focus: Company 360 architecture design + historical data seeding strategy
+summary: Cloud migration in progress — moving from local Mac daemon (Ollama + SQLite) to GitHub Actions + Gemini Flash + Turso. Zero Mac dependency on completion.
+current_focus: Cloud migration — Gemini swap → Turso DB → GitHub Actions workflows
 -->
 
 ---
 
 ## Current Phase
-**Phase 1b** — Briefing generation, Telegram delivery, and HTML UI complete. Company intelligence layer in design.
+**Phase 2** — Cloud migration. Moving entire pipeline off Mac Air.
 
 ## Status
-`Active`
+`Active — migration in progress`
 
 ---
 
 ## Current Focus
-Designing company 360 intelligence layer — RAG query interface over grounded historical + live signals. Historical seeding strategy (HN Algolia back to 2015, Wikipedia structured facts) finalized but not yet built.
+Migrating from local Mac stack to fully cloud-hosted pipeline:
+1. Replace Ollama → Gemini 2.0 Flash API (batch classification)
+2. Replace SQLite → Turso (libSQL-compatible cloud DB)
+3. Replace APScheduler daemon → GitHub Actions cron workflows
+4. Replace ingest_job.py + briefing_job.py as standalone scripts (no scheduler loop)
 
 ---
 
-## What's Built (as of 2026-07-25)
+## What's Built (Phase 1b — complete, running on Mac)
 
 ### Core Pipeline ✅
 - APScheduler daemon — ingestion every 30min, briefing every 1h
-- 6 ingestion sources: HackerNews, Reddit (skipped if no creds), RSS (7 feeds), GitHub Trending, Dev.to, Product Hunt (403 — needs replacement)
+- 6 ingestion sources: HackerNews, Reddit (needs creds), RSS (7 feeds), GitHub Trending, Dev.to, Product Hunt (403 — broken)
 - Ollama + Llama3.2 local classification — domain, relevance_score, plain_explanation, entities_json, prediction
 - SQLite schema: signals_raw, signals_enriched, predictions — WAL mode, dedup via UNIQUE(source, source_id)
-- `last_shown_at` column on signals_enriched — prevents same signal appearing in consecutive briefings
-
-### Briefing System ✅
-- `briefing/generator.py` — loads top signals (6h window, pool of 40), diversity-selects 8 covering different watchlist companies
-- `briefing/telegram.py` — sends text summary (top 3 signals) then HTML file as document
-- `briefing/html_formatter.py` — full dark-mode HTML briefing
-- `send_now.py` — manual trigger: runs ingestion first, then generates, then sends + opens
+- `last_shown_at` column — 7-day exclusion window prevents signal repetition
+- Diversity selection — pool of 60, greedy company-rotation picks 8 per briefing
 
 ### HTML Briefing UI ✅
-- Dark theme (#07070d), responsive (`clamp()` font sizes, mobile breakpoint at 480px)
-- Signal cards: domain-colored left border, entity highlights (purple), number highlights (green), company brand badges, prediction cross-reference
-- Predictions accordion: resolved (✅/❌) + watching (⏳) all in collapsible rows
-- Company Watch accordion: 157 companies across 14 categories, click to expand and see up to 5 real DB signal links per company
-- Stats header: Surfaced / Ingested (24h) / Tracked / Resolved
+- Dark theme (#07070d), responsive with clamp() font sizes, mobile breakpoint at 480px
+- Signal cards: domain-colored left border, entity/number highlights, company brand badges, prediction cross-reference
+- Predictions accordion: resolved (✅/❌) + watching (⏳) — collapsible <details> rows
+- Company Watch accordion: 157 companies across 14 categories, click → 5 real DB signal links per company
 
 ### Company Watch ✅
 - 157 companies across 14 categories: US Big Tech, AI/LLM, Cloud/Infra, DevOps/Platform, Observability, Security, Data/Analytics, SaaS/Enterprise, Fintech/Crypto, Hardware/Transport, China, Korea/Taiwan/Japan, Europe, India, Semiconductor
-- Each company has a brand color for dark-mode visibility
-- Active companies (in today's signals) show glowing dot + brand-colored name + signal index reference
 
 ---
 
-## Pending / In Design
+## Phase 2 Migration — Task List
 
-### Company 360 Intelligence (Designed, Not Built)
-**Architecture decision:** RAG over grounded data — never ask LLM for facts from memory.
+### Step 1 — Gemini Flash swap 🔄 (next)
+- [ ] Add `google-generativeai` to requirements.txt
+- [ ] Rewrite `classifier/gemini_classifier.py` — batch 5 signals per prompt
+- [ ] Update `briefing/generator.py` — replace `_ollama()` with `_gemini()`
+- [ ] Update `config.py` — GEMINI_API_KEY instead of OLLAMA_HOST/MODEL
+- [ ] Test locally with real Gemini API key before touching DB
 
-Three data layers:
-1. **Structured facts** (cold start): Wikipedia API + Wikidata → founding, CEO, products, acquisitions, market cap history
-2. **Historical signals** (back-window): HN Algolia API (2015→now, free), arXiv papers — gives 10 years of community signal per company
-3. **Live pipeline**: existing ingestion (what we have now)
+### Step 2 — Turso DB swap
+- [ ] Create Turso account + database
+- [ ] Add `libsql-client` to requirements.txt
+- [ ] Rewrite `db/connection.py` — libsql HTTP client instead of sqlite3
+- [ ] Run `db/schema.py` against Turso to create tables
+- [ ] Migrate existing local signals to Turso (optional — can start fresh)
+- [ ] Verify all SQL queries work unchanged
 
-Query interface planned:
-- `seed_company.py <CompanyName>` — one-time seed for any company: Wikipedia facts + HN Algolia history → stored in DB
-- `ask.py "<question>"` — RAG CLI: retrieves all relevant signals from DB → passes as context to Ollama → grounded answer with citations
+### Step 3 — GitHub Actions workflows
+- [ ] Create `ingest_job.py` — single ingestion + classification run (no scheduler)
+- [ ] Create `briefing_job.py` — single briefing gen + Telegram send (no scheduler)
+- [ ] Create `.github/workflows/ingest.yml` — cron every 30min
+- [ ] Create `.github/workflows/briefing.yml` — cron every 1h
+- [ ] Add all secrets to GitHub repo settings:
+  - GEMINI_API_KEY
+  - TURSO_DATABASE_URL
+  - TURSO_AUTH_TOKEN
+  - TELEGRAM_BOT_TOKEN
+  - TELEGRAM_CHAT_ID
+- [ ] Test manual workflow_dispatch trigger
+- [ ] Verify end-to-end: ingest → classify → Turso → briefing → Telegram
 
-**Key insight:** Source coverage depends on company geography. US companies = good HN/RSS coverage. Indian companies need YourStory/Inc42 RSS. Chinese companies need TechNode/36Kr. Coverage must match company's ecosystem.
+### Step 4 — Cleanup
+- [ ] Stop local daemon on Mac
+- [ ] Archive daemon.py (keep for reference)
+- [ ] Remove Ollama dependency from requirements.txt
+- [ ] Update README with new setup instructions (no Ollama, no local DB)
 
-### Source Expansion Needed
-- Indian tech: YourStory RSS, Inc42 RSS
-- Chinese tech: TechNode RSS, 36Kr English
-- Replace Product Hunt (403 error) with alternative
-- Reddit creds still not configured
+---
 
-### launchd plist
-- Mac auto-start on reboot — not yet built
+## Pending (Post-Migration)
 
-### Phase 1c — Web UI
-- Next.js app (localhost:3000) — not started
-- Endpoints: /signals, /briefing, /entity, /company/:name
+### Company 360 Intelligence
+- [ ] `seed_company.py` — HN Algolia (2015→now) + Wikipedia facts → Turso
+- [ ] `ask.py` — RAG CLI: retrieve signals → Gemini synthesis → cited answer
+- [ ] Expand sources: YourStory/Inc42 (India), TechNode (China)
+- [ ] Replace Product Hunt (403) with alternative
+
+### Phase 1c — Web UI (Next.js)
+- [ ] Not started — deprioritised until cloud migration complete
 
 ### Phase 1d — Neo4j Graph
-- Entity co-occurrence → graph write pipeline
-- Canonical entity resolution ("Microsoft" vs "Microsoft Corp" vs "MSFT")
-- Not started
+- [ ] Not started — may become cloud Neo4j AuraDB (free tier: 200MB)
 
 ---
 
@@ -101,32 +116,36 @@ Query interface planned:
 ### 2026-07-25 — Session 2: Full Phase 1a + 1b Build
 - Built entire ingestion pipeline (6 sources), Ollama classifier, APScheduler daemon
 - Built briefing generator, Telegram delivery, HTML formatter
-- Fixed: Python 3.9 type hint incompatibility, UTC/IST timezone offset, Telegram data= vs json=, hex opacity visibility bug
+- Fixes: Python 3.9 type hints, UTC/IST timezone offset, Telegram data= vs json=, hex opacity bug
 - 18/18 smoke tests passing
 
 ### 2026-07-25 — Session 3: UI Iteration
-- Multiple rounds of HTML briefing improvements
-- Added domain hashtag-style tags → then removed (too noisy)
-- Added company brand colors, watch section with glow effects
-- Fixed hex opacity (#color15) invisible on dark background
-- Switched to HTML file delivery (sendDocument) to bypass Telegram formatting limits
+- Multiple HTML briefing rounds: domain colors, company brand colors, watch section
+- Switched to HTML sendDocument to bypass Telegram formatting limits
 
 ### 2026-07-25 — Session 4: Company Watch + Intelligence Design
-- Expanded watchlist from 12 → 157 companies across 14 global categories
-- Company watch rebuilt as clickable accordion with real DB signal links
-- Added predictions accordion (same <details> pattern, zero JS)
-- Signal deduplication across briefings (last_shown_at column)
-- Diversity selection algorithm: pool of 40, greedy company-rotation pick of 8
-- Responsive UI with clamp() font sizes and mobile breakpoint
-- send_now.py now runs ingestion first → fresh data every run
-- Discussed company 360 RAG architecture — seed_company.py + ask.py planned
+- Watchlist 12 → 157 companies across 14 global categories
+- Company watch → clickable accordion with real DB signal links
+- Predictions accordion — same <details> pattern
+- Signal dedup: last_shown_at column, 7-day exclusion, pool of 60
+- Responsive UI: clamp() font sizes, 480px mobile breakpoint
+- send_now.py now runs ingestion before briefing
+
+### 2026-07-25 — Session 5: Cloud Migration Design
+- Decision: move entire pipeline off Mac
+- Chose GitHub Actions (public repo = unlimited free minutes) over Fly.io/Railway
+- Chose Gemini 2.0 Flash over Groq/Llama — better quality, 1500 req/day free
+- Batch classification design: 5 signals/prompt → 288 calls/day (vs 1,440 single)
+- Chose Turso over Supabase — libSQL compatible, zero SQL query changes
+- Documented full migration plan in ARCH.md v0.2
 
 ---
 
 ## Blockers
-- Reddit: REDDIT_CLIENT_ID/SECRET not in .env
-- Product Hunt: 403 error (their API now requires auth)
-- No historical data yet (ingestion only covers since daemon started)
+- Reddit creds not in .env (minor — Reddit is optional)
+- Product Hunt: 403 (needs replacement source)
+- Gemini API key: need to create at aistudio.google.com
+- Turso: need to create account at turso.tech
 
 ---
 
@@ -136,8 +155,9 @@ Query interface planned:
 |---|---|---|---|
 | 2026-07-25 | Brainstorm + Foundation | 1h | 1h |
 | 2026-07-25 | Phase 1a + 1b full build | 4h | 5h |
-| 2026-07-25 | UI iteration (Telegram format, HTML, colors) | 2h | 7h |
+| 2026-07-25 | UI iteration | 2h | 7h |
 | 2026-07-25 | Company watch + intelligence design | 2h | 9h |
+| 2026-07-25 | Cloud migration design + docs | 1h | 10h |
 
 ---
 
@@ -146,10 +166,11 @@ Query interface planned:
 | Date | Decision | Rationale |
 |---|---|---|
 | 2026-07-25 | Ollama-only for Phase 1 | No API key needed, fully free and local |
-| 2026-07-25 | SQLite before Neo4j | Zero-config start, graph added once ingestion stable |
-| 2026-07-25 | Telegram over WhatsApp | WhatsApp Business API is paid |
-| 2026-07-25 | launchd for daemon | Native macOS, survives sleep/reboot |
-| 2026-07-25 | HTML file via sendDocument | Bypasses Telegram 4096 char limit and HTML parse mode issues |
-| 2026-07-25 | RAG over LLM memory for company facts | LLM training data is frozen/stale — retrieve from grounded sources instead |
-| 2026-07-25 | HN Algolia as historical seed | Free, unlimited, goes back to 2006, searchable by company name + date range |
-| 2026-07-25 | Source coverage must match company geography | US sources don't cover Zepto, DeepSeek well — need regional RSS feeds |
+| 2026-07-25 | SQLite before Neo4j | Zero-config start |
+| 2026-07-25 | Telegram sendDocument | Bypasses 4096 char limit and HTML parse mode |
+| 2026-07-25 | Migrate off Mac entirely | Mac Air shouldn't need to run for intelligence pipeline |
+| 2026-07-25 | GitHub Actions over Fly.io | Public repo = unlimited free minutes, zero infra to manage |
+| 2026-07-25 | Gemini Flash over Groq | Better quality classification, 1500 req/day sufficient with batching |
+| 2026-07-25 | Batch 5 signals per Gemini call | Reduces daily API calls 5x — fits easily in free tier |
+| 2026-07-25 | Turso over Supabase | libSQL dialect = zero SQL query changes from SQLite |
+| 2026-07-25 | RAG over LLM memory for company facts | Grounded retrieval beats hallucination-prone training data |

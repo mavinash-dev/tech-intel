@@ -1,366 +1,323 @@
 # Architecture Document
 ## tech-intel
 
-**Version:** 0.1  
+**Version:** 0.2 — Cloud migration (GitHub Actions + Gemini + Turso)
 **Created:** 2026-07-25
+**Updated:** 2026-07-25
 
 ---
 
 ## 1. Tech Stack
 
+### Current (Phase 1b — local Mac, being migrated away from)
+| Layer | Technology | Status |
+|---|---|---|
+| Ingestion daemon | Python + APScheduler on Mac | → replacing with GitHub Actions |
+| Database | SQLite local file | → replacing with Turso |
+| AI classification | Ollama + Llama 3.2 (local) | → replacing with Gemini Flash API |
+| Briefing generation | Ollama + Llama 3.2 (local) | → replacing with Gemini Flash API |
+| Notifications | Telegram Bot API | ✅ keeping |
+| Process management | launchd (macOS) | → dropping entirely |
+
+### Target (Phase 2 — fully off Mac)
 | Layer | Technology | Reason |
 |---|---|---|
-| Ingestion | Python 3.11 + APScheduler | Simple, reliable, runs as background daemon on Mac |
-| Raw store | SQLite | Zero-config, local, perfect for signal queue before graph processing |
-| AI classification | Ollama + Llama 3.2 | Fully local, free, no API key, runs well on Mac Air M-series |
-| Knowledge graph | Neo4j Desktop (free) | Graph-native queries, local, handles entity relationships across time |
-| API server | FastAPI | Lightweight Python, async, good for local query endpoint |
-| Web UI | Next.js (App Router) | Matches Avinash's existing stack, fast local dev |
-| Notifications | Telegram Bot API | Free, no business account needed, instant phone delivery |
-| Process management | launchd (macOS) | Keeps daemon alive across sleeps and reboots |
+| Scheduler / compute | **GitHub Actions** (cron) | Free unlimited on public repo, no VM to manage, UI logs |
+| Database | **Turso** (libSQL cloud) | SQLite-compatible, free 500MB, minimal code change |
+| AI — classification | **Gemini 2.0 Flash** (Google free tier) | Better quality than Llama 3.2, 1500 req/day free |
+| AI — briefing gen | **Gemini 2.0 Flash** (Google free tier) | Same model, consistent quality |
+| Notifications | Telegram Bot API | Free, unchanged |
+| Mac | Nothing running | Just receives Telegram on phone |
 
 ---
 
 ## 2. Architecture Overview
 
+### Target Architecture (Phase 2 — fully cloud)
 ```
-┌─────────────────────────────────────────────────────┐
-│                    MAC AIR (local)                  │
-│                                                     │
-│  ┌──────────────┐    every 30min    ┌────────────┐  │
-│  │  Free APIs   │ ──────────────→  │  Ingestion │  │
-│  │  HN, Reddit  │                  │   Daemon   │  │
-│  │  RSS, GitHub │                  │  (Python)  │  │
-│  └──────────────┘                  └─────┬──────┘  │
-│                                          │          │
-│                                          ▼          │
-│                                    ┌──────────┐     │
-│                                    │  SQLite  │     │
-│                                    │ raw store│     │
-│                                    └─────┬────┘     │
-│                                          │          │
-│                                          ▼          │
-│                                    ┌──────────┐     │
-│                                    │  Ollama  │     │
-│                                    │ Llama3.2 │     │
-│                                    │classify +│     │
-│                                    │ explain  │     │
-│                                    └─────┬────┘     │
-│                                          │          │
-│                              ┌───────────┴──────┐   │
-│                              │                  │   │
-│                              ▼                  ▼   │
-│                         ┌────────┐        ┌────────┐│
-│                         │ Neo4j  │        │ SQLite ││
-│                         │ graph  │        │enriched││
-│                         └───┬────┘        └───┬────┘│
-│                             │                 │     │
-│                             └────────┬────────┘     │
-│                                      ▼              │
-│                               ┌────────────┐        │
-│                               │  FastAPI   │        │
-│                               │  server   │        │
-│                               └─────┬──────┘        │
-│                                     │               │
-│                          ┌──────────┴──────────┐    │
-│                          │                     │    │
-│                          ▼                     ▼    │
-│                    ┌──────────┐         ┌──────────┐│
-│                    │ Next.js  │         │ Telegram ││
-│                    │ Web UI   │         │   Bot    ││
-│                    │localhost │         │  (8am)   ││
-│                    │  :3000   │         └──────────┘│
-│                    └──────────┘                     │
-└─────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────┐
+│                    GITHUB ACTIONS                        │
+│                                                         │
+│  ┌─────────────────────────────────────────┐            │
+│  │  ingest.yml  (cron: every 30 min)       │            │
+│  │                                         │            │
+│  │  fetch HN, RSS, GitHub, Dev.to          │            │
+│  │       │                                 │            │
+│  │       ▼                                 │            │
+│  │  Gemini Flash  ←── batch classify ──→   │            │
+│  │  (5 signals per prompt)                 │            │
+│  │       │                                 │            │
+│  │       ▼                                 │            │
+│  │    Turso DB (libSQL cloud)              │            │
+│  └─────────────────────────────────────────┘            │
+│                                                         │
+│  ┌─────────────────────────────────────────┐            │
+│  │  briefing.yml  (cron: every 1 hour)     │            │
+│  │                                         │            │
+│  │  load top signals from Turso            │            │
+│  │       │                                 │            │
+│  │       ▼                                 │            │
+│  │  Gemini Flash  ←── generate briefing    │            │
+│  │  (why it matters, question, predictions)│            │
+│  │       │                                 │            │
+│  │       ▼                                 │            │
+│  │  send HTML to Telegram                  │            │
+│  └─────────────────────────────────────────┘            │
+└─────────────────────────────────────────────────────────┘
+
+GitHub Secrets:
+  GEMINI_API_KEY
+  TURSO_DATABASE_URL
+  TURSO_AUTH_TOKEN
+  TELEGRAM_BOT_TOKEN
+  TELEGRAM_CHAT_ID
+  REDDIT_CLIENT_ID / REDDIT_CLIENT_SECRET  (optional)
+```
+
+### Previous Architecture (Phase 1b — local Mac, deprecated)
+```
+Mac Air → APScheduler daemon → Ollama → SQLite → Telegram
 ```
 
 ---
 
 ## 3. Data Model
 
-### SQLite — Raw Signals Table
-```
-signals_raw
-  - id: INTEGER PRIMARY KEY
-  - source: TEXT (hackernews / reddit / rss / github / devto / seed_hn / seed_wiki)
-  - source_id: TEXT (external ID for dedup — UNIQUE with source)
-  - title: TEXT
-  - url: TEXT
-  - body: TEXT (summary or first 500 chars)
-  - published_at: DATETIME
-  - ingested_at: DATETIME
-  - processed: BOOLEAN DEFAULT FALSE
-```
+### Turso (libSQL) — identical schema to SQLite, same queries
 
-### SQLite — Enriched Signals Table
-```
-signals_enriched
-  - id: INTEGER PRIMARY KEY
-  - raw_id: INTEGER → signals_raw.id
-  - domain: TEXT (Capital / Talent / Technology / Power / Infrastructure / Narrative / Security)
-  - relevance_score: FLOAT (0-1, assigned by Ollama)
-  - plain_explanation: TEXT (Ollama-generated plain language explanation)
-  - entities_json: TEXT (JSON array of extracted entity names + types)
-  - prediction: TEXT (forward-looking statement generated per signal)
-  - enriched_at: DATETIME
-  - last_shown_at: DATETIME (NULL until first briefing — used to rotate signals, exclude recently shown)
+#### signals_raw
+```sql
+CREATE TABLE IF NOT EXISTS signals_raw (
+    id           INTEGER PRIMARY KEY AUTOINCREMENT,
+    source       TEXT NOT NULL,
+    source_id    TEXT NOT NULL,
+    title        TEXT NOT NULL,
+    url          TEXT,
+    body         TEXT,
+    published_at DATETIME,
+    ingested_at  DATETIME DEFAULT (datetime('now')),
+    processed    BOOLEAN DEFAULT FALSE,
+    UNIQUE(source, source_id)
+);
 ```
 
-### SQLite — Predictions Table
-```
-predictions
-  - id: INTEGER PRIMARY KEY
-  - made_at: DATETIME
-  - briefing_date: DATE
-  - prediction_text: TEXT
-  - related_entities: TEXT (comma-separated entity names)
-  - domain: TEXT
-  - status: TEXT DEFAULT 'watching' (watching / confirmed / wrong / expired)
-  - resolved_at: DATETIME
-  - resolution_note: TEXT (Ollama-written on resolution)
-  - signal_id: INTEGER → signals_enriched.id
-```
-
-### Planned: company_facts Table (Phase 2 — Company 360)
-```
-company_facts
-  - id: INTEGER PRIMARY KEY
-  - company: TEXT (canonical name, matches COMPANY_BRAND key)
-  - fact_type: TEXT (founding / ceo / hq / product / acquisition / funding / headcount)
-  - value: TEXT
-  - source: TEXT (wikipedia / wikidata / crunchbase_rss)
-  - as_of: DATE (when this fact was true)
-  - seeded_at: DATETIME
+#### signals_enriched
+```sql
+CREATE TABLE IF NOT EXISTS signals_enriched (
+    id                INTEGER PRIMARY KEY AUTOINCREMENT,
+    raw_id            INTEGER NOT NULL REFERENCES signals_raw(id),
+    domain            TEXT NOT NULL,
+    relevance_score   REAL NOT NULL,
+    plain_explanation TEXT NOT NULL,
+    entities_json     TEXT NOT NULL,
+    prediction        TEXT,
+    enriched_at       DATETIME DEFAULT (datetime('now')),
+    last_shown_at     DATETIME   -- NULL until first briefing; 7-day exclusion window prevents repeats
+);
 ```
 
-### Neo4j — Graph Model
+#### predictions
+```sql
+CREATE TABLE IF NOT EXISTS predictions (
+    id               INTEGER PRIMARY KEY AUTOINCREMENT,
+    made_at          DATETIME DEFAULT (datetime('now')),
+    briefing_date    DATE NOT NULL,
+    prediction_text  TEXT NOT NULL,
+    related_entities TEXT,
+    domain           TEXT,
+    status           TEXT DEFAULT 'watching',  -- watching / confirmed / wrong / expired
+    resolved_at      DATETIME,
+    resolution_note  TEXT,
+    signal_id        INTEGER REFERENCES signals_enriched(id)
+);
 ```
-Node: Company
-  - name: string (canonical)
-  - aliases: [string]
-  - country: string
-  - sector: string
 
-Node: Person
-  - name: string
-  - role: string (at time of signal)
-
-Node: Technology
-  - name: string
-  - category: string (AI / Chip / Cloud / Protocol / etc.)
-
-Node: Country
-  - name: string
-  - region: string
-
-Node: Organization
-  - name: string (government body, standards org, VC firm, etc.)
-  - type: string
-
-Relationship: SIGNAL
-  - signal_id: integer → SQLite id
-  - type: string (ACQUIRED / INVESTED_IN / HIRED / REGULATED / PARTNERED / COMPETED)
-  - date: datetime
-  - domain: string
-  - summary: string
-  - source: string
+#### company_facts (planned — Phase 2 Company 360)
+```sql
+CREATE TABLE IF NOT EXISTS company_facts (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    company     TEXT NOT NULL,
+    fact_type   TEXT NOT NULL,  -- founding / ceo / hq / product / acquisition / funding
+    value       TEXT NOT NULL,
+    source      TEXT,           -- wikipedia / wikidata / crunchbase_rss
+    as_of       DATE,
+    seeded_at   DATETIME DEFAULT (datetime('now'))
+);
 ```
 
 ---
 
-## 4. External APIs & Integrations
+## 4. Gemini Flash — Classification Design
 
-### Live Ingestion (current)
-| Source | Method | Rate Limits | Status |
-|---|---|---|---|
-| Hacker News Firebase API | REST | None | ✅ Working |
-| Reddit | PRAW OAuth | 60 req/min | ⚠️ Needs creds in .env |
-| RSS feeds (TechCrunch, MIT Tech Review, arXiv, TLDR, Crunchbase, YC Blog) | feedparser | None | ✅ Working |
-| GitHub Trending | BeautifulSoup scrape | Informal | ✅ Working |
-| Dev.to API | REST (no key) | 1000 req/day | ✅ Working |
-| Product Hunt GraphQL | GraphQL | N/A | ❌ 403 — needs auth now |
-| Telegram Bot API | REST | None personal | ✅ Working |
-| Ollama (local) | Local HTTP | No limits | ✅ Working |
+### Why Batched Classification
+Gemini Flash free tier: 1,500 requests/day. Single-signal classification would use ~1,440 calls/day (30 signals × 48 runs). Batching 5 signals per prompt drops this to ~288 classification calls/day.
+
+```
+Daily budget (1,500 req/day):
+  Classification:  30 signals ÷ 5 per batch = 6 calls × 48 runs = 288 calls
+  Why it matters:  8 calls × 24 briefings   = 192 calls
+  Question gen:    1 call  × 24 briefings   =  24 calls
+  Pred resolution: 1 call  × 24 briefings   =  24 calls
+  ─────────────────────────────────────────────────────
+  Total:                                    = 528 calls/day  (35% of limit)
+```
+
+### Batch Classification Prompt Structure
+```
+Classify these 5 signals. Return a JSON array with one object per signal, in order.
+
+Signal 1: <title> — <body>
+Signal 2: <title> — <body>
+...
+
+Each object must have:
+  domain: Capital|Talent|Technology|Power|Infrastructure|Narrative|Security
+  relevance_score: float 0-1 (IT sector relevance)
+  plain_explanation: string (1-2 sentences, plain language)
+  entities_json: [{name, type}] array
+  prediction: string (one forward-looking sentence) or null
+```
+
+---
+
+## 5. External APIs & Integrations
+
+### Live Ingestion (GitHub Actions)
+| Source | Method | Status |
+|---|---|---|
+| Hacker News Firebase API | REST | ✅ Working |
+| Reddit | PRAW OAuth | ⚠️ Needs creds in GitHub Secrets |
+| RSS (TechCrunch, MIT Tech Review, arXiv, TLDR, Crunchbase, YC Blog) | feedparser | ✅ Working |
+| GitHub Trending | BeautifulSoup scrape | ✅ Working |
+| Dev.to API | REST (no key) | ✅ Working |
+| Product Hunt | GraphQL | ❌ 403 — needs replacement |
+| Gemini Flash | google-generativeai SDK | 🔄 Replacing Ollama |
+| Turso | libsql-client Python | 🔄 Replacing SQLite |
+| Telegram Bot API | REST | ✅ Working |
 
 ### Historical Seeding (planned — seed_company.py)
-| Source | Purpose | Range | Notes |
-|---|---|---|---|
-| HN Algolia API | Historical HN discussions per company | 2006 → now | Free, no key, searchable by date + query |
-| Wikipedia API | Structured company facts (founding, CEO, products, acquisitions) | As of seed date | Free, returns infobox JSON |
-| Wikidata API | Machine-readable facts with timestamps | As of seed date | Free, structured, linked data |
-| arXiv API | Research papers mentioning a company | 2010 → now | Free, date-range search |
+| Source | Purpose | Notes |
+|---|---|---|
+| HN Algolia API | Historical HN discussions per company (2006→now) | Free, no key |
+| Wikipedia API | Structured company facts | Free |
+| Wikidata API | Machine-readable facts with timestamps | Free |
+| arXiv API | Research papers mentioning a company | Free |
 
-### Planned Regional RSS (for non-US companies)
+### Planned Regional RSS
 | Region | Source | Companies covered |
 |---|---|---|
-| India | YourStory RSS, Inc42 RSS | Zepto, CRED, PhonePe, Razorpay, Meesho |
+| India | YourStory RSS, Inc42 RSS | Zepto, CRED, PhonePe, Razorpay |
 | China | TechNode RSS, 36Kr English | DeepSeek, BYD, CATL, Meituan |
-| Southeast Asia | Tech in Asia RSS | Grab, GoTo, Sea Group |
 
 ---
 
-## 5. Key Technical Decisions
+## 6. Company 360 Intelligence Architecture (Planned — Phase 2)
 
-### Decision 1: SQLite before Neo4j
-- **Chose:** SQLite as the raw and enriched signal store, Neo4j only for the processed graph
-- **Over:** Writing directly to Neo4j from ingestion
-- **Because:** SQLite is zero-config and lets ingestion work immediately. Neo4j can be added in Phase 1b without touching the ingestion layer. Also enables easy debugging — SQL queries on raw signals are simpler than Cypher.
-
-### Decision 2: Ollama over Claude API (Phase 1)
-- **Chose:** Ollama with Llama 3.2 for all AI tasks
-- **Over:** Claude API, OpenAI API
-- **Because:** Fully free, no API key, no rate limits, runs locally. Claude API slot is built into the architecture so it can be swapped in for synthesis quality later.
-
-### Decision 3: Telegram over WhatsApp
-- **Chose:** Telegram Bot API
-- **Over:** WhatsApp Business API
-- **Because:** WhatsApp requires Meta Business account and costs money per message. Telegram bot is free, instant, and takes 5 minutes to set up.
-
-### Decision 4: launchd for daemon persistence
-- **Chose:** macOS launchd plist for keeping the ingestion daemon alive
-- **Over:** Manual terminal process, cron, systemd
-- **Because:** launchd is native to macOS, survives sleep/wake cycles, auto-restarts on crash, and doesn't require Docker or any additional tooling.
-
-### Decision 5: Next.js for web UI [ASSUMED]
-- **Chose:** Next.js App Router
-- **Over:** Plain HTML, React + Vite, Svelte
-- **Because:** Matches Avinash's existing stack (unified dashboard project uses Next.js). Faster to build on familiar ground.
-
----
-
-## 6. Infrastructure & Deployment
-
-- **Environments:** Local only (Mac Air)
-- **CI/CD:** None (Phase 1) — manual git push to GitHub for backup
-- **Domain:** localhost:3000 (web UI), localhost:8000 (API)
-- **Secrets management:** `.env` file in project root, gitignored. Contains Telegram bot token. No cloud secrets needed in Phase 1.
-- **Persistence across reboots:** launchd plist in `~/Library/LaunchAgents/`
-
----
-
-## 7. Security Considerations
-
-- All data stays local — no cloud storage, no third-party analytics
-- `.env` file gitignored — Telegram token never committed
-- Neo4j runs with local auth disabled (acceptable for personal local use)
-- No user input sanitization needed — no external users, no public endpoints
-
----
-
-## 8. Performance Considerations
-
-- Ollama inference on Mac Air M-series: Llama 3.2 (3B) runs at ~20 tokens/sec — fast enough for batch classification
-- SQLite handles thousands of signals easily at local scale
-- Neo4j Desktop handles millions of nodes — no performance concern for months of personal use
-- 30-minute ingestion interval avoids rate limit issues on free APIs
-
----
-
-## 6. Company 360 Intelligence Architecture (Planned)
-
-### Problem
-Asking Ollama "tell me about Nvidia" returns stale, potentially hallucinated facts from training data. We need grounded, sourced, time-stamped facts.
-
-### RAG Design (Retrieval-Augmented Generation)
-LLM role = synthesis only. All facts come from sources we control.
+### RAG Design
+LLM role = synthesis only. All facts retrieved from Turso, never from LLM memory.
 
 ```
 Query: "What has Anthropic been doing with safety research?"
-         │
-         ▼
-  Retrieve from DB
-  ┌─────────────────────────────────────┐
-  │ signals_raw WHERE title LIKE '%Anthropic%'
-  │ signals_enriched (entities_json)
-  │ company_facts WHERE company = 'Anthropic'
-  │ predictions WHERE related_entities LIKE '%Anthropic%'
-  └─────────────────────────────────────┘
-         │
-         ▼ (formatted as context)
-     Ollama
-  "Based on these signals: [context]
-   Answer: [cited, grounded response]"
+  → retrieve signals mentioning Anthropic from Turso
+  → retrieve company_facts for Anthropic
+  → retrieve predictions related to Anthropic
+  → pass all as context to Gemini Flash
+  → grounded answer with signal citations
 ```
 
-### Cold Start Per Company (seed_company.py)
+### seed_company.py (planned)
 ```
 python3 seed_company.py "Nvidia"
-
-1. Wikipedia API → get infobox (founding, CEO, HQ, products, market cap)
-   → store in company_facts table
-
-2. HN Algolia API → search "nvidia" from 2015-01-01 to today
-   → paginate through results (~500-2000 items)
-   → feed into signals_raw with source="seed_hn"
-   → classify with Ollama batch (same pipeline)
-
-3. arXiv API → search papers mentioning "nvidia" (for chip/AI companies)
-   → store abstracts as signals
-
-Result: 10 years of signal in ~3 minutes. Company watch card goes from
-"No signals" to 500+ searchable, classified items.
+  1. Wikipedia API → infobox → company_facts table
+  2. HN Algolia API → 2015→now → signals_raw (source="seed_hn")
+  3. Classify historical signals in batches via Gemini
+  Result: 10 years of signal in ~3 minutes
 ```
 
-### Coverage Depends on Company Geography
-- Apple / Google / OpenAI → HN has thousands of items, excellent coverage
-- Zepto / CRED (India) → HN has almost nothing, need YourStory/Inc42 RSS
-- DeepSeek / ByteDance → sparse English coverage until 2024, need TechNode
-- TSMC / ASML → good arXiv/tech press coverage, limited HN community discussion
-
-### ask.py (RAG Query Interface)
+### ask.py (planned)
 ```
-python3 ask.py "What signals do we have about TSMC's capacity expansion?"
-
-→ Retrieve top 20 relevant signals from DB (keyword + entity match)
-→ Format as numbered context block
-→ Ollama: synthesize with citations [Signal #3, #7, #12]
-→ Print grounded answer
+python3 ask.py "What signals do we have about TSMC capacity expansion?"
+  → retrieve top 20 relevant signals from Turso
+  → Gemini synthesizes with citations
+  → grounded answer printed to terminal
 ```
 
 ---
 
 ## 7. Key Technical Decisions
 
-### Decision 1: SQLite before Neo4j
-- **Chose:** SQLite for raw and enriched signal store, Neo4j only for processed graph
-- **Because:** Zero-config, immediate start, easy SQL debugging. Neo4j added in Phase 1d.
-
-### Decision 2: Ollama over Claude API (Phase 1)
-- **Chose:** Ollama with Llama 3.2 for all AI tasks
-- **Because:** Fully free, no rate limits, local. Claude API slot reserved for Phase 3 synthesis quality upgrade.
-
-### Decision 3: Telegram sendDocument over sendMessage
-- **Chose:** Send HTML file as document, plus short text summary
-- **Because:** Telegram's sendMessage has 4096 char limit and HTML parse mode restrictions. sendDocument has no size limit, renders in browser on tap.
-
-### Decision 4: RAG over LLM memory for company facts
-- **Chose:** Retrieve from grounded DB, pass as context to Ollama
-- **Because:** LLM training data is frozen and hallucination-prone on company specifics. Grounded retrieval gives cited, verifiable answers.
-
-### Decision 5: HN Algolia as historical seed
-- **Chose:** HN Algolia API (search.hnn.algolia.com) for back-window
-- **Because:** Free, unlimited, covers 2006→now, searchable by query + date range. Best available free source for English-language tech history.
-
-### Decision 6: last_shown_at for signal rotation
-- **Chose:** Track last briefing appearance per signal, exclude for 12h
-- **Because:** Without this, the 2-3 highest-scored signals dominate every briefing. Rotation ensures each run surfaces fresh content.
+| Date | Decision | Rationale |
+|---|---|---|
+| 2026-07-25 | SQLite → Turso | libSQL-compatible, free 500MB, zero SQL query changes |
+| 2026-07-25 | Ollama → Gemini Flash | Better classification quality, free 1500 req/day, no local GPU needed |
+| 2026-07-25 | APScheduler daemon → GitHub Actions | Public repo = unlimited free minutes, built-in logs, no VM |
+| 2026-07-25 | Batch 5 signals per Gemini call | Reduces daily API calls from 1,440 to 288 — fits comfortably in free tier |
+| 2026-07-25 | RAG over LLM memory for company facts | LLM training data is frozen — retrieve from grounded sources instead |
+| 2026-07-25 | HN Algolia as historical seed | Free, unlimited, covers 2006→now, searchable by query + date range |
 
 ---
 
-## 8. Infrastructure & Deployment
+## 8. GitHub Actions Workflow Design
 
-- **Environments:** Local only (Mac Air)
-- **CI/CD:** None — manual git push to GitHub for backup
-- **Domain:** localhost:3000 (web UI, Phase 1c), localhost:8000 (API, Phase 1c)
-- **Secrets:** `.env` gitignored — Telegram token, Reddit creds
-- **Persistence:** launchd plist in `~/Library/LaunchAgents/` (planned)
+### .github/workflows/ingest.yml
+```yaml
+name: Signal Ingestion
+on:
+  schedule:
+    - cron: '*/30 * * * *'   # every 30 minutes
+  workflow_dispatch:           # manual trigger button in GitHub UI
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.11' }
+      - run: pip install -r requirements.txt
+      - run: python ingest_job.py
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          TURSO_DATABASE_URL: ${{ secrets.TURSO_DATABASE_URL }}
+          TURSO_AUTH_TOKEN: ${{ secrets.TURSO_AUTH_TOKEN }}
+```
+
+### .github/workflows/briefing.yml
+```yaml
+name: Briefing Generation
+on:
+  schedule:
+    - cron: '0 * * * *'      # every hour
+  workflow_dispatch:
+
+jobs:
+  briefing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.11' }
+      - run: pip install -r requirements.txt
+      - run: python briefing_job.py
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          TURSO_DATABASE_URL: ${{ secrets.TURSO_DATABASE_URL }}
+          TURSO_AUTH_TOKEN: ${{ secrets.TURSO_AUTH_TOKEN }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+```
+
+Note: daemon.py (APScheduler) is replaced by two separate job scripts:
+- `ingest_job.py` — single ingestion + classification run (no scheduler loop)
+- `briefing_job.py` — single briefing generation + send run (no scheduler loop)
 
 ---
 
 ## 9. Open Technical Questions
 
-- [ ] Does Llama 3.2 3B give sufficient entity extraction quality, or do we need 7B?
-- [ ] Should seed_company.py classify all historical signals (slow) or just store raw (fast)?
-- [ ] For ask.py — keyword search or vector similarity? sqlite-vec adds embedding search locally.
-- [ ] How to canonicalize "Microsoft" vs "Microsoft Corp" vs "MSFT" before Neo4j write?
+- [ ] Turso free tier resets monthly — do we need a migration plan if we exceed 500MB?
+- [ ] Should seed_company.py classify historical signals (Gemini cost) or store raw only (free)?
+- [ ] For ask.py — keyword search (free) or vector similarity search (needs embedding API)?
+- [ ] How to canonicalize entity names ("Microsoft" vs "Microsoft Corp") before graph write?
 - [ ] Should company_facts be seeded for all 157 watchlist companies at once or on-demand?
+- [ ] Add YourStory/Inc42/TechNode RSS feeds before or after cloud migration?

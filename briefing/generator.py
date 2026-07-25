@@ -130,7 +130,7 @@ def _apply_resolutions(resolutions: list):
         if r["status"] in ("confirmed", "wrong"):
             conn.execute(
                 "UPDATE predictions SET status=?, resolved_at=datetime('now'), resolution_note=? WHERE id=?",
-                (r["status"], r["note"], r["id"]),
+                (r["status"], r.get("note", ""), r["id"]),
             )
     conn.commit()
     conn.close()
