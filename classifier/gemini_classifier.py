@@ -58,7 +58,7 @@ def _classify_batch(batch: list[dict]) -> list[dict] | None:
         except Exception as e:
             msg = str(e)
             if "429" in msg or "RESOURCE_EXHAUSTED" in msg:
-                wait = 60 * (attempt + 1)  # 60s, 120s, 180s
+                wait = 15 * (attempt + 1)  # 15s, 30s, 45s
                 print(f"[gemini] rate limited, waiting {wait}s (attempt {attempt+1}/3)...")
                 time.sleep(wait)
             else:
