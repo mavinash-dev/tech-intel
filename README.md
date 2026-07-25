@@ -1,65 +1,84 @@
 # tech-intel
 
-> A local intelligence system that ingests global tech signals, builds a connected knowledge graph over time, and delivers analyst-grade briefings — running entirely on your Mac.
+> A fully cloud-hosted signal intelligence system that ingests global tech signals, classifies them with AI, and delivers analyst-grade briefings via Telegram and a public URL. Nothing runs on Mac.
+
+---
+
+## Live Briefing
+
+**[mavinash-dev.github.io/tech-intel/](https://mavinash-dev.github.io/tech-intel/)**
+
+Auto-updated every hour via GitHub Actions. No login, no download — just open the link.
 
 ---
 
 ## What It Is
 
-Tech Intel is a personal signal intelligence system for someone who wants to understand the global technology ecosystem — not just what launched today, but why investment is flowing somewhere, what a company's layoff actually signals, and what pattern from 2019 is quietly repeating right now. It ingests continuously from free sources, classifies signals using a local AI model, builds a Neo4j knowledge graph linking companies, events, and technologies across time, and delivers plain-language briefings to a local web app and Telegram.
+Tech Intel is a personal signal intelligence system that tracks the global technology ecosystem across 157 companies and 7 signal domains. It ingests from free public APIs every 30 minutes, classifies signals using Gemini Flash, stores everything in a cloud database, and delivers a structured briefing to Telegram + a GitHub Pages URL every hour.
 
----
-
-## Why It Exists
-
-Most tech news is surface-level: new SDK released, startup raised money, company fired engineers. The real signal — where capital is actually flowing, which talent movements predict market shifts, what regulatory changes mean for infrastructure — is scattered across dozens of sources and requires cross-domain pattern recognition to interpret. This system connects those dots automatically and explains them plainly.
+Signals are classified into domains — **Capital** (investment, M&A), **Talent** (hiring, layoffs, founders), **Technology** (launches, research), **Power** (regulation, geopolitics), **Infrastructure**, **Narrative**, **Security** — with an explanation, strategic question, and prediction for each.
 
 ---
 
 ## Status
 
-**Phase:** Phase 1 — Core ingestion, graph, and daily briefing  
-**Stage:** Early Development
+**Phase:** Phase 3 — Company Intelligence (active)  
+**Phase 2:** Complete — full cloud pipeline live since 2026-07
+
+---
+
+## Architecture
+
+```
+GitHub Actions (every 30 min)
+  → ingest_job.py
+      → 5 sources: HN, RSS (7 feeds), GitHub Trending, Dev.to
+      → Gemini 2.0 Flash classifier (batch 5 signals/prompt)
+      → Turso (libSQL cloud) — signals_raw + signals_enriched
+
+GitHub Actions (every 1 hour)
+  → briefing_job.py
+      → load signals from Turso
+      → Gemini: why / question / prediction per signal
+      → HTML briefing → docs/index.html (GitHub Pages)
+      → Telegram sendDocument → phone
+```
+
+No server. No Mac process. No paid API.
 
 ---
 
 ## Tech Stack
 
-- **Python** — background daemon, ingestion, AI orchestration
-- **SQLite** — raw signal store before graph processing
-- **Neo4j Desktop** — local knowledge graph (entities + relationships across time)
-- **Ollama + Llama 3** — local LLM for signal classification and briefing synthesis (free, no API key)
-- **FastAPI** — local web server and query API
-- **Next.js** — local web UI for browsing signals and reading briefings
-- **Telegram Bot API** — delivers daily briefings to phone (free)
+| Layer | Tool |
+|---|---|
+| Scheduler | GitHub Actions cron (free, unlimited for public repos) |
+| AI | Gemini 2.0 Flash (`google-genai` SDK) |
+| Database | Turso (libSQL cloud) — HTTP API, SQLite dialect |
+| Ingestion | feedparser, requests, beautifulsoup4 |
+| Notifications | Telegram Bot API (sendDocument) |
+| Publishing | GitHub Pages from `docs/` on main branch |
+| Language | Python 3.11 |
 
 ---
 
-## Running Locally
+## Phase 3 — Company Intelligence (In Progress)
+
+Per-company deep intelligence on any of the 157 watched companies:
 
 ```bash
-# 1. Install dependencies
-pip install -r requirements.txt
+# Cold-start a company (run once per company)
+python3 seed_company.py "Nvidia"
+# → Wikipedia facts → company_facts table
+# → HN Algolia 2015→now → historical signals
+# → arXiv papers → research signal layer
 
-# 2. Start Ollama (must be installed separately)
-ollama serve
-
-# 3. Pull the model
-ollama pull llama3.2
-
-# 4. Start Neo4j Desktop (install separately, free)
-# Create a local database called "tech-intel"
-
-# 5. Run the ingestion daemon
-python daemon.py
-
-# 6. Start the web server
-uvicorn api:app --reload --port 8000
-
-# 7. Start the web UI
-cd web && npm install && npm run dev
-# Open http://localhost:3000
+# Query grounded answers from DB (not from LLM memory)
+python3 ask.py "What signals do we have about TSMC capacity constraints?"
+# → retrieve 25 signals + facts → Gemini synthesis → cited answer
 ```
+
+Full protocol: [docs/company-intelligence.md](docs/company-intelligence.md)
 
 ---
 
@@ -67,8 +86,7 @@ cd web && npm install && npm run dev
 
 | Document | Purpose |
 |---|---|
-| [PRD.md](PRD.md) | Product requirements and feature spec |
-| [ARCH.md](ARCH.md) | Technical architecture and data model |
-| [DESIGN.md](DESIGN.md) | UX flows and interface design |
-| [STATUS.md](STATUS.md) | Development log and pending tasks |
-| [CLAUDE.md](CLAUDE.md) | Full project brief for AI-assisted sessions |
+| [CLAUDE.md](CLAUDE.md) | Full project brief — read this first in any AI session |
+| [ARCH.md](ARCH.md) | Technical architecture, data model, graph design |
+| [STATUS.md](STATUS.md) | Current phase, task list, decisions log |
+| [docs/company-intelligence.md](docs/company-intelligence.md) | Per-company RAG protocol |
