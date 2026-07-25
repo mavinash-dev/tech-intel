@@ -1,10 +1,13 @@
 import json
 import os
-import ollama
+import google.generativeai as genai
 from datetime import datetime
 from db.connection import get_connection
-from config import OLLAMA_MODEL, OLLAMA_HOST, BRIEFING_STYLE
+from config import GEMINI_API_KEY, GEMINI_MODEL, BRIEFING_STYLE
 from briefing.html_formatter import generate_html
+
+genai.configure(api_key=GEMINI_API_KEY)
+_gemini_model = genai.GenerativeModel(GEMINI_MODEL)
 
 TOP_SIGNALS_LIMIT = 8
 SIGNAL_POOL_SIZE = 60   # fetch wider pool, then diversity-select 8
@@ -12,17 +15,13 @@ SINCE_HOURS = 24        # look back 24h so pool has enough variety
 BRIEFING_DIR = "briefings"
 
 
-def _ollama(prompt: str, system: str = "") -> str:
-    client = ollama.Client(host=OLLAMA_HOST)
-    messages = []
-    if system:
-        messages.append({"role": "system", "content": system})
-    messages.append({"role": "user", "content": prompt})
+def _gemini(prompt: str, system: str = "") -> str:
+    full = f"{system}\n\n{prompt}" if system else prompt
     try:
-        resp = client.chat(model=OLLAMA_MODEL, messages=messages)
-        return resp["message"]["content"].strip()
+        resp = _gemini_model.generate_content(full)
+        return resp.text.strip()
     except Exception as e:
-        print(f"[briefing] Ollama error: {e}")
+        print(f"[briefing] Gemini error: {e}")
         return ""
 
 
@@ -105,7 +104,7 @@ def _resolve_predictions(watching: list, signals: list) -> list:
     predictions_block = "\n".join(
         f"[ID:{p['id']} | {p['briefing_date']}] {p['prediction_text']}" for p in watching
     )
-    raw = _ollama(
+    raw = _gemini(
         f"Today's signals:\n{signals_summary}\n\nWatching predictions:\n{predictions_block}\n\n"
         'For each prediction: confirmed / wrong / still_watching. '
         'JSON only: [{"id": <int>, "status": "...", "note": "<one sentence>"}]',
@@ -137,7 +136,7 @@ def _apply_resolutions(resolutions: list):
 
 
 def _why_it_matters(title: str, explanation: str, domain: str) -> str:
-    raw = _ollama(
+    raw = _gemini(
         f"Signal: {title}\nDomain: {domain}\nExplanation: {explanation}\n\n"
         "2 sentences explaining why this matters to someone new to the tech ecosystem. "
         "Start directly with 'Why it matters:' — no preamble.",
@@ -151,7 +150,7 @@ def _why_it_matters(title: str, explanation: str, domain: str) -> str:
 
 def _generate_question(signals: list) -> str:
     summary = "\n".join(f"- [{s['domain']}] {s['title']}" for s in signals)
-    return _ollama(
+    return _gemini(
         f"Signals:\n{summary}\n\n"
         "One sharp strategic question across these signals. "
         "About how power, money, or technology is shifting. One sentence. No preamble.",
@@ -170,8 +169,8 @@ def generate_briefing() -> str:
         <style>body{{background:#07070d;color:#6b7280;font-family:sans-serif;
         padding:40px;text-align:center;}}</style></head>
         <body><h2 style="color:#e2e8f0">Tech Intel · {now_str}</h2>
-        <p>No new signals in the last 90 minutes.<br>
-        Run <code>python daemon.py</code> to start ingestion.</p></body></html>"""
+        <p>No new signals in the last 24 hours.<br>
+        Check that the ingest workflow is running in GitHub Actions.</p></body></html>"""
         path = os.path.join(BRIEFING_DIR, f"briefing_{datetime.now().strftime('%Y%m%d_%H%M')}.html")
         with open(path, "w") as f:
             f.write(html)

@@ -3,19 +3,23 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-DB_PATH = os.getenv("DB_PATH", "tech_intel.db")
+# --- Database ---
+DB_PATH = os.getenv("DB_PATH", "tech_intel.db")          # local SQLite fallback
+TURSO_DATABASE_URL = os.getenv("TURSO_DATABASE_URL", "")  # e.g. https://xxx.turso.io
+TURSO_AUTH_TOKEN = os.getenv("TURSO_AUTH_TOKEN", "")
 
-OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "llama3.2")
-OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://localhost:11434")
+# --- AI ---
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
+GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
 
+# --- Reddit (optional) ---
 REDDIT_CLIENT_ID = os.getenv("REDDIT_CLIENT_ID", "")
 REDDIT_CLIENT_SECRET = os.getenv("REDDIT_CLIENT_SECRET", "")
 REDDIT_USER_AGENT = os.getenv("REDDIT_USER_AGENT", "tech-intel/1.0")
 
+# --- Telegram ---
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "")
 TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "")
 
 BRIEFING_STYLE = os.getenv("BRIEFING_STYLE", "beginner")
-BRIEFING_HOUR = int(os.getenv("BRIEFING_HOUR", "8"))
-
 INGESTION_INTERVAL_MINUTES = int(os.getenv("INGESTION_INTERVAL_MINUTES", "30"))
