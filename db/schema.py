@@ -25,7 +25,8 @@ def init_db():
             plain_explanation TEXT NOT NULL,
             entities_json     TEXT NOT NULL,
             prediction        TEXT,
-            enriched_at       DATETIME DEFAULT (datetime('now'))
+            enriched_at       DATETIME DEFAULT (datetime('now')),
+            last_shown_at     DATETIME
         );
 
         CREATE TABLE IF NOT EXISTS predictions (
@@ -47,6 +48,12 @@ def init_db():
         CREATE INDEX IF NOT EXISTS idx_predictions_status ON predictions(status);
     """)
     conn.commit()
+    # Migrate: add last_shown_at if it doesn't exist yet
+    try:
+        conn.execute("ALTER TABLE signals_enriched ADD COLUMN last_shown_at DATETIME")
+        conn.commit()
+    except Exception:
+        pass
     conn.close()
     print("[db] Schema initialised.")
 

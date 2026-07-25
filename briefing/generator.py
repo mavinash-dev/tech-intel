@@ -7,7 +7,8 @@ from config import OLLAMA_MODEL, OLLAMA_HOST, BRIEFING_STYLE
 from briefing.html_formatter import generate_html
 
 TOP_SIGNALS_LIMIT = 8
-SINCE_HOURS = 1.5
+SIGNAL_POOL_SIZE = 60   # fetch wider pool, then diversity-select 8
+SINCE_HOURS = 24        # look back 24h so pool has enough variety
 BRIEFING_DIR = "briefings"
 
 
@@ -26,6 +27,7 @@ def _ollama(prompt: str, system: str = "") -> str:
 
 
 def _load_top_signals() -> list:
+    from briefing.html_formatter import GIANT_WATCH
     conn = get_connection()
     rows = conn.execute(
         """SELECT e.id, e.domain, e.relevance_score, e.plain_explanation,
@@ -34,12 +36,53 @@ def _load_top_signals() -> list:
            FROM signals_enriched e
            JOIN signals_raw r ON r.id = e.raw_id
            WHERE e.enriched_at >= datetime('now', ?)
+             AND (e.last_shown_at IS NULL OR e.last_shown_at < datetime('now', '-7 days'))
            ORDER BY e.relevance_score DESC
            LIMIT ?""",
-        (f"-{SINCE_HOURS} hours", TOP_SIGNALS_LIMIT),
+        (f"-{SINCE_HOURS} hours", SIGNAL_POOL_SIZE),
     ).fetchall()
     conn.close()
-    return [dict(r) for r in rows]
+    pool = [dict(r) for r in rows]
+    return _diverse_select(pool, GIANT_WATCH)
+
+
+def _mark_shown(signal_ids: list):
+    if not signal_ids:
+        return
+    conn = get_connection()
+    conn.execute(
+        f"UPDATE signals_enriched SET last_shown_at = datetime('now') WHERE id IN ({','.join('?' * len(signal_ids))})",
+        signal_ids,
+    )
+    conn.commit()
+    conn.close()
+
+
+def _diverse_select(pool: list, watchlist: list) -> list:
+    """Pick TOP_SIGNALS_LIMIT signals, boosting coverage of underrepresented watchlist companies."""
+    if len(pool) <= TOP_SIGNALS_LIMIT:
+        return pool
+
+    seen_companies = set()
+    selected = []
+    remainder = []
+
+    for s in pool:
+        sig_text = (s["title"] + " " + (s.get("entities_json") or "")).lower()
+        hit = next((c for c in watchlist if c.lower() in sig_text and c not in seen_companies), None)
+        if hit and len(selected) < TOP_SIGNALS_LIMIT:
+            selected.append(s)
+            seen_companies.add(hit)
+        else:
+            remainder.append(s)
+
+    # Fill remaining slots from highest-relevance leftovers
+    for s in remainder:
+        if len(selected) >= TOP_SIGNALS_LIMIT:
+            break
+        selected.append(s)
+
+    return selected
 
 
 def _load_watching_predictions() -> list:
@@ -120,6 +163,7 @@ def generate_briefing() -> str:
     os.makedirs(BRIEFING_DIR, exist_ok=True)
 
     signals = _load_top_signals()
+    _mark_shown([s["id"] for s in signals])
     if not signals:
         now_str = datetime.now().strftime("%d %b %Y %H:%M")
         html = f"""<!DOCTYPE html><html><head><meta charset="UTF-8">
@@ -157,6 +201,7 @@ def generate_briefing() -> str:
         question=question,
         callbacks=resolutions,
         total_ingested=total_ingested,
+        watching_predictions=watching,
     )
 
     filename = f"briefing_{datetime.now().strftime('%Y%m%d_%H%M')}.html"
