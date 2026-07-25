@@ -21,9 +21,10 @@ class BaseIngester(ABC):
         for s in signals:
             try:
                 conn.execute(
-                    """INSERT OR IGNORE INTO signals_raw
+                    """INSERT INTO signals_raw
                        (source, source_id, title, url, body, published_at)
-                       VALUES (?, ?, ?, ?, ?, ?)""",
+                       VALUES (?, ?, ?, ?, ?, ?)
+                       ON CONFLICT(source, source_id) DO NOTHING""",
                     (
                         s["source"],
                         s["source_id"],
@@ -33,7 +34,9 @@ class BaseIngester(ABC):
                         s.get("published_at"),
                     ),
                 )
-                if conn.execute("SELECT changes()").fetchone()[0] > 0:
+                # Turso returns affected_row_count as int; sqlite3 returns changes() as int
+                row = conn.execute("SELECT changes()").fetchone()
+                if row and int(row[0]) > 0:
                     inserted += 1
             except Exception as e:
                 print(f"[{self.source_name}] save error: {e}")

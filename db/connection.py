@@ -64,7 +64,16 @@ class TursoConnection:
         cols = [c["name"] for c in exec_result["cols"]]
         rows = []
         for raw_row in exec_result["rows"]:
-            values = [cell.get("value") if cell["type"] != "null" else None for cell in raw_row]
+            values = []
+            for cell in raw_row:
+                if cell["type"] == "null":
+                    values.append(None)
+                elif cell["type"] == "integer":
+                    values.append(int(cell["value"]))
+                elif cell["type"] == "float":
+                    values.append(float(cell["value"]))
+                else:
+                    values.append(cell.get("value"))
             rows.append(_TursoRow(zip(cols, values)))
 
         lastrowid = None
