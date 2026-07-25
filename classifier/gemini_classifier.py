@@ -33,8 +33,10 @@ Relevance score guide:
   <0.3: Noise"""
 
 
-def _classify_batch(batch: list[dict]) -> list[dict] | None:
+def _classify_batch(batch: list[dict], batch_num: int) -> list[dict] | None:
+    print(f"[gemini] batch {batch_num}: creating client...", flush=True)
     client = genai.Client(api_key=GEMINI_API_KEY)
+    print(f"[gemini] batch {batch_num}: client ready, sending to {GEMINI_MODEL}...", flush=True)
     lines = []
     for i, s in enumerate(batch, 1):
         body = (s.get("body") or "")[:400]
@@ -49,9 +51,11 @@ def _classify_batch(batch: list[dict]) -> list[dict] | None:
             text = text.split("```")[1]
             if text.startswith("json"):
                 text = text[4:]
-        return json.loads(text.strip())
+        result = json.loads(text.strip())
+        print(f"[gemini] batch {batch_num}: got {len(result)} results.", flush=True)
+        return result
     except Exception as e:
-        print(f"[gemini] batch error: {e}")
+        print(f"[gemini] batch {batch_num} error: {e}", flush=True)
         return None
 
 
@@ -71,15 +75,16 @@ def run_classification_batch(batch_size: int = 30):
         return
 
     signals = [dict(r) for r in rows]
-    print(f"[gemini] classifying {len(signals)} signals in batches of {BATCH_SIZE}...")
+    print(f"[gemini] classifying {len(signals)} signals in batches of {BATCH_SIZE}...", flush=True)
     classified = 0
 
     for i in range(0, len(signals), BATCH_SIZE):
         batch = signals[i : i + BATCH_SIZE]
-        results = _classify_batch(batch)
+        batch_num = i // BATCH_SIZE + 1
+        results = _classify_batch(batch, batch_num)
 
         if results is None or len(results) != len(batch):
-            print(f"[gemini] batch {i//BATCH_SIZE + 1}: bad response, skipping {len(batch)} signals")
+            print(f"[gemini] batch {batch_num}: bad response, skipping {len(batch)} signals", flush=True)
             continue
 
         for signal, result in zip(batch, results):
@@ -116,4 +121,4 @@ def run_classification_batch(batch_size: int = 30):
 
     conn.commit()
     conn.close()
-    print(f"[gemini] done — {classified}/{len(signals)} classified.")
+    print(f"[gemini] done — {classified}/{len(signals)} classified.", flush=True)
