@@ -26,11 +26,17 @@ Domain definitions:
   Security: breaches, vulnerabilities, CVEs, exploits, national security
 
 Relevance score guide:
-  0.9+: Major shift affecting multiple companies/countries
-  0.7-0.9: Significant — one major company or policy with clear consequence
-  0.5-0.7: Moderate — noteworthy but contained
-  0.3-0.5: Low — minor update or niche interest
-  <0.3: Noise"""
+  0.9+: Major shift affecting multiple companies/countries — acquisition, regulation, geopolitical move, massive layoff/hire
+  0.7-0.9: Significant strategic move — funding round, executive departure, infrastructure investment, policy change
+  0.5-0.7: Meaningful signal — market entry/exit, notable partnership, research with real-world consequence
+  0.3-0.5: Routine — minor product update, incremental release, standard blog post
+  <0.3: Noise — version bumps, tutorials, generic "how to" posts, routine open source releases
+
+IMPORTANT scoring rules:
+- A new product version, library release, or feature announcement = score 0.1-0.3 UNLESS it fundamentally changes the competitive landscape
+- Funding, M&A, layoffs, regulation, infrastructure bets = score high (these show where power/money is moving)
+- "Company X releases Y" without strategic consequence = score < 0.3
+- Ask: does this signal reveal MOTION (money moving, people moving, power shifting)? If yes, score high. If it's just announcing something exists, score low."""
 
 
 def _classify_batch(batch, batch_num):

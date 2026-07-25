@@ -13,6 +13,17 @@ SIGNAL_POOL_SIZE = 60   # fetch wider pool, then diversity-select 8
 SINCE_HOURS = 24        # look back 24h so pool has enough variety
 BRIEFING_DIR = "briefings"
 
+# Strategic domains score higher — these show where money/power/people are moving
+DOMAIN_WEIGHT = {
+    "Capital":        1.5,   # funding, M&A, IPOs
+    "Power":          1.4,   # regulation, geopolitics, policy
+    "Infrastructure": 1.3,   # chips, data centres, energy bets
+    "Talent":         1.3,   # layoffs, exec moves, hiring waves
+    "Security":       1.2,   # breaches, CVEs with real impact
+    "Narrative":      1.0,   # industry discourse
+    "Technology":     0.7,   # deprioritise — too many routine releases
+}
+
 
 def _groq(prompt: str, system: str = "") -> str:
     try:
@@ -47,6 +58,11 @@ def _load_top_signals() -> list:
     ).fetchall()
     conn.close()
     pool = [dict(r) for r in rows]
+    # Apply domain weight to effective score for sorting
+    for s in pool:
+        weight = DOMAIN_WEIGHT.get(s["domain"], 1.0)
+        s["_effective_score"] = s["relevance_score"] * weight
+    pool.sort(key=lambda s: s["_effective_score"], reverse=True)
     return _diverse_select(pool, GIANT_WATCH)
 
 
