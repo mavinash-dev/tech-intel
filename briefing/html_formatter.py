@@ -313,15 +313,20 @@ def _watch_row(company: str, top_signal=None, signal_idx: int = 0) -> str:
     c = brand["color"]
 
     recent = _company_recent_signals(company, limit=5)
+    has_signals = bool(recent)
 
     if top_signal:
-        status_dot = f'<span class="wdot active-dot" style="background:{c};box-shadow:0 0 6px {c};"></span>'
-        name_style = f'color:{c};font-weight:700;'
-        meta = f'<span class="wref">→ in today\'s signal #{signal_idx}</span>'
+        status_dot = f'<span class="wdot" style="background:{c};box-shadow:0 0 5px {c}80;"></span>'
+        name_style = f'color:var(--fg);font-weight:600;'
+        signal_tag = f'<span class="wtag wtag-today">in today\'s briefing #{signal_idx}</span>'
+    elif has_signals:
+        status_dot = f'<span class="wdot" style="background:{c}60;border:1.5px solid {c};"></span>'
+        name_style = 'color:var(--fg-body);font-weight:500;'
+        signal_tag = f'<span class="wtag wtag-has">{len(recent)} signal{"s" if len(recent) != 1 else ""}</span>'
     else:
-        status_dot = f'<span class="wdot" style="border:1.5px solid {c};"></span>'
-        name_style = 'color:#94a3b8;font-weight:600;'
-        meta = ""
+        status_dot = f'<span class="wdot" style="background:var(--border-subtle);border:1.5px solid var(--border-default);"></span>'
+        name_style = 'color:var(--fg-muted);font-weight:400;'
+        signal_tag = '<span class="wtag wtag-none">no data</span>'
 
     links_html = ""
     if recent:
@@ -331,7 +336,7 @@ def _watch_row(company: str, top_signal=None, signal_idx: int = 0) -> str:
         )
         links_html = f'<ul class="wlinks">{items}</ul>'
     else:
-        links_html = '<p class="wno-data">No signals ingested yet for this company.</p>'
+        links_html = '<p class="wno-data">No signals ingested yet — will populate as the pipeline runs.</p>'
 
     cat = _h(brand.get("cat", ""))
 
@@ -341,7 +346,7 @@ def _watch_row(company: str, top_signal=None, signal_idx: int = 0) -> str:
     {status_dot}
     <span class="wname" style="{name_style}">{_h(company)}</span>
     <span class="wcat">{cat}</span>
-    {meta}
+    {signal_tag}
     <span class="wchev">›</span>
   </summary>
   <div class="wrow-body">
@@ -506,13 +511,13 @@ hr{{border:none;border-top:1px solid var(--border-subtle);margin:0;}}
 
 /* ── Signal cards — gradient slab pattern ── */
 .cards-slab{{
-  border-radius:20px;padding:4px;gap:4px;
+  border-radius:20px;padding:4px;gap:3px;
   background:linear-gradient(135deg, var(--green-tint) 0%, var(--green) 100%);
   display:flex;flex-direction:column;
 }}
 .card{{
   background:var(--elevated);border-radius:16px;
-  padding:22px 24px;border:1px solid var(--fg);color:var(--fg);
+  padding:24px 26px;color:var(--fg);
 }}
 .card-meta-row{{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px;}}
 .domain-pill{{
@@ -572,7 +577,7 @@ hr{{border:none;border-top:1px solid var(--border-subtle);margin:0;}}
   font-family:monospace;font-size:11px;color:var(--fg-muted);
   font-weight:400;letter-spacing:0;text-transform:none;
 }}
-.sum-chev{{font-size:15px;color:var(--border-default);transition:transform 0.15s;}}
+.sum-chev{{font-size:15px;color:var(--fg-muted);transition:transform 0.15s;}}
 details[open] .sum-chev{{transform:rotate(90deg);}}
 
 /* ── Predictions rows ── */
@@ -612,9 +617,15 @@ details[open] .sum-chev{{transform:rotate(90deg);}}
 .wdot{{width:8px;height:8px;border-radius:50%;flex-shrink:0;background:transparent;}}
 .active-dot{{box-shadow:none;}}
 .wname{{font-size:14px;font-weight:500;flex-shrink:0;min-width:130px;color:var(--fg-body);}}
-.wcat{{font-size:11px;color:var(--border-default);flex:1;font-family:monospace;}}
-.wref{{font-family:monospace;font-size:10px;color:var(--green);margin-left:auto;flex-shrink:0;letter-spacing:0.05em;}}
-.wchev{{font-size:14px;color:var(--border-default);flex-shrink:0;transition:transform 0.15s;}}
+.wcat{{font-size:11px;color:var(--fg-muted);flex:1;font-family:monospace;letter-spacing:0.05em;}}
+.wtag{{
+  font-family:monospace;font-size:10px;font-weight:500;letter-spacing:0.08em;
+  padding:2px 8px;border-radius:4px;flex-shrink:0;text-transform:uppercase;
+}}
+.wtag-today{{background:rgba(28,231,131,0.15);color:#059669;border:1px solid rgba(28,231,131,0.4);}}
+.wtag-has{{background:rgba(61,157,255,0.1);color:#2563eb;border:1px solid rgba(61,157,255,0.3);}}
+.wtag-none{{background:var(--surface);color:var(--fg-muted);border:1px solid var(--border-subtle);}}
+.wchev{{font-size:14px;color:var(--fg-muted);flex-shrink:0;transition:transform 0.15s;}}
 details[open] .wchev{{transform:rotate(90deg);}}
 .wrow-body{{padding:6px 0 12px 24px;}}
 .wlinks{{list-style:none;}}
@@ -674,10 +685,9 @@ details[open] .wchev{{transform:rotate(90deg);}}
   <h1 class="brand">Tech <em>Intel</em></h1>
   <p class="dateline">{now_str}</p>
   <div class="stats">
-    <div class="stat"><strong>{len(signals)}</strong><span>Surfaced</span></div>
-    <div class="stat"><strong>{total_ingested}</strong><span>Ingested (24h)</span></div>
-    <div class="stat"><strong>{len(GIANT_WATCH)}</strong><span>Tracked</span></div>
-    <div class="stat"><strong>{len(callbacks)}</strong><span>Resolved</span></div>
+    <div class="stat"><strong>{len(signals)}</strong><span>Top signals</span></div>
+    <div class="stat"><strong>{total_ingested}</strong><span>Articles scanned</span></div>
+    <div class="stat"><strong>{len(callbacks)}</strong><span>Predictions resolved</span></div>
   </div>
 </header>
 

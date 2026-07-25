@@ -2,11 +2,13 @@
 """Single-run briefing generation + Telegram send job. Called by GitHub Actions every hour."""
 import sys
 import os
+import json
 import shutil
 import glob
 from datetime import datetime
 from briefing.generator import generate_briefing
 from briefing.telegram import send_briefing
+from briefing.html_formatter import COMPANY_BRAND
 
 
 def _parse_briefing_dt(filename: str):
@@ -35,6 +37,38 @@ def _generate_archive():
         time_str = dt.strftime("%H:%M")
         rel_path = os.path.basename(f)
 
+        # Load sidecar metadata if available
+        sidecar_path = f.replace(".html", ".json")
+        meta = {}
+        if os.path.exists(sidecar_path):
+            try:
+                with open(sidecar_path) as fj:
+                    meta = json.load(fj)
+            except Exception:
+                pass
+
+        companies = meta.get("companies", [])
+        domains = meta.get("domains", [])
+
+        # Build company tags (up to 4, colored)
+        company_tags = ""
+        for c in companies[:4]:
+            color = COMPANY_BRAND.get(c, {}).get("color", "#6a7173")
+            company_tags += f'<span class="atag" style="background:{color}18;color:{color};border-color:{color}40;">{c}</span>'
+
+        # Build domain tags (up to 3)
+        domain_colors = {
+            "Capital": "#22c55e", "Power": "#ef4444", "Infrastructure": "#f97316",
+            "Talent": "#3b82f6", "Security": "#eab308", "Technology": "#a855f7",
+            "Narrative": "#94a3b8",
+        }
+        domain_tags = ""
+        for d in domains[:3]:
+            dc = domain_colors.get(d, "#94a3b8")
+            domain_tags += f'<span class="atag atag-domain" style="color:{dc};border-color:{dc}30;">{d}</span>'
+
+        tags_html = f'<div class="atags">{company_tags}{domain_tags}</div>' if (company_tags or domain_tags) else ""
+
         if date_str != current_date:
             if current_date is not None:
                 rows.append("</div>")
@@ -43,8 +77,10 @@ def _generate_archive():
 
         rows.append(f'''
 <a class="briefing-link" href="briefings/{rel_path}">
-  <span class="btime">{time_str}</span>
-  <span class="btitle">Tech Intel Briefing</span>
+  <div class="blink-left">
+    <span class="btime">{time_str}</span>
+    {tags_html}
+  </div>
   <span class="barrow">→</span>
 </a>''')
 
@@ -105,16 +141,22 @@ a:hover{{opacity:0.7;}}
   padding-bottom:10px;border-bottom:1px solid var(--border-subtle);margin-bottom:8px;
 }}
 .briefing-link{{
-  display:flex;align-items:center;gap:14px;
-  padding:13px 18px;margin-bottom:6px;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:14px 18px;margin-bottom:6px;
   background:var(--surface);border:1px solid var(--border-subtle);
   border-radius:10px;transition:border-color 0.15s,background 0.15s;
   text-decoration:none;
 }}
 .briefing-link:hover{{border-color:var(--border-default);background:var(--elevated);opacity:1;}}
-.btime{{font-family:monospace;font-size:14px;font-weight:600;color:var(--fg);min-width:52px;}}
-.btitle{{font-size:15px;color:var(--fg-body);flex:1;}}
-.barrow{{font-size:16px;color:var(--green);}}
+.blink-left{{display:flex;flex-direction:column;gap:7px;flex:1;min-width:0;}}
+.btime{{font-family:monospace;font-size:13px;font-weight:600;color:var(--fg);letter-spacing:0.06em;}}
+.atags{{display:flex;flex-wrap:wrap;gap:5px;}}
+.atag{{
+  font-family:monospace;font-size:10px;font-weight:500;letter-spacing:0.06em;
+  padding:2px 8px;border-radius:4px;border:1px solid;
+}}
+.atag-domain{{background:transparent;}}
+.barrow{{font-size:16px;color:var(--green);flex-shrink:0;}}
 .footer{{
   margin-top:48px;padding:18px;
   background:var(--fg);border-radius:14px;
@@ -155,6 +197,21 @@ def main():
     dest = os.path.join("docs/briefings", os.path.basename(path))
     shutil.copy(path, dest)
     print(f"[briefing] archived to {dest}")
+
+    # Save sidecar metadata for archive tags
+    top_companies = []
+    seen = set()
+    for s in signals:
+        sig_text = (s["title"] + " " + (s.get("entities_json") or "")).lower()
+        for company in COMPANY_BRAND:
+            if company not in seen and company.lower() in sig_text:
+                top_companies.append(company)
+                seen.add(company)
+    top_domains = list(dict.fromkeys(s["domain"] for s in signals))
+    sidecar = {"companies": top_companies[:6], "domains": top_domains[:4]}
+    sidecar_path = dest.replace(".html", ".json")
+    with open(sidecar_path, "w") as f:
+        json.dump(sidecar, f)
 
     # Regenerate archive index
     _generate_archive()

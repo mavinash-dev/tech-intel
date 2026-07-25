@@ -49,16 +49,22 @@ a:hover{opacity:0.7;}
   padding-bottom:10px;border-bottom:1px solid var(--border-subtle);margin-bottom:8px;
 }
 .briefing-link{
-  display:flex;align-items:center;gap:14px;
-  padding:13px 18px;margin-bottom:6px;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:14px 18px;margin-bottom:6px;
   background:var(--surface);border:1px solid var(--border-subtle);
   border-radius:10px;transition:border-color 0.15s,background 0.15s;
   text-decoration:none;
 }
 .briefing-link:hover{border-color:var(--border-default);background:var(--elevated);opacity:1;}
-.btime{font-family:monospace;font-size:14px;font-weight:600;color:var(--fg);min-width:52px;}
-.btitle{font-size:15px;color:var(--fg-body);flex:1;}
-.barrow{font-size:16px;color:var(--green);}
+.blink-left{display:flex;flex-direction:column;gap:7px;flex:1;min-width:0;}
+.btime{font-family:monospace;font-size:13px;font-weight:600;color:var(--fg);letter-spacing:0.06em;}
+.atags{display:flex;flex-wrap:wrap;gap:5px;}
+.atag{
+  font-family:monospace;font-size:10px;font-weight:500;letter-spacing:0.06em;
+  padding:2px 8px;border-radius:4px;border:1px solid;
+}
+.atag-domain{background:transparent;}
+.barrow{font-size:16px;color:var(--green);flex-shrink:0;}
 .footer{
   margin-top:48px;padding:18px;
   background:var(--fg);border-radius:14px;
@@ -74,33 +80,57 @@ a:hover{opacity:0.7;}
   <p class="sub">Every briefing, ever. Updated hourly.</p>
 </header>
 <a class="back" href="index.html">← Latest briefing</a>
-<p class="count">5 briefings stored</p>
+<p class="count">7 briefings stored</p>
 <div class="day-group"><div class="day-label">Saturday, 25 July 2026</div>
+<a class="briefing-link" href="briefings/briefing_20260725_1745.html">
+  <div class="blink-left">
+    <span class="btime">17:45</span>
+    <div class="atags"><span class="atag" style="background:#00b1d218;color:#00b1d2;border-color:#00b1d240;">Rivian</span><span class="atag" style="background:#0082fb18;color:#0082fb;border-color:#0082fb40;">Meta</span><span class="atag" style="background:#e2e8f018;color:#e2e8f0;border-color:#e2e8f040;">GitHub</span><span class="atag" style="background:#4285f418;color:#4285f4;border-color:#4285f440;">Google</span><span class="atag atag-domain" style="color:#ef4444;border-color:#ef444430;">Power</span><span class="atag atag-domain" style="color:#a855f7;border-color:#a855f730;">Technology</span><span class="atag atag-domain" style="color:#22c55e;border-color:#22c55e30;">Capital</span></div>
+  </div>
+  <span class="barrow">→</span>
+</a>
+<a class="briefing-link" href="briefings/briefing_20260725_1742.html">
+  <div class="blink-left">
+    <span class="btime">17:42</span>
+    
+  </div>
+  <span class="barrow">→</span>
+</a>
 <a class="briefing-link" href="briefings/briefing_20260725_1738.html">
-  <span class="btime">17:38</span>
-  <span class="btitle">Tech Intel Briefing</span>
+  <div class="blink-left">
+    <span class="btime">17:38</span>
+    
+  </div>
   <span class="barrow">→</span>
 </a>
 <a class="briefing-link" href="briefings/briefing_20260725_1736.html">
-  <span class="btime">17:36</span>
-  <span class="btitle">Tech Intel Briefing</span>
+  <div class="blink-left">
+    <span class="btime">17:36</span>
+    
+  </div>
   <span class="barrow">→</span>
 </a>
 <a class="briefing-link" href="briefings/briefing_20260725_1728.html">
-  <span class="btime">17:28</span>
-  <span class="btitle">Tech Intel Briefing</span>
+  <div class="blink-left">
+    <span class="btime">17:28</span>
+    
+  </div>
   <span class="barrow">→</span>
 </a>
 <a class="briefing-link" href="briefings/briefing_20260725_1723.html">
-  <span class="btime">17:23</span>
-  <span class="btitle">Tech Intel Briefing</span>
+  <div class="blink-left">
+    <span class="btime">17:23</span>
+    
+  </div>
   <span class="barrow">→</span>
 </a>
 <a class="briefing-link" href="briefings/briefing_20260725_1721.html">
-  <span class="btime">17:21</span>
-  <span class="btitle">Tech Intel Briefing</span>
+  <div class="blink-left">
+    <span class="btime">17:21</span>
+    
+  </div>
   <span class="barrow">→</span>
 </a></div>
-<footer class="footer">tech-intel · generated 25 Jul 2026 17:38</footer>
+<footer class="footer">tech-intel · generated 25 Jul 2026 17:45</footer>
 </body>
 </html>
