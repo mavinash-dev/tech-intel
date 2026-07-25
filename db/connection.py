@@ -49,7 +49,7 @@ class TursoConnection:
         args = [{"type": "text", "value": str(v)} if v is not None else {"type": "null"} for v in params]
         payload = {
             "requests": [
-                {"type": "execute", "stmt": {"sql": sql, "positional_args": args}},
+                {"type": "execute", "stmt": {"sql": sql, "args": args}},
                 {"type": "close"},
             ]
         }
