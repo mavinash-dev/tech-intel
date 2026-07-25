@@ -407,10 +407,21 @@ def _predictions_accordion_html(callbacks: list, watching: list) -> str:
 
     if not rows:
         return ""
-    return f"""<section class="section">
-  <h3 class="sec-title">Predictions</h3>
-  {"".join(rows)}
-</section>"""
+    total = len(callbacks) + len(watching)
+    return f"""<div class="section-accordion">
+  <details>
+    <summary>
+      Predictions
+      <div class="sum-right">
+        <span class="sum-count">{total} total</span>
+        <span class="sum-chev">›</span>
+      </div>
+    </summary>
+    <div class="section-accordion-body">
+      {"".join(rows)}
+    </div>
+  </details>
+</div>"""
 
 
 def generate_html(signals: list, why_map: dict, question: str,
@@ -433,111 +444,130 @@ def generate_html(signals: list, why_map: dict, question: str,
 <style>
 *{{box-sizing:border-box;margin:0;padding:0}}
 body{{
-  background:#111318;color:#d1d5db;
+  background:#f8f9fa;color:#1f2937;
   font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
   font-size:16px;line-height:1.7;
   padding:24px 20px 64px;max-width:900px;margin:0 auto;
 }}
-a{{color:#818cf8;text-decoration:underline;text-underline-offset:3px;}}
-a:hover{{color:#c7d2fe;}}
+a{{color:#4f46e5;text-decoration:underline;text-underline-offset:3px;}}
+a:hover{{color:#4338ca;}}
 
 /* ── Header ── */
-.header{{padding:28px 0 20px;border-bottom:1px solid #2a2d36;margin-bottom:28px;}}
-.eyebrow{{font-size:11px;letter-spacing:3px;color:#6b7280;text-transform:uppercase;margin-bottom:8px;}}
-.brand{{font-size:clamp(26px,4vw,34px);font-weight:800;color:#f9fafb;letter-spacing:-0.5px;}}
-.brand em{{color:#818cf8;font-style:normal;}}
-.dateline{{font-size:13px;color:#9ca3af;margin-top:6px;}}
+.header{{padding:28px 0 20px;border-bottom:2px solid #e5e7eb;margin-bottom:28px;}}
+.eyebrow{{font-size:11px;letter-spacing:3px;color:#9ca3af;text-transform:uppercase;margin-bottom:8px;}}
+.brand{{font-size:clamp(26px,4vw,34px);font-weight:800;color:#111827;letter-spacing:-0.5px;}}
+.brand em{{color:#4f46e5;font-style:normal;}}
+.dateline{{font-size:13px;color:#6b7280;margin-top:6px;}}
 .stats{{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;}}
-.stat{{background:#1a1d24;border:1px solid #2a2d36;border-radius:8px;padding:10px 16px;min-width:90px;}}
-.stat strong{{font-size:clamp(20px,3vw,24px);font-weight:800;color:#f3f4f6;display:block;line-height:1.2;}}
+.stat{{background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:10px 16px;min-width:90px;box-shadow:0 1px 3px rgba(0,0,0,0.06);}}
+.stat strong{{font-size:clamp(20px,3vw,24px);font-weight:800;color:#111827;display:block;line-height:1.2;}}
 .stat span{{font-size:11px;color:#9ca3af;}}
 
 /* ── Section ── */
 .section{{margin-bottom:36px;}}
 .sec-title{{font-size:11px;letter-spacing:3px;color:#9ca3af;text-transform:uppercase;font-weight:700;
-  margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid #2a2d36;}}
+  margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid #e5e7eb;}}
 
 /* ── Signal card ── */
-.card{{border-radius:12px;padding:20px 22px;margin-bottom:14px;border:1px solid #2a2d36;}}
+.card{{border-radius:12px;padding:20px 22px;margin-bottom:14px;border:1px solid #e5e7eb;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,0.05);}}
 .giant-badges{{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;}}
 .giant-badge{{font-size:10px;font-weight:700;letter-spacing:0.5px;padding:2px 9px;border-radius:4px;border:1px solid;background:transparent;}}
-.pred-links-block{{margin:12px 0;padding:10px 14px;background:#1a1d24;border-radius:6px;border-left:3px solid #818cf8;}}
-.pred-links-label{{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#818cf8;display:block;margin-bottom:6px;}}
-.pred-link{{font-size:13px;color:#9ca3af;margin-top:4px;}}
-.sig-title{{font-size:clamp(16px,2.5vw,18px);font-weight:700;color:#f9fafb;margin-bottom:10px;line-height:1.4;}}
-.sig-title a{{color:#f9fafb;text-decoration:underline;text-decoration-color:#ffffff25;text-underline-offset:3px;}}
-.sig-title a:hover{{color:#818cf8;text-decoration-color:#818cf8;}}
-.ext{{font-size:12px;color:#6b7280;}}
-.explanation{{color:#d1d5db;font-size:15px;margin-bottom:12px;line-height:1.7;}}
-.entity{{color:#a5b4fc;font-weight:600;}}
-.num{{color:#34d399;font-weight:700;}}
-.why-block{{margin:12px 0;padding:12px 14px;background:#1a1d24;border-radius:6px;}}
+.pred-links-block{{margin:12px 0;padding:10px 14px;background:#f3f4f6;border-radius:6px;border-left:3px solid #4f46e5;}}
+.pred-links-label{{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#4f46e5;display:block;margin-bottom:6px;}}
+.pred-link{{font-size:13px;color:#6b7280;margin-top:4px;}}
+.sig-title{{font-size:clamp(16px,2.5vw,18px);font-weight:700;color:#111827;margin-bottom:10px;line-height:1.4;}}
+.sig-title a{{color:#111827;text-decoration:underline;text-decoration-color:#11182720;text-underline-offset:3px;}}
+.sig-title a:hover{{color:#4f46e5;text-decoration-color:#4f46e5;}}
+.ext{{font-size:12px;color:#9ca3af;}}
+.explanation{{color:#374151;font-size:15px;margin-bottom:12px;line-height:1.7;}}
+.entity{{color:#4f46e5;font-weight:600;}}
+.num{{color:#059669;font-weight:700;}}
+.why-block{{margin:12px 0;padding:12px 14px;background:#faf5ff;border-radius:6px;border-left:3px solid #f97316;}}
 .why-heading{{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;
   color:{WHY_COLOR};display:block;margin-bottom:6px;}}
-.why-text{{font-size:14px;color:#d1d5db;line-height:1.65;}}
-.prediction{{font-size:14px;color:#9ca3af;font-style:italic;
-  margin-top:12px;padding-top:12px;border-top:1px solid #2a2d36;}}
+.why-text{{font-size:14px;color:#374151;line-height:1.65;}}
+.prediction{{font-size:14px;color:#6b7280;font-style:italic;
+  margin-top:12px;padding-top:12px;border-top:1px solid #e5e7eb;}}
 
-/* ── Predictions accordion ── */
-.pred-row{{border-bottom:1px solid #1f2128;}}
+/* ── Collapsible section wrapper ── */
+.section-accordion{{margin-bottom:36px;}}
+.section-accordion > details{{border:1px solid #e5e7eb;border-radius:10px;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,0.05);}}
+.section-accordion > details > summary{{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 18px;cursor:pointer;list-style:none;user-select:none;font-weight:700;
+  font-size:11px;letter-spacing:3px;color:#9ca3af;text-transform:uppercase;
+}}
+.section-accordion > details > summary::-webkit-details-marker{{display:none;}}
+.section-accordion > details > summary:hover{{background:#f9fafb;border-radius:10px;}}
+.section-accordion > details[open] > summary{{border-bottom:1px solid #e5e7eb;border-radius:10px 10px 0 0;}}
+.section-accordion-body{{padding:16px 18px;}}
+.sum-right{{display:flex;align-items:center;gap:10px;}}
+.sum-count{{font-size:12px;color:#d1d5db;font-weight:600;letter-spacing:0;text-transform:none;}}
+.sum-chev{{font-size:16px;color:#d1d5db;transition:transform 0.12s;}}
+details[open] .sum-chev{{transform:rotate(90deg);}}
+
+/* ── Predictions rows ── */
+.pred-row{{border-bottom:1px solid #f3f4f6;}}
+.pred-row:last-child{{border-bottom:none;}}
 .pred-summary{{
   display:flex;align-items:center;gap:10px;
   padding:11px 6px;cursor:pointer;list-style:none;user-select:none;
 }}
 .pred-summary::-webkit-details-marker{{display:none;}}
 .pred-status{{font-size:10px;font-weight:800;letter-spacing:1px;flex-shrink:0;width:100px;}}
-.pred-text{{font-size:14px;color:#9ca3af;flex:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}}
+.pred-text{{font-size:14px;color:#6b7280;flex:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}}
 .pred-body{{padding:8px 0 14px 28px;}}
-.pred-full{{font-size:15px;color:#d1d5db;line-height:1.6;}}
-.pred-note{{font-size:13px;color:#9ca3af;margin-top:6px;}}
-.pred-meta{{font-size:11px;color:#6b7280;margin-top:6px;}}
+.pred-full{{font-size:15px;color:#374151;line-height:1.6;}}
+.pred-note{{font-size:13px;color:#6b7280;margin-top:6px;}}
+.pred-meta{{font-size:11px;color:#9ca3af;margin-top:6px;}}
 
-/* ── Company watch accordion ── */
+/* ── Company watch rows ── */
 .wcat-header{{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#9ca3af;
-  padding:14px 0 6px;border-bottom:1px solid #2a2d36;margin-bottom:2px;font-weight:700;}}
-.wrow{{border-bottom:1px solid #1a1d24;}}
+  padding:14px 0 6px;border-bottom:1px solid #e5e7eb;margin-bottom:2px;font-weight:700;}}
+.wrow{{border-bottom:1px solid #f3f4f6;}}
+.wrow:last-child{{border-bottom:none;}}
 .wrow-summary{{
   display:flex;align-items:center;gap:8px;
   padding:9px 6px;cursor:pointer;list-style:none;user-select:none;
 }}
 .wrow-summary::-webkit-details-marker{{display:none;}}
-.wrow-summary:hover .wname{{color:#f3f4f6 !important;}}
+.wrow-summary:hover .wname{{color:#111827 !important;}}
 .wdot{{width:8px;height:8px;border-radius:50%;flex-shrink:0;background:transparent;}}
-.wname{{font-size:14px;flex-shrink:0;min-width:120px;}}
-.wcat{{font-size:11px;color:#4b5563;flex:1;}}
-.wref{{font-size:10px;color:#818cf8;margin-left:auto;flex-shrink:0;}}
-.wchev{{font-size:14px;color:#6b7280;flex-shrink:0;transition:transform 0.12s;}}
+.wname{{font-size:14px;flex-shrink:0;min-width:120px;color:#374151;}}
+.wcat{{font-size:11px;color:#d1d5db;flex:1;}}
+.wref{{font-size:10px;color:#4f46e5;margin-left:auto;flex-shrink:0;}}
+.wchev{{font-size:14px;color:#d1d5db;flex-shrink:0;transition:transform 0.12s;}}
 details[open] .wchev{{transform:rotate(90deg);}}
 .wrow-body{{padding:6px 0 12px 24px;}}
 .wlinks{{list-style:none;}}
-.wlinks li{{padding:3px 0;border-bottom:1px solid #1a1d24;}}
+.wlinks li{{padding:3px 0;border-bottom:1px solid #f3f4f6;}}
 .wlinks li:last-child{{border-bottom:none;}}
-.wlink{{font-size:13px;color:#9ca3af;text-decoration:none;display:block;line-height:1.5;}}
-.wlink:hover{{color:#a5b4fc;}}
-.wno-data{{font-size:12px;color:#4b5563;}}
+.wlink{{font-size:13px;color:#6b7280;text-decoration:none;display:block;line-height:1.5;}}
+.wlink:hover{{color:#4f46e5;}}
+.wno-data{{font-size:12px;color:#d1d5db;}}
 
 /* ── Question ── */
 .q-box{{
-  background:#1a1d24;border:1px solid #312e81;
-  border-left:4px solid #818cf8;border-radius:0 10px 10px 0;
+  background:#fff;border:1px solid #c7d2fe;
+  border-left:4px solid #4f46e5;border-radius:0 10px 10px 0;
   padding:18px 22px;font-size:clamp(15px,2.2vw,17px);font-style:italic;
-  color:#c7d2fe;line-height:1.7;
+  color:#4338ca;line-height:1.7;box-shadow:0 1px 3px rgba(0,0,0,0.05);
 }}
 
 /* ── Archive card ── */
 .archive-card{{
   display:flex;align-items:center;justify-content:space-between;
-  padding:16px 20px;background:#1a1d24;border:1px solid #2a2d36;
-  border-radius:10px;text-decoration:none;transition:border-color 0.15s;
+  padding:16px 20px;background:#fff;border:1px solid #e5e7eb;
+  border-radius:10px;text-decoration:none;transition:border-color 0.15s;box-shadow:0 1px 3px rgba(0,0,0,0.05);
 }}
-.archive-card:hover{{border-color:#818cf8;}}
-.archive-card-title{{font-size:16px;font-weight:700;color:#f9fafb;}}
-.archive-card-sub{{font-size:13px;color:#9ca3af;margin-top:3px;}}
-.archive-card-arrow{{font-size:20px;color:#818cf8;}}
+.archive-card:hover{{border-color:#4f46e5;}}
+.archive-card-title{{font-size:16px;font-weight:700;color:#111827;}}
+.archive-card-sub{{font-size:13px;color:#6b7280;margin-top:3px;}}
+.archive-card-arrow{{font-size:20px;color:#4f46e5;}}
 
 /* ── Footer ── */
-.footer{{margin-top:40px;padding-top:20px;border-top:1px solid #2a2d36;
-  font-size:12px;color:#4b5563;text-align:center;letter-spacing:0.5px;}}
+.footer{{margin-top:40px;padding-top:20px;border-top:1px solid #e5e7eb;
+  font-size:12px;color:#9ca3af;text-align:center;letter-spacing:0.5px;}}
 
 /* ── Mobile ── */
 @media(max-width:480px){{
@@ -572,10 +602,20 @@ details[open] .wchev{{transform:rotate(90deg);}}
 
 {preds_html}
 
-<section class="section">
-  <h3 class="sec-title">Company Watch · {len(GIANT_WATCH)} companies</h3>
-  {watch_html}
-</section>
+<div class="section-accordion">
+  <details>
+    <summary>
+      Company Watch
+      <div class="sum-right">
+        <span class="sum-count">{len(GIANT_WATCH)} companies</span>
+        <span class="sum-chev">›</span>
+      </div>
+    </summary>
+    <div class="section-accordion-body">
+      {watch_html}
+    </div>
+  </details>
+</div>
 
 <section class="section">
   <h3 class="sec-title">Question to sit with</h3>
