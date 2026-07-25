@@ -571,6 +571,6 @@ details[open] .wchev{{transform:rotate(90deg);}}
   <div class="q-box">{_h(question)}</div>
 </section>
 
-<div class="footer">tech-intel · {now_str}</div>
+<div class="footer">tech-intel · {now_str} · <a href="archive.html" style="color:#818cf8;">Archive →</a></div>
 </body>
 </html>"""
