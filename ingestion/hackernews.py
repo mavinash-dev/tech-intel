@@ -4,7 +4,7 @@ from ingestion.base import BaseIngester
 
 HN_TOP_URL = "https://hacker-news.firebaseio.com/v0/topstories.json"
 HN_ITEM_URL = "https://hacker-news.firebaseio.com/v0/item/{}.json"
-FETCH_LIMIT = 30
+FETCH_LIMIT = 15
 
 
 class HackerNewsIngester(BaseIngester):
@@ -15,7 +15,7 @@ class HackerNewsIngester(BaseIngester):
         signals = []
         for item_id in ids:
             try:
-                item = requests.get(HN_ITEM_URL.format(item_id), timeout=10).json()
+                item = requests.get(HN_ITEM_URL.format(item_id), timeout=5).json()
                 if not item or item.get("type") != "story" or not item.get("title"):
                     continue
                 signals.append({

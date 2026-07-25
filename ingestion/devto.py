@@ -16,7 +16,7 @@ class DevToIngester(BaseIngester):
                 resp = requests.get(
                     DEVTO_URL,
                     params={"tag": tag, "per_page": PER_TAG, "top": 1},
-                    timeout=10,
+                    timeout=6,
                 )
                 resp.raise_for_status()
                 for article in resp.json():

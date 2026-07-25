@@ -1,4 +1,5 @@
 import feedparser
+import requests
 from datetime import datetime
 from email.utils import parsedate_to_datetime
 from ingestion.base import BaseIngester
@@ -37,7 +38,8 @@ class RSSIngester(BaseIngester):
         signals = []
         for feed_key, feed_url in RSS_FEEDS.items():
             try:
-                parsed = feedparser.parse(feed_url)
+                raw = requests.get(feed_url, timeout=8).text
+                parsed = feedparser.parse(raw)
                 for entry in parsed.entries[:ENTRIES_PER_FEED]:
                     source_id = entry.get("id") or entry.get("link", "")
                     title = entry.get("title", "").strip()
