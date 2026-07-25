@@ -1,6 +1,8 @@
 import json
 import re
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
+
+_IST = timezone(timedelta(hours=5, minutes=30))
 from db.connection import get_connection
 
 DOMAIN_COLOR = {
@@ -451,7 +453,7 @@ def _predictions_accordion_html(callbacks: list, watching: list) -> str:
 def generate_html(signals: list, why_map: dict, question: str,
                   callbacks: list, total_ingested: int,
                   watching_predictions: list = None) -> str:
-    now_str = datetime.now().strftime("%A, %d %B %Y · %H:%M")
+    now_str = datetime.now(tz=_IST).strftime("%A, %d %B %Y · %H:%M IST")
     cards_html = "\n".join(
         _signal_card(i, s, why_map.get(s["id"], ""), watching_predictions or [])
         for i, s in enumerate(signals, 1)
