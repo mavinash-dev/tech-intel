@@ -3,115 +3,134 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Tech Intel · Saturday, 25 July 2026 · 11:55</title>
+<title>Tech Intel · Saturday, 25 July 2026 · 12:01</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{
-  background:#111318;color:#d1d5db;
+  background:#f8f9fa;color:#1f2937;
   font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
   font-size:16px;line-height:1.7;
   padding:24px 20px 64px;max-width:900px;margin:0 auto;
 }
-a{color:#818cf8;text-decoration:underline;text-underline-offset:3px;}
-a:hover{color:#c7d2fe;}
+a{color:#4f46e5;text-decoration:underline;text-underline-offset:3px;}
+a:hover{color:#4338ca;}
 
 /* ── Header ── */
-.header{padding:28px 0 20px;border-bottom:1px solid #2a2d36;margin-bottom:28px;}
-.eyebrow{font-size:11px;letter-spacing:3px;color:#6b7280;text-transform:uppercase;margin-bottom:8px;}
-.brand{font-size:clamp(26px,4vw,34px);font-weight:800;color:#f9fafb;letter-spacing:-0.5px;}
-.brand em{color:#818cf8;font-style:normal;}
-.dateline{font-size:13px;color:#9ca3af;margin-top:6px;}
+.header{padding:28px 0 20px;border-bottom:2px solid #e5e7eb;margin-bottom:28px;}
+.eyebrow{font-size:11px;letter-spacing:3px;color:#9ca3af;text-transform:uppercase;margin-bottom:8px;}
+.brand{font-size:clamp(26px,4vw,34px);font-weight:800;color:#111827;letter-spacing:-0.5px;}
+.brand em{color:#4f46e5;font-style:normal;}
+.dateline{font-size:13px;color:#6b7280;margin-top:6px;}
 .stats{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;}
-.stat{background:#1a1d24;border:1px solid #2a2d36;border-radius:8px;padding:10px 16px;min-width:90px;}
-.stat strong{font-size:clamp(20px,3vw,24px);font-weight:800;color:#f3f4f6;display:block;line-height:1.2;}
+.stat{background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:10px 16px;min-width:90px;box-shadow:0 1px 3px rgba(0,0,0,0.06);}
+.stat strong{font-size:clamp(20px,3vw,24px);font-weight:800;color:#111827;display:block;line-height:1.2;}
 .stat span{font-size:11px;color:#9ca3af;}
 
 /* ── Section ── */
 .section{margin-bottom:36px;}
 .sec-title{font-size:11px;letter-spacing:3px;color:#9ca3af;text-transform:uppercase;font-weight:700;
-  margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid #2a2d36;}
+  margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid #e5e7eb;}
 
 /* ── Signal card ── */
-.card{border-radius:12px;padding:20px 22px;margin-bottom:14px;border:1px solid #2a2d36;}
+.card{border-radius:12px;padding:20px 22px;margin-bottom:14px;border:1px solid #e5e7eb;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,0.05);}
 .giant-badges{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;}
 .giant-badge{font-size:10px;font-weight:700;letter-spacing:0.5px;padding:2px 9px;border-radius:4px;border:1px solid;background:transparent;}
-.pred-links-block{margin:12px 0;padding:10px 14px;background:#1a1d24;border-radius:6px;border-left:3px solid #818cf8;}
-.pred-links-label{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#818cf8;display:block;margin-bottom:6px;}
-.pred-link{font-size:13px;color:#9ca3af;margin-top:4px;}
-.sig-title{font-size:clamp(16px,2.5vw,18px);font-weight:700;color:#f9fafb;margin-bottom:10px;line-height:1.4;}
-.sig-title a{color:#f9fafb;text-decoration:underline;text-decoration-color:#ffffff25;text-underline-offset:3px;}
-.sig-title a:hover{color:#818cf8;text-decoration-color:#818cf8;}
-.ext{font-size:12px;color:#6b7280;}
-.explanation{color:#d1d5db;font-size:15px;margin-bottom:12px;line-height:1.7;}
-.entity{color:#a5b4fc;font-weight:600;}
-.num{color:#34d399;font-weight:700;}
-.why-block{margin:12px 0;padding:12px 14px;background:#1a1d24;border-radius:6px;}
+.pred-links-block{margin:12px 0;padding:10px 14px;background:#f3f4f6;border-radius:6px;border-left:3px solid #4f46e5;}
+.pred-links-label{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#4f46e5;display:block;margin-bottom:6px;}
+.pred-link{font-size:13px;color:#6b7280;margin-top:4px;}
+.sig-title{font-size:clamp(16px,2.5vw,18px);font-weight:700;color:#111827;margin-bottom:10px;line-height:1.4;}
+.sig-title a{color:#111827;text-decoration:underline;text-decoration-color:#11182720;text-underline-offset:3px;}
+.sig-title a:hover{color:#4f46e5;text-decoration-color:#4f46e5;}
+.ext{font-size:12px;color:#9ca3af;}
+.explanation{color:#374151;font-size:15px;margin-bottom:12px;line-height:1.7;}
+.entity{color:#4f46e5;font-weight:600;}
+.num{color:#059669;font-weight:700;}
+.why-block{margin:12px 0;padding:12px 14px;background:#faf5ff;border-radius:6px;border-left:3px solid #f97316;}
 .why-heading{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;
   color:#f97316;display:block;margin-bottom:6px;}
-.why-text{font-size:14px;color:#d1d5db;line-height:1.65;}
-.prediction{font-size:14px;color:#9ca3af;font-style:italic;
-  margin-top:12px;padding-top:12px;border-top:1px solid #2a2d36;}
+.why-text{font-size:14px;color:#374151;line-height:1.65;}
+.prediction{font-size:14px;color:#6b7280;font-style:italic;
+  margin-top:12px;padding-top:12px;border-top:1px solid #e5e7eb;}
 
-/* ── Predictions accordion ── */
-.pred-row{border-bottom:1px solid #1f2128;}
+/* ── Collapsible section wrapper ── */
+.section-accordion{margin-bottom:36px;}
+.section-accordion > details{border:1px solid #e5e7eb;border-radius:10px;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,0.05);}
+.section-accordion > details > summary{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 18px;cursor:pointer;list-style:none;user-select:none;font-weight:700;
+  font-size:11px;letter-spacing:3px;color:#9ca3af;text-transform:uppercase;
+}
+.section-accordion > details > summary::-webkit-details-marker{display:none;}
+.section-accordion > details > summary:hover{background:#f9fafb;border-radius:10px;}
+.section-accordion > details[open] > summary{border-bottom:1px solid #e5e7eb;border-radius:10px 10px 0 0;}
+.section-accordion-body{padding:16px 18px;}
+.sum-right{display:flex;align-items:center;gap:10px;}
+.sum-count{font-size:12px;color:#d1d5db;font-weight:600;letter-spacing:0;text-transform:none;}
+.sum-chev{font-size:16px;color:#d1d5db;transition:transform 0.12s;}
+details[open] .sum-chev{transform:rotate(90deg);}
+
+/* ── Predictions rows ── */
+.pred-row{border-bottom:1px solid #f3f4f6;}
+.pred-row:last-child{border-bottom:none;}
 .pred-summary{
   display:flex;align-items:center;gap:10px;
   padding:11px 6px;cursor:pointer;list-style:none;user-select:none;
 }
 .pred-summary::-webkit-details-marker{display:none;}
 .pred-status{font-size:10px;font-weight:800;letter-spacing:1px;flex-shrink:0;width:100px;}
-.pred-text{font-size:14px;color:#9ca3af;flex:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+.pred-text{font-size:14px;color:#6b7280;flex:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
 .pred-body{padding:8px 0 14px 28px;}
-.pred-full{font-size:15px;color:#d1d5db;line-height:1.6;}
-.pred-note{font-size:13px;color:#9ca3af;margin-top:6px;}
-.pred-meta{font-size:11px;color:#6b7280;margin-top:6px;}
+.pred-full{font-size:15px;color:#374151;line-height:1.6;}
+.pred-note{font-size:13px;color:#6b7280;margin-top:6px;}
+.pred-meta{font-size:11px;color:#9ca3af;margin-top:6px;}
 
-/* ── Company watch accordion ── */
+/* ── Company watch rows ── */
 .wcat-header{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#9ca3af;
-  padding:14px 0 6px;border-bottom:1px solid #2a2d36;margin-bottom:2px;font-weight:700;}
-.wrow{border-bottom:1px solid #1a1d24;}
+  padding:14px 0 6px;border-bottom:1px solid #e5e7eb;margin-bottom:2px;font-weight:700;}
+.wrow{border-bottom:1px solid #f3f4f6;}
+.wrow:last-child{border-bottom:none;}
 .wrow-summary{
   display:flex;align-items:center;gap:8px;
   padding:9px 6px;cursor:pointer;list-style:none;user-select:none;
 }
 .wrow-summary::-webkit-details-marker{display:none;}
-.wrow-summary:hover .wname{color:#f3f4f6 !important;}
+.wrow-summary:hover .wname{color:#111827 !important;}
 .wdot{width:8px;height:8px;border-radius:50%;flex-shrink:0;background:transparent;}
-.wname{font-size:14px;flex-shrink:0;min-width:120px;}
-.wcat{font-size:11px;color:#4b5563;flex:1;}
-.wref{font-size:10px;color:#818cf8;margin-left:auto;flex-shrink:0;}
-.wchev{font-size:14px;color:#6b7280;flex-shrink:0;transition:transform 0.12s;}
+.wname{font-size:14px;flex-shrink:0;min-width:120px;color:#374151;}
+.wcat{font-size:11px;color:#d1d5db;flex:1;}
+.wref{font-size:10px;color:#4f46e5;margin-left:auto;flex-shrink:0;}
+.wchev{font-size:14px;color:#d1d5db;flex-shrink:0;transition:transform 0.12s;}
 details[open] .wchev{transform:rotate(90deg);}
 .wrow-body{padding:6px 0 12px 24px;}
 .wlinks{list-style:none;}
-.wlinks li{padding:3px 0;border-bottom:1px solid #1a1d24;}
+.wlinks li{padding:3px 0;border-bottom:1px solid #f3f4f6;}
 .wlinks li:last-child{border-bottom:none;}
-.wlink{font-size:13px;color:#9ca3af;text-decoration:none;display:block;line-height:1.5;}
-.wlink:hover{color:#a5b4fc;}
-.wno-data{font-size:12px;color:#4b5563;}
+.wlink{font-size:13px;color:#6b7280;text-decoration:none;display:block;line-height:1.5;}
+.wlink:hover{color:#4f46e5;}
+.wno-data{font-size:12px;color:#d1d5db;}
 
 /* ── Question ── */
 .q-box{
-  background:#1a1d24;border:1px solid #312e81;
-  border-left:4px solid #818cf8;border-radius:0 10px 10px 0;
+  background:#fff;border:1px solid #c7d2fe;
+  border-left:4px solid #4f46e5;border-radius:0 10px 10px 0;
   padding:18px 22px;font-size:clamp(15px,2.2vw,17px);font-style:italic;
-  color:#c7d2fe;line-height:1.7;
+  color:#4338ca;line-height:1.7;box-shadow:0 1px 3px rgba(0,0,0,0.05);
 }
 
 /* ── Archive card ── */
 .archive-card{
   display:flex;align-items:center;justify-content:space-between;
-  padding:16px 20px;background:#1a1d24;border:1px solid #2a2d36;
-  border-radius:10px;text-decoration:none;transition:border-color 0.15s;
+  padding:16px 20px;background:#fff;border:1px solid #e5e7eb;
+  border-radius:10px;text-decoration:none;transition:border-color 0.15s;box-shadow:0 1px 3px rgba(0,0,0,0.05);
 }
-.archive-card:hover{border-color:#818cf8;}
-.archive-card-title{font-size:16px;font-weight:700;color:#f9fafb;}
-.archive-card-sub{font-size:13px;color:#9ca3af;margin-top:3px;}
-.archive-card-arrow{font-size:20px;color:#818cf8;}
+.archive-card:hover{border-color:#4f46e5;}
+.archive-card-title{font-size:16px;font-weight:700;color:#111827;}
+.archive-card-sub{font-size:13px;color:#6b7280;margin-top:3px;}
+.archive-card-arrow{font-size:20px;color:#4f46e5;}
 
 /* ── Footer ── */
-.footer{margin-top:40px;padding-top:20px;border-top:1px solid #2a2d36;
-  font-size:12px;color:#4b5563;text-align:center;letter-spacing:0.5px;}
+.footer{margin-top:40px;padding-top:20px;border-top:1px solid #e5e7eb;
+  font-size:12px;color:#9ca3af;text-align:center;letter-spacing:0.5px;}
 
 /* ── Mobile ── */
 @media(max-width:480px){
@@ -130,7 +149,7 @@ details[open] .wchev{transform:rotate(90deg);}
 <div class="header">
   <div class="eyebrow">Signal Intelligence</div>
   <div class="brand">Tech <em>Intel</em></div>
-  <div class="dateline">Saturday, 25 July 2026 · 11:55</div>
+  <div class="dateline">Saturday, 25 July 2026 · 12:01</div>
   <div class="stats">
     <div class="stat"><strong>8</strong><span>Surfaced</span></div>
     <div class="stat"><strong>260</strong><span>Ingested (24h)</span></div>
@@ -142,40 +161,40 @@ details[open] .wchev{transform:rotate(90deg);}
 <section class="section">
   <h3 class="sec-title">Top Signals</h3>
   
-<div class="card" style="border-left:4px solid #3b82f6; background:linear-gradient(135deg,#3b82f608 0%,#0f0f18 60%);">
-
-  <div class='giant-badges'><span class="giant-badge" style="color:#635bff;border-color:#635bff40;">Stripe</span></div>
-
-  <h2 class="sig-title">
-    <a href='https://tldr.tech/tech/2026-07-24' target='_blank'>Stripe's OpenRouter talks 💰, ChatGPT Health ⚕️, why software factories fail 👨‍💻 <span class='ext'>↗</span></a>
-  </h2>
-
-  <p class="explanation"><span class="entity">Stripe</span> is discussing <span class="entity">OpenRouter</span> with other companies. <span class="entity">ChatGPT Health</span> is a growing concern. Software factories are becoming more complex.</p>
-
-  <div class="why-block">
-    <span class="why-heading">Why it matters</span>
-    <p class="why-text">Why it matters: The intersection of <span class="entity">OpenRouter</span>, <span class="entity">ChatGPT Health</span>, and software factories highlights the complexities and challenges of managing talent and technology in the modern tech ecosystem. This convergence of issues can impact the ability of companies to innovate, adapt to changing circumstances, and ultimately succeed in a rapidly evolving industry.</p>
-  </div>
-
-  <div class="pred-links-block"><span class="pred-links-label">Watching prediction</span><div class="pred-link">⏳ <em>Localized, open-source AI curriculum repositories will contribute to a 20% increase in regional developer contributions …</em></div></div>
-
-  
-
-</div>
-
 <div class="card" style="border-left:4px solid #a855f7; background:linear-gradient(135deg,#a855f708 0%,#0f0f18 60%);">
 
   <div class='giant-badges'><span class="giant-badge" style="color:#e2e8f0;border-color:#e2e8f040;">GitHub</span></div>
 
   <h2 class="sig-title">
-    <a href='https://github.com/CoreBunch/Instatic' target='_blank'>[GitHub Trending] CoreBunch/Instatic (TypeScript) <span class='ext'>↗</span></a>
+    <a href='https://github.com/RyanCodrai/turbovec' target='_blank'>[GitHub Trending] RyanCodrai/turbovec (Python) <span class='ext'>↗</span></a>
   </h2>
 
-  <p class="explanation"><span class="entity">CoreBunch/Instatic</span> is an open-source visual content management system (CMS) that allows users to create and manage static web pages. It's a self-hosted alternative to popular CMS platforms like <span class="entity">Webflow</span> and <span class="entity">WordPress</span>.</p>
+  <p class="explanation">Developer <span class="entity">Ryan Codrai</span> launched <span class="entity">turbovec</span>, an open-source high-performance vector indexing library written in <span class="entity">Rust</span> with Python bindings, powered by <span class="entity">TurboQuant</span> compression. Vector indices allow AI applications to rapidly search high-dimensional mathematical representations of text, audio, and video. Improving vector retrieval performance directly lowers computing latency and hosting costs for Retrieval-Augmented Generation (RAG) systems.</p>
 
   <div class="why-block">
     <span class="why-heading">Why it matters</span>
-    <p class="why-text">Why it matters: This open-source CMS provides users with a self-hosted alternative to popular platforms, offering more control and flexibility over their content management. For those new to the tech ecosystem, Instatic's self-hosted nature means they can learn and experiment with web development without being locked into a specific platform's ecosystem.</p>
+    <p class="why-text">Why it matters: Turbovec is a significant development in the field of artificial intelligence (AI) because it enables faster and more efficient search capabilities for high-dimensional data, such as text, audio, and video. This improvement in vector retrieval performance can lead to reduced latency and hosting costs for AI applications, making them more scalable and accessible to a wider range of users.</p>
+  </div>
+
+  <div class="pred-links-block"><span class="pred-links-label">Watching prediction</span><div class="pred-link">⏳ <em>Script-specific token optimization methods will be integrated into major global open-source LLM tokenizers by Q4 2025 to…</em></div><div class="pred-link">⏳ <em>Palmier-pro will integrate direct API support for real-time video generation models like Sora or Runway Gen-3 by the end…</em></div></div>
+
+  <p class='prediction'>🔮 Major commercial vector database providers will adopt TurboQuant-style quantization techniques into their core engines within the next 9 months.</p>
+
+</div>
+
+<div class="card" style="border-left:4px solid #a855f7; background:linear-gradient(135deg,#a855f708 0%,#0f0f18 60%);">
+
+  <div class='giant-badges'><span class="giant-badge" style="color:#4285f4;border-color:#4285f440;">Google</span></div>
+
+  <h2 class="sig-title">
+    <a href='https://dev.to/shaojie/how-one-lazy-line-turned-a-simple-feature-into-a-recursive-dom-walker-454m' target='_blank'>How one lazy line turned a simple feature into a recursive DOM walker <span class='ext'>↗</span></a>
+  </h2>
+
+  <p class="explanation">The author provides a technical breakdown of a front-end web performance bug within <span class="entity">Google</span>'s <span class="entity">NotebookLM</span> interface. A single unoptimized line of code caused the browser to repeatedly traverse the web page's structure (the Document Object Model, or DOM) when rendering AI-generated text. It highlights common engineering oversights when building rich, interactive user interfaces for AI applications.</p>
+
+  <div class="why-block">
+    <span class="why-heading">Why it matters</span>
+    <p class="why-text">Why it matters: This article highlights the importance of careful coding and optimization when building complex user interfaces, especially those that involve AI and interactive features. By understanding how a single line of code can cause significant performance issues, developers can learn to identify and prevent similar problems, leading to faster, more efficient, and more user-friendly applications.</p>
   </div>
 
   <div class="pred-links-block"><span class="pred-links-label">Watching prediction</span><div class="pred-link">⏳ <em>Script-specific token optimization methods will be integrated into major global open-source LLM tokenizers by Q4 2025 to…</em></div><div class="pred-link">⏳ <em>Palmier-pro will integrate direct API support for real-time video generation models like Sora or Runway Gen-3 by the end…</em></div></div>
@@ -186,106 +205,22 @@ details[open] .wchev{transform:rotate(90deg);}
 
 <div class="card" style="border-left:4px solid #a855f7; background:linear-gradient(135deg,#a855f708 0%,#0f0f18 60%);">
 
-  <div class='giant-badges'><span class="giant-badge" style="color:#a2aaad;border-color:#a2aaad40;">Apple</span></div>
+  
 
   <h2 class="sig-title">
-    <a href='https://tldr.tech/tech/2026-07-14' target='_blank'>Siri AI beta 📱, Starlink v3 🛰️, Apple's new speech API 👨‍💻 <span class='ext'>↗</span></a>
+    <a href='https://arcprize.org/leaderboard' target='_blank'>ARC-AGI Leaderboard <span class='ext'>↗</span></a>
   </h2>
 
-  <p class="explanation"><span class="entity">Apple</span> is releasing a beta version of its AI-powered virtual assistant, <span class="entity">Siri</span>. This is a significant move as it shows <span class="entity">Apple</span> is investing in AI technology. Additionally, SpaceX's <span class="entity">Starlink</span> v3 is being released, which will provide faster internet connectivity. <span class="entity">Apple</span> is also releasing a new speech API, which will allow developers to create more advanced voice assistants.</p>
+  <p class="explanation">The <span class="entity">ARC-AGI</span> leaderboard tracks AI system performance on the Abstraction and Reasoning Corpus, a benchmark designed to evaluate novel problem-solving rather than memorized data. AGI, or Artificial General Intelligence, refers to AI that can match human-level reasoning across broad domains. High scores on this benchmark serve as a primary indicator of genuine frontier model progress.</p>
 
   <div class="why-block">
     <span class="why-heading">Why it matters</span>
-    <p class="why-text">Why it matters: This development in AI technology and speech APIs will lead to more personalized and efficient interactions between humans and machines, making our daily lives easier and more convenient. As these technologies become more widespread, they will also pave the way for new innovations and applications in areas like healthcare, education, and customer service.</p>
+    <p class="why-text">Why it matters: The <span class="entity">ARC-AGI</span> leaderboard is significant because it helps researchers and developers understand how close AI systems are to achieving true Artificial General Intelligence, which could revolutionize various industries and aspects of our lives. High scores on this benchmark indicate that AI systems are getting better at solving complex problems and adapting to new situations, which could lead to breakthroughs in fields like healthcare, finance, and education.</p>
   </div>
 
   <div class="pred-links-block"><span class="pred-links-label">Watching prediction</span><div class="pred-link">⏳ <em>Script-specific token optimization methods will be integrated into major global open-source LLM tokenizers by Q4 2025 to…</em></div><div class="pred-link">⏳ <em>Palmier-pro will integrate direct API support for real-time video generation models like Sora or Runway Gen-3 by the end…</em></div></div>
 
-  <p class='prediction'>🔮 Siri will become a major player in the virtual assistant market within the next 2 years, with over 50% market share.</p>
-
-</div>
-
-<div class="card" style="border-left:4px solid #a855f7; background:linear-gradient(135deg,#a855f708 0%,#0f0f18 60%);">
-
-  <div class='giant-badges'><span class="giant-badge" style="color:#a2aaad;border-color:#a2aaad40;">Apple</span><span class="giant-badge" style="color:#10a37f;border-color:#10a37f40;">OpenAI</span></div>
-
-  <h2 class="sig-title">
-    <a href='https://tldr.tech/tech/2026-07-15' target='_blank'>OpenAI's first device 📢, Apple shrinking AI 📱, vibecoding at scale 👨‍💻 <span class='ext'>↗</span></a>
-  </h2>
-
-  <p class="explanation"><span class="entity">OpenAI</span> is releasing its first device, which will be a major milestone for the company. <span class="entity">Apple</span> is also shrinking its AI team, which could be a sign of a shift in its AI strategy. <span class="entity">Vibecoding</span>, a new technology that allows for real-time coding, is being used at scale.</p>
-
-  <div class="why-block">
-    <span class="why-heading">Why it matters</span>
-    <p class="why-text">Why it matters: The release of <span class="entity">OpenAI</span>'s first device and <span class="entity">Apple</span>'s shrinking AI team indicate significant changes in the tech industry, which could impact how we interact with technology in the future. The adoption of vibecoding at scale also has the potential to revolutionize the way we code and develop software, making it more efficient and accessible to a wider range of people.</p>
-  </div>
-
-  <div class="pred-links-block"><span class="pred-links-label">Watching prediction</span><div class="pred-link">⏳ <em>Script-specific token optimization methods will be integrated into major global open-source LLM tokenizers by Q4 2025 to…</em></div><div class="pred-link">⏳ <em>Palmier-pro will integrate direct API support for real-time video generation models like Sora or Runway Gen-3 by the end…</em></div></div>
-
-  <p class='prediction'>🔮 OpenAI's device will be a major success, with over 1 million units sold within the first year.</p>
-
-</div>
-
-<div class="card" style="border-left:4px solid #3b82f6; background:linear-gradient(135deg,#3b82f608 0%,#0f0f18 60%);">
-
-  
-
-  <h2 class="sig-title">
-    <a href='https://www.ycombinator.com/blog/chris-golda-and-grey-baker-general-partners/' target='_blank'>Christopher Golda and Grey Baker Join YC as General Partners <span class='ext'>↗</span></a>
-  </h2>
-
-  <p class="explanation">YC has added two new General Partners, <span class="entity">Christopher Golda</span> and <span class="entity">Grey Baker</span>. They will be working with startups and helping them grow. This is a significant move for YC, as it brings in new expertise and perspectives.</p>
-
-  <div class="why-block">
-    <span class="why-heading">Why it matters</span>
-    <p class="why-text">Why it matters: The addition of new General Partners at YC brings fresh perspectives and expertise, which can help startups navigate the complex tech industry and make informed decisions. This move can also have a ripple effect, influencing the types of startups that YC invests in and the advice it provides to entrepreneurs, ultimately shaping the future of the tech ecosystem.</p>
-  </div>
-
-  <div class="pred-links-block"><span class="pred-links-label">Watching prediction</span><div class="pred-link">⏳ <em>Localized, open-source AI curriculum repositories will contribute to a 20% increase in regional developer contributions …</em></div></div>
-
-  
-
-</div>
-
-<div class="card" style="border-left:4px solid #3b82f6; background:linear-gradient(135deg,#3b82f608 0%,#0f0f18 60%);">
-
-  
-
-  <h2 class="sig-title">
-    <a href='https://news.crunchbase.com/startups/tech-layoffs/' target='_blank'>The Crunchbase Tech Layoffs Tracker <span class='ext'>↗</span></a>
-  </h2>
-
-  <p class="explanation">In 2025 and 2026, over 127,000 workers at <span class="entity">U.S.-based tech companies</span> were laid off in mass job cuts. This is a significant number of layoffs, indicating a challenging time for the tech industry.</p>
-
-  <div class="why-block">
-    <span class="why-heading">Why it matters</span>
-    <p class="why-text">Why it matters: The large number of layoffs in the tech industry can have a ripple effect on the economy, as many of these laid-off workers may struggle to find new employment, potentially impacting their personal finances and overall well-being. Additionally, the mass job cuts can also lead to a decrease in consumer spending and economic growth, as tech industry professionals are often key drivers of innovation and entrepreneurship.</p>
-  </div>
-
-  <div class="pred-links-block"><span class="pred-links-label">Watching prediction</span><div class="pred-link">⏳ <em>Localized, open-source AI curriculum repositories will contribute to a 20% increase in regional developer contributions …</em></div></div>
-
-  
-
-</div>
-
-<div class="card" style="border-left:4px solid #22c55e; background:linear-gradient(135deg,#22c55e08 0%,#0f0f18 60%);">
-
-  
-
-  <h2 class="sig-title">
-    <a href='https://news.crunchbase.com/venture/fintech-funder-general-catalyst-leads-deal-count-q2-2026/' target='_blank'>General Catalyst Takes The Lead Over Y Combinator In Backing $5M+ Fintech Deals <span class='ext'>↗</span></a>
-  </h2>
-
-  <p class="explanation"><span class="entity">General Catalyst</span> overtook <span class="entity">Y Combinator</span> in Q2 2026 in terms of participating in <span class="entity">fintech deals</span> of <span class="num">$<span class="num">5 million</span></span> or more. This marks the busiest quarter for <span class="entity">General Catalyst</span> since 2021 in terms of investing in rounds of <span class="num">$<span class="num">5 million</span></span> or above.</p>
-
-  <div class="why-block">
-    <span class="why-heading">Why it matters</span>
-    <p class="why-text">Why it matters: This shift in investment leadership from <span class="entity">Y Combinator</span> to <span class="entity">General Catalyst</span> highlights the growing influence and credibility of <span class="entity">General Catalyst</span> in the fintech industry, which can attract more startups and entrepreneurs to collaborate with them. As a result, this can lead to the development of innovative financial solutions and potentially drive the growth of the fintech sector as a whole.</p>
-  </div>
-
-  
-
-  
+  <p class='prediction'>🔮 At least one frontier AI model will achieve a verified public score above 85% on the ARC-AGI benchmark by December 2025.</p>
 
 </div>
 
@@ -294,37 +229,118 @@ details[open] .wchev{transform:rotate(90deg);}
   
 
   <h2 class="sig-title">
-    <a href='https://dev.to/copyleftdev/389-tests-passed-nist-still-caught-the-bug-37jh' target='_blank'>389 Tests Passed. NIST Still Caught the Bug. <span class='ext'>↗</span></a>
+    <a href='https://dev.to/moose978/refresh-tokens-done-right-323' target='_blank'>Refresh Tokens Done Right <span class='ext'>↗</span></a>
   </h2>
 
-  <p class="explanation">An engineering analysis demonstrated that an AI agent calculator passed nearly 400 internal automated tests but still contained flaws identified by NIST reference data. The <span class="entity">National Institute of Standards and Technology</span> (NIST) provides authoritative government standard datasets used to benchmark software accuracy. This highlights the growing need for rigorous external reference verification as autonomous AI agents are entrusted with complex computations.</p>
+  <p class="explanation">This post outlines secure implementation patterns for user authentication using JSON Web Tokens (<span class="entity">JWT</span>) within <span class="entity">NestJS</span>, a popular Node.js framework. It focuses on properly handling refresh tokens, which allow users to stay logged in safely without exposing long-lived credentials. Secure token management is essential for protecting web applications against session hijacking and credential theft.</p>
 
   <div class="why-block">
     <span class="why-heading">Why it matters</span>
-    <p class="why-text">Why it matters: Even if an AI system passes internal tests, it's still crucial to verify its accuracy against external standards to ensure it's reliable and trustworthy. This is especially important for AI agents handling complex computations, as their flaws can have significant consequences in fields like finance, healthcare, and security.</p>
+    <p class="why-text">Why it matters: Securely managing user authentication is crucial to prevent unauthorized access to sensitive information and protect users' personal data. Properly handling refresh tokens helps prevent session hijacking and credential theft, ensuring the security and integrity of web applications.</p>
   </div>
 
   <div class="pred-links-block"><span class="pred-links-label">Watching prediction</span><div class="pred-link">⏳ <em>By 2026, mainstream IDEs will integrate automated safety scanners specifically designed to flag unverified AI-generated …</em></div><div class="pred-link">⏳ <em>At least one major software supply chain breach in 2025 will be traced directly to an AI assistant recommending a halluc…</em></div></div>
 
-  <p class='prediction'>🔮 NIST will establish a dedicated standardized framework for evaluating AI agent tool-use accuracy by the end of 2025.</p>
+  
+
+</div>
+
+<div class="card" style="border-left:4px solid #f97316; background:linear-gradient(135deg,#f9731608 0%,#0f0f18 60%);">
+
+  
+
+  <h2 class="sig-title">
+    <a href='https://dev.to/moose978/disaster-recovery-and-backups-11l5' target='_blank'>Disaster Recovery and Backups <span class='ext'>↗</span></a>
+  </h2>
+
+  <p class="explanation">This educational post covers disaster recovery and backup systems for Software-as-a-Service (<span class="entity">SaaS</span>) platforms as they expand across multiple servers. <span class="entity">SaaS</span> describes software delivered online via subscription rather than downloaded locally. Implementing proper backup infrastructure prevents total data loss and ensures high availability when server failures or cyber outages occur.</p>
+
+  <div class="why-block">
+    <span class="why-heading">Why it matters</span>
+    <p class="why-text">Why it matters: If a <span class="entity">SaaS</span> platform loses its data due to a server failure or cyber attack, it can lead to significant financial losses and damage to its reputation. Proper disaster recovery and backup systems are essential to prevent such losses and ensure that the platform can quickly recover and continue to operate smoothly, maintaining the trust of its users.</p>
+  </div>
+
+  
+
+  
+
+</div>
+
+<div class="card" style="border-left:4px solid #94a3b8; background:linear-gradient(135deg,#94a3b808 0%,#0f0f18 60%);">
+
+  
+
+  <h2 class="sig-title">
+    <a href='https://dev.to/eayurt/every-ai-commit-is-someones-future-legacy-code-444l' target='_blank'>Every AI Commit Is Someone's Future Legacy Code <span class='ext'>↗</span></a>
+  </h2>
+
+  <p class="explanation">The increasing use of AI in coding is creating a new kind of legacy code. This is happening faster than ever before, and it's worth noting that AI can now read 25-year-old codebases.</p>
+
+  <div class="why-block">
+    <span class="why-heading">Why it matters</span>
+    <p class="why-text">Why it matters: As AI-generated code becomes more prevalent, it can be difficult for new developers to understand and maintain existing projects, making it harder for them to contribute and learn from the codebase. This can create a barrier to entry for new developers, hindering the growth and evolution of the tech ecosystem.</p>
+  </div>
+
+  
+
+  
+
+</div>
+
+<div class="card" style="border-left:4px solid #94a3b8; background:linear-gradient(135deg,#94a3b808 0%,#0f0f18 60%);">
+
+  
+
+  <h2 class="sig-title">
+    <a href='https://news.crunchbase.com/ai/on-prem-systems-vs-cloud-security-sagie/' target='_blank'>Is On-Prem Making A Comeback? <span class='ext'>↗</span></a>
+  </h2>
+
+  <p class="explanation">There is a shift in perception about <span class="entity">on-prem systems</span>, with decision-makers now seeing them as offering superior long-term security compared to <span class="entity">cloud migration</span>. This is due to three trends identified by strategic adviser <span class="entity">Itay Sagie</span>.</p>
+
+  <div class="why-block">
+    <span class="why-heading">Why it matters</span>
+    <p class="why-text">Why it matters: This shift in perception highlights the importance of considering long-term security implications when deciding between on-prem and cloud systems, as it can impact an organization's overall data protection and resilience. The renewed interest in <span class="entity">on-prem systems</span> also underscores the need for businesses to carefully weigh the trade-offs between security, cost, and flexibility when choosing their technology infrastructure.</p>
+  </div>
+
+  
+
+  
+
+</div>
+
+<div class="card" style="border-left:4px solid #a855f7; background:linear-gradient(135deg,#a855f708 0%,#0f0f18 60%);">
+
+  
+
+  <h2 class="sig-title">
+    <a href='https://dev.to/ethanjlin/your-256k-context-window-is-a-ceiling-not-a-budget-5cc2' target='_blank'>Your 256K Context Window Is a Ceiling, Not a Budget <span class='ext'>↗</span></a>
+  </h2>
+
+  <p class="explanation">The release of the <span class="entity">Gemma</span> model highlights larger context windows, which refer to the total amount of text an AI can process at one time. The analysis warns developers that utilizing the maximum context capacity reduces model accuracy and drastically increases compute costs. It highlights the practical engineering trade-offs required when building applications on top of modern open large language models.</p>
+
+  <div class="why-block">
+    <span class="why-heading">Why it matters</span>
+    <p class="why-text">Why it matters: The <span class="entity">Gemma</span> model's context window limitations emphasize the importance of balancing AI model performance and computational costs in real-world applications. This trade-off has significant implications for developers, as it affects the efficiency and scalability of their projects, ultimately impacting the user experience and the overall success of their products.</p>
+  </div>
+
+  <div class="pred-links-block"><span class="pred-links-label">Watching prediction</span><div class="pred-link">⏳ <em>Script-specific token optimization methods will be integrated into major global open-source LLM tokenizers by Q4 2025 to…</em></div><div class="pred-link">⏳ <em>Palmier-pro will integrate direct API support for real-time video generation models like Sora or Runway Gen-3 by the end…</em></div></div>
+
+  
 
 </div>
 </section>
 
-<section class="section">
-  <h3 class="sec-title">Predictions</h3>
-  
-<details class="pred-row">
-  <summary class="pred-summary">
-    <span class="pred-status" style="color:#ef4444;">❌ WRONG</span>
-    <span class="pred-text">The deal between Stripe and PayPal will be approved within the next 3 months, wi…</span>
-    <span class="wchev">›</span>
-  </summary>
-  <div class="pred-body">
-    <p class="pred-full">The deal between Stripe and PayPal will be approved within the next 3 months, with Stripe gaining a significant share of the payments market.</p>
-    <p class="pred-note">The deal between Stripe and PayPal has not been approved yet.</p>
-  </div>
-</details>
+<div class="section-accordion">
+  <details>
+    <summary>
+      Predictions
+      <div class="sum-right">
+        <span class="sum-count">20 total</span>
+        <span class="sum-chev">›</span>
+      </div>
+    </summary>
+    <div class="section-accordion-body">
+      
 <details class="pred-row">
   <summary class="pred-summary">
     <span class="pred-status" style="color:#f97316;">⏳ STILL WATCHING</span>
@@ -333,7 +349,7 @@ details[open] .wchev{transform:rotate(90deg);}
   </summary>
   <div class="pred-body">
     <p class="pred-full">Localized, open-source AI curriculum repositories will contribute to a 20% increase in regional developer contributions to open-weight AI models over the next 12 months.</p>
-    <p class="pred-note">No update on localized, open-source AI curriculum repositories.</p>
+    <p class="pred-note">Localized, open-source AI curriculum repositories will contribute to a 20% increase in regional developer contributions to open-weight AI models over the next 12 months.</p>
   </div>
 </details>
 <details class="pred-row">
@@ -344,7 +360,7 @@ details[open] .wchev{transform:rotate(90deg);}
   </summary>
   <div class="pred-body">
     <p class="pred-full">Script-specific token optimization methods will be integrated into major global open-source LLM tokenizers by Q4 2025 to drastically lower regional inference costs.</p>
-    <p class="pred-note">No update on script-specific token optimization methods.</p>
+    <p class="pred-note">Script-specific token optimization methods will be integrated into major global open-source LLM tokenizers by Q4 2025 to drastically lower regional inference costs.</p>
   </div>
 </details>
 <details class="pred-row">
@@ -355,7 +371,7 @@ details[open] .wchev{transform:rotate(90deg);}
   </summary>
   <div class="pred-body">
     <p class="pred-full">Palmier-pro will integrate direct API support for real-time video generation models like Sora or Runway Gen-3 by the end of 2025.</p>
-    <p class="pred-note">No update on Palmier-pro integrating direct API support for real-time video generation models.</p>
+    <p class="pred-note">Palmier-pro will integrate direct API support for real-time video generation models like Sora or Runway Gen-3 by the end of 2025.</p>
   </div>
 </details>
 <details class="pred-row">
@@ -366,7 +382,7 @@ details[open] .wchev{transform:rotate(90deg);}
   </summary>
   <div class="pred-body">
     <p class="pred-full">aisuite will exceed 30,000 GitHub stars and become one of the top three multi-provider Python wrappers by Q4 2025.</p>
-    <p class="pred-note">No update on aisuite exceeding 30,000 GitHub stars.</p>
+    <p class="pred-note">aisuite will exceed 30,000 GitHub stars and become one of the top three multi-provider Python wrappers by Q4 2025.</p>
   </div>
 </details>
 <details class="pred-row">
@@ -377,7 +393,7 @@ details[open] .wchev{transform:rotate(90deg);}
   </summary>
   <div class="pred-body">
     <p class="pred-full">Major commercial vector database providers will adopt TurboQuant-style quantization techniques into their core engines within the next 9 months.</p>
-    <p class="pred-note">No update on major commercial vector database providers adopting TurboQuant-style quantization techniques.</p>
+    <p class="pred-note">Major commercial vector database providers will adopt TurboQuant-style quantization techniques into their core engines within the next 9 months.</p>
   </div>
 </details>
 <details class="pred-row">
@@ -388,7 +404,7 @@ details[open] .wchev{transform:rotate(90deg);}
   </summary>
   <div class="pred-body">
     <p class="pred-full">ECC or similar specialized agent optimization harnesses will be natively integrated into mainstream developer IDEs within the next 12 months.</p>
-    <p class="pred-note">No update on ECC or similar specialized agent optimization harnesses being natively integrated into mainstream developer IDEs.</p>
+    <p class="pred-note">ECC or similar specialized agent optimization harnesses will be natively integrated into mainstream developer IDEs within the next 12 months.</p>
   </div>
 </details>
 <details class="pred-row">
@@ -399,7 +415,7 @@ details[open] .wchev{transform:rotate(90deg);}
   </summary>
   <div class="pred-body">
     <p class="pred-full">By 2026, mainstream IDEs will integrate automated safety scanners specifically designed to flag unverified AI-generated code patterns before execution.</p>
-    <p class="pred-note">No update on mainstream IDEs integrating automated safety scanners.</p>
+    <p class="pred-note">By 2026, mainstream IDEs will integrate automated safety scanners specifically designed to flag unverified AI-generated code patterns before execution.</p>
   </div>
 </details>
 <details class="pred-row">
@@ -410,7 +426,7 @@ details[open] .wchev{transform:rotate(90deg);}
   </summary>
   <div class="pred-body">
     <p class="pred-full">At least one major software supply chain breach in 2025 will be traced directly to an AI assistant recommending a hallucinated malicious package.</p>
-    <p class="pred-note">No update on a major software supply chain breach being traced directly to an AI assistant recommending a hallucinated malicious package.</p>
+    <p class="pred-note">At least one major software supply chain breach in 2025 will be traced directly to an AI assistant recommending a hallucinated malicious package.</p>
   </div>
 </details>
 <details class="pred-row">
@@ -421,18 +437,18 @@ details[open] .wchev{transform:rotate(90deg);}
   </summary>
   <div class="pred-body">
     <p class="pred-full">By late 2025, major LLM API providers will introduce automated context-pruning safeguards by default to prevent unexpected runaway usage costs.</p>
-    <p class="pred-note">No update on major LLM API providers introducing automated context-pruning safeguards by default.</p>
+    <p class="pred-note">By late 2025, major LLM API providers will introduce automated context-pruning safeguards by default to prevent unexpected runaway usage costs.</p>
   </div>
 </details>
 <details class="pred-row">
   <summary class="pred-summary">
-    <span class="pred-status" style="color:#f97316;">⏳ WATCHING</span>
-    <span class="pred-text">The deal between Stripe and PayPal will be approved within the next 3 months, wi…</span>
+    <span class="pred-status" style="color:#f97316;">⏳ STILL WATCHING</span>
+    <span class="pred-text">Alibaba's open-code-review tool will reach over 25,000 GitHub stars by the end o…</span>
     <span class="wchev">›</span>
   </summary>
   <div class="pred-body">
-    <p class="pred-full">The deal between Stripe and PayPal will be approved within the next 3 months, with Stripe gaining a significant share of the payments market.</p>
-    <p class="pred-meta">Domain: Power · Made: 2026-07-25</p>
+    <p class="pred-full">Alibaba's open-code-review tool will reach over 25,000 GitHub stars by the end of 2025.</p>
+    <p class="pred-note">Alibaba's open-code-review tool will reach over 25,000 GitHub stars by the end of 2025.</p>
   </div>
 </details>
 <details class="pred-row">
@@ -534,18 +550,39 @@ details[open] .wchev{transform:rotate(90deg);}
     <p class="pred-meta">Domain: Technology · Made: 2026-07-25</p>
   </div>
 </details>
-</section>
+<details class="pred-row">
+  <summary class="pred-summary">
+    <span class="pred-status" style="color:#f97316;">⏳ WATCHING</span>
+    <span class="pred-text">Alibaba's open-code-review tool will reach over 25,000 GitHub stars by the end o…</span>
+    <span class="wchev">›</span>
+  </summary>
+  <div class="pred-body">
+    <p class="pred-full">Alibaba's open-code-review tool will reach over 25,000 GitHub stars by the end of 2025.</p>
+    <p class="pred-meta">Domain: Technology · Made: 2026-07-25</p>
+  </div>
+</details>
+    </div>
+  </details>
+</div>
 
-<section class="section">
-  <h3 class="sec-title">Company Watch · 155 companies</h3>
-  <div class="wcat-header">US Big Tech</div>
+<div class="section-accordion">
+  <details>
+    <summary>
+      Company Watch
+      <div class="sum-right">
+        <span class="sum-count">155 companies</span>
+        <span class="sum-chev">›</span>
+      </div>
+    </summary>
+    <div class="section-accordion-body">
+      <div class="wcat-header">US Big Tech</div>
 
 <details class="wrow">
   <summary class="wrow-summary">
-    <span class="wdot active-dot" style="background:#a2aaad;box-shadow:0 0 6px #a2aaad;"></span>
-    <span class="wname" style="color:#a2aaad;font-weight:700;">Apple</span>
+    <span class="wdot" style="border:1.5px solid #a2aaad;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Apple</span>
     <span class="wcat">US Big Tech</span>
-    <span class="wref">→ in today's signal #3</span>
+    
     <span class="wchev">›</span>
   </summary>
   <div class="wrow-body">
@@ -581,10 +618,10 @@ details[open] .wchev{transform:rotate(90deg);}
 
 <details class="wrow">
   <summary class="wrow-summary">
-    <span class="wdot" style="border:1.5px solid #4285f4;"></span>
-    <span class="wname" style="color:#94a3b8;font-weight:600;">Google</span>
+    <span class="wdot active-dot" style="background:#4285f4;box-shadow:0 0 6px #4285f4;"></span>
+    <span class="wname" style="color:#4285f4;font-weight:700;">Google</span>
     <span class="wcat">US Big Tech</span>
-    
+    <span class="wref">→ in today's signal #2</span>
     <span class="wchev">›</span>
   </summary>
   <div class="wrow-body">
@@ -686,10 +723,10 @@ details[open] .wchev{transform:rotate(90deg);}
 
 <details class="wrow">
   <summary class="wrow-summary">
-    <span class="wdot active-dot" style="background:#10a37f;box-shadow:0 0 6px #10a37f;"></span>
-    <span class="wname" style="color:#10a37f;font-weight:700;">OpenAI</span>
+    <span class="wdot" style="border:1.5px solid #10a37f;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">OpenAI</span>
     <span class="wcat">AI / LLM</span>
-    <span class="wref">→ in today's signal #4</span>
+    
     <span class="wchev">›</span>
   </summary>
   <div class="wrow-body">
@@ -1003,7 +1040,7 @@ details[open] .wchev{transform:rotate(90deg);}
     <span class="wdot active-dot" style="background:#e2e8f0;box-shadow:0 0 6px #e2e8f0;"></span>
     <span class="wname" style="color:#e2e8f0;font-weight:700;">GitHub</span>
     <span class="wcat">DevOps / Platform</span>
-    <span class="wref">→ in today's signal #2</span>
+    <span class="wref">→ in today's signal #1</span>
     <span class="wchev">›</span>
   </summary>
   <div class="wrow-body">
@@ -1563,10 +1600,10 @@ details[open] .wchev{transform:rotate(90deg);}
 
 <details class="wrow">
   <summary class="wrow-summary">
-    <span class="wdot active-dot" style="background:#635bff;box-shadow:0 0 6px #635bff;"></span>
-    <span class="wname" style="color:#635bff;font-weight:700;">Stripe</span>
+    <span class="wdot" style="border:1.5px solid #635bff;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Stripe</span>
     <span class="wcat">SaaS / Enterprise</span>
-    <span class="wref">→ in today's signal #1</span>
+    
     <span class="wchev">›</span>
   </summary>
   <div class="wrow-body">
@@ -2568,11 +2605,13 @@ details[open] .wchev{transform:rotate(90deg);}
     <p class="wno-data">No signals ingested yet for this company.</p>
   </div>
 </details>
-</section>
+    </div>
+  </details>
+</div>
 
 <section class="section">
   <h3 class="sec-title">Question to sit with</h3>
-  <div class="q-box">The shift in power dynamics in the tech industry is evident as General Catalyst surpasses Y Combinator in backing fintech deals, indicating a potential shift in venture capital influence.</div>
+  <div class="q-box">Is the increasing adoption of on-prem infrastructure a sign of a shift back to centralized control and away from cloud-based services?</div>
 </section>
 
 <section class="section">
@@ -2585,6 +2624,6 @@ details[open] .wchev{transform:rotate(90deg);}
     <span class="archive-card-arrow">→</span>
   </a>
 </section>
-<div class="footer">tech-intel · Saturday, 25 July 2026 · 11:55</div>
+<div class="footer">tech-intel · Saturday, 25 July 2026 · 12:01</div>
 </body>
 </html>
