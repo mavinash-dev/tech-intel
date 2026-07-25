@@ -4,7 +4,9 @@ import os
 import json
 import shutil
 import glob
-from datetime import datetime
+from datetime import datetime, timedelta
+
+IST = timedelta(hours=5, minutes=30)
 from briefing.generator import generate_briefing
 from briefing.html_formatter import COMPANY_BRAND
 from briefing.firehose import generate_firehose
@@ -14,7 +16,7 @@ def _parse_briefing_dt(filename: str):
     """Parse datetime from briefing_YYYYMMDD_HHMM.html"""
     base = os.path.basename(filename).replace("briefing_", "").replace(".html", "")
     try:
-        return datetime.strptime(base, "%Y%m%d_%H%M")
+        return datetime.strptime(base, "%Y%m%d_%H%M") + IST
     except Exception:
         return None
 
