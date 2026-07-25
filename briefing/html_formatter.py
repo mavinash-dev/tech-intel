@@ -267,9 +267,8 @@ def _signal_card(i: int, s: dict, why: str, watching_predictions: list = None) -
         sig_text = (s["title"] + " " + (s.get("entities_json") or "")).lower()
         for p in watching_predictions:
             p_entities = (p.get("related_entities") or "").lower()
-            p_domain = (p.get("domain") or "").lower()
-            if p_domain == domain.lower() or any(
-                word.strip() in sig_text for word in p_entities.split(",") if len(word.strip()) > 2
+            if p_entities and any(
+                word.strip() in sig_text for word in p_entities.split(",") if len(word.strip()) > 3
             ):
                 related_preds.append(p)
 
