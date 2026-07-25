@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
-"""Single-run briefing generation + Telegram send job. Called by GitHub Actions every hour."""
-import sys
+"""Single-run briefing generation job. Called by GitHub Actions at scheduled times."""
 import os
 import json
 import shutil
 import glob
 from datetime import datetime
 from briefing.generator import generate_briefing
-from briefing.telegram import send_briefing
 from briefing.html_formatter import COMPANY_BRAND
 
 
@@ -249,18 +247,7 @@ def main():
 
     # Regenerate archive index
     _generate_archive()
-
-    if not signals:
-        print("[briefing] no signals — skipping Telegram send.")
-        return
-
-    print(f"[briefing] saved to {path}, sending to Telegram...")
-    ok = send_briefing(path)
-    if ok:
-        print("[briefing] sent successfully.")
-    else:
-        print("[briefing] Telegram send failed.", file=sys.stderr)
-        sys.exit(1)
+    print("[briefing] done.")
 
 
 if __name__ == "__main__":
