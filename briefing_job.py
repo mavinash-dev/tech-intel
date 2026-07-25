@@ -198,7 +198,7 @@ a:hover{{opacity:0.7;}}
 </nav>
 <p class="count">{count_label}</p>
 {rows_html}
-<footer class="footer">tech-intel · generated {now_str}</footer>
+<footer class="footer">tech-intel</footer>
 
 <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">&#127769;</button>
 <script>

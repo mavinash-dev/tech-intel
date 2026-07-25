@@ -832,7 +832,7 @@ details[open] .wchev{{transform:rotate(90deg);}}
 </section>
 
 <footer class="footer">
-  tech-intel · {now_str} · <a href="archive.html">archive</a> · <a href="firehose.html">firehose</a>
+  tech-intel · <a href="archive.html">archive</a> · <a href="firehose.html">firehose</a>
 </footer>
 
 <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">🌙</button>
