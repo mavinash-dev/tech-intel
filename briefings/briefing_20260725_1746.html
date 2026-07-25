@@ -3,49 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Tech Intel · Saturday, 25 July 2026 · 18:05</title>
-<script>
-  (function(){
-    try{
-      var t = localStorage.getItem('ti-theme');
-      if(t) document.documentElement.setAttribute('data-theme', t);
-    }catch(e){}
-  })();
-</script>
+<title>Tech Intel · Saturday, 25 July 2026 · 17:46</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* ── Design tokens — light (default) ── */
+/* ── Design tokens ── */
 :root{
-  --canvas:        #fdfcf0;
-  --surface:       #f1f0e4;
-  --elevated:      #fffefa;
+  --canvas:   #fdfcf0;
+  --surface:  #f1f0e4;
+  --elevated: #fffefa;
   --border-subtle: #e5e4d8;
-  --border-default:#cdc9b8;
-  --fg:            #080f11;
-  --fg-body:       #1a242a;
-  --fg-muted:      #6a7173;
-  --pill-text:     #080f11;
-  --green:         #3d9dff;
-  --green-tint:    #bfdbfe;
-  --blue:          #3d9dff;
-  --ember:         #ff7f4d;
-  --toggle-icon:   "🌙";
-}
-
-/* ── Design tokens — dark ── */
-[data-theme="dark"]{
-  --canvas:        #080f11;
-  --surface:       #0e1518;
-  --elevated:      #141c20;
-  --border-subtle: #1f272b;
-  --border-default:#2a343a;
-  --fg:            #fdfcf0;
-  --fg-body:       #f1f0e4;
-  --fg-muted:      #888c8d;
-  --pill-text:     #fdfcf0;
-  --toggle-icon:   "☀️";
+  --border-default: #cdc9b8;
+  --fg:       #080f11;
+  --fg-body:  #1a242a;
+  --fg-muted: #6a7173;
+  --green:    #1ce783;
+  --green-tint:#aaf2ce;
+  --blue:     #3d9dff;
+  --ember:    #ff7f4d;
+  --yellow:   #f7d354;
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
@@ -56,19 +33,8 @@ body{
   padding:32px 20px 80px;max-width:900px;margin:0 auto;
 }
 a{color:var(--fg);text-decoration:underline;text-underline-offset:3px;}
-a:hover{opacity:0.75;}
+a:hover{color:#1a242a;}
 hr{border:none;border-top:1px solid var(--border-subtle);margin:0;}
-
-/* ── Theme toggle ── */
-.theme-toggle{
-  position:fixed;bottom:24px;right:20px;
-  width:44px;height:44px;border-radius:50%;
-  background:var(--surface);border:1px solid var(--border-default);
-  cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;
-  box-shadow:0 2px 8px rgba(0,0,0,0.12);transition:background 0.2s,border-color 0.2s;
-  z-index:100;
-}
-.theme-toggle:hover{background:var(--elevated);border-color:var(--fg-muted);}
 
 /* ── Eyebrow (mono uppercase label) ── */
 .eyebrow{
@@ -97,24 +63,26 @@ hr{border:none;border-top:1px solid var(--border-subtle);margin:0;}
 .section-head{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
 .section-head hr{flex:1;}
 
-/* ── Signal cards — standalone floating ── */
-.cards-slab{display:flex;flex-direction:column;gap:20px;}
+/* ── Signal cards — gradient slab pattern ── */
+.cards-slab{
+  border-radius:20px;padding:5px;gap:4px;
+  background:linear-gradient(135deg, var(--green-tint) 0%, var(--green) 100%);
+  display:flex;flex-direction:column;
+}
 .card{
-  background:var(--surface);border-radius:16px;
-  padding:28px 30px;color:var(--fg);
-  border:1px solid var(--border-subtle);
+  background:var(--elevated);border-radius:15px;
+  padding:28px 28px;color:var(--fg);
 }
 .card-meta-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
 .domain-pill{
   font-family:monospace;font-size:10px;font-weight:500;letter-spacing:0.12em;
   text-transform:uppercase;padding:3px 9px;border-radius:4px;border:1px solid;
-  color:var(--pill-text);
 }
 .giant-badges{display:flex;flex-wrap:wrap;gap:5px;}
-.giant-badge{font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;border:1px solid;color:var(--pill-text);}
+.giant-badge{font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;border:1px solid;}
 .sig-title{font-size:clamp(16px,2.5vw,19px);font-weight:600;color:var(--fg);
   margin-bottom:10px;line-height:1.4;letter-spacing:-0.01em;}
-.sig-title a{color:var(--fg);text-decoration:underline;text-decoration-color:var(--border-default);text-underline-offset:3px;}
+.sig-title a{color:var(--fg);text-decoration:underline;text-decoration-color:rgba(8,15,17,0.2);text-underline-offset:3px;}
 .sig-title a:hover{text-decoration-color:var(--fg);}
 .ext{font-size:12px;color:var(--fg-muted);}
 .explanation{color:var(--fg-body);font-size:15px;margin-bottom:16px;line-height:1.8;}
@@ -208,8 +176,8 @@ details[open] .sum-chev{transform:rotate(90deg);}
   font-family:monospace;font-size:10px;font-weight:500;letter-spacing:0.08em;
   padding:2px 8px;border-radius:4px;flex-shrink:0;text-transform:uppercase;
 }
-.wtag-today{background:rgba(28,231,131,0.18);color:var(--pill-text);border:1px solid rgba(28,231,131,0.5);}
-.wtag-has{background:rgba(61,157,255,0.14);color:var(--pill-text);border:1px solid rgba(61,157,255,0.35);}
+.wtag-today{background:rgba(28,231,131,0.15);color:#059669;border:1px solid rgba(28,231,131,0.4);}
+.wtag-has{background:rgba(61,157,255,0.1);color:#2563eb;border:1px solid rgba(61,157,255,0.3);}
 .wtag-none{background:var(--surface);color:var(--fg-muted);border:1px solid var(--border-subtle);}
 .wchev{font-size:14px;color:var(--fg-muted);flex-shrink:0;transition:transform 0.15s;}
 details[open] .wchev{transform:rotate(90deg);}
@@ -245,12 +213,11 @@ details[open] .wchev{transform:rotate(90deg);}
 .footer{
   margin-top:48px;padding:20px;
   background:var(--fg);border-radius:14px;
-  font-family:monospace;font-size:12px;color:var(--canvas);
+  font-family:monospace;font-size:12px;color:rgba(253,252,240,0.5);
   text-align:center;letter-spacing:0.1em;text-transform:uppercase;
-  opacity:0.85;
 }
-.footer a{color:var(--green);text-decoration:none;opacity:0.8;}
-.footer a:hover{opacity:1;}
+.footer a{color:rgba(28,231,131,0.8);text-decoration:none;}
+.footer a:hover{color:#1ce783;}
 
 /* ── Mobile ── */
 @media(max-width:600px){
@@ -260,7 +227,7 @@ details[open] .wchev{transform:rotate(90deg);}
   .stats{gap:8px;}
   .stat{padding:14px 16px;min-width:0;flex:1;}
   .stat strong{font-size:24px;}
-  .cards-slab{gap:16px;}
+  .cards-slab{border-radius:18px;padding:5px;gap:4px;}
   .card{padding:22px 20px;}
   .explanation{font-size:15px;line-height:1.8;}
   .sig-title{font-size:17px;margin-bottom:12px;}
@@ -289,11 +256,11 @@ details[open] .wchev{transform:rotate(90deg);}
 <header class="page-header">
   <p class="eyebrow">Signal Intelligence</p>
   <h1 class="brand">Tech <em>Intel</em></h1>
-  <p class="dateline">Saturday, 25 July 2026 · 18:05</p>
+  <p class="dateline">Saturday, 25 July 2026 · 17:46</p>
   <div class="stats">
     <div class="stat"><strong>8</strong><span>Top signals</span></div>
     <div class="stat"><strong>261</strong><span>Articles scanned</span></div>
-    <div class="stat"><strong>3</strong><span>Predictions resolved</span></div>
+    <div class="stat"><strong>10</strong><span>Predictions resolved</span></div>
   </div>
 </header>
 
@@ -306,22 +273,45 @@ details[open] .wchev{transform:rotate(90deg);}
     
 <article class="card" style="border-top:3px solid #a855f7;">
   <div class="card-meta-row">
-    <span class="domain-pill" style="background:#a855f722;border-left:3px solid #a855f7;border-color:#a855f750;">Technology</span>
-    <div class='giant-badges'><span class="giant-badge" style="background:#24292f22;border-color:#24292f55;">GitHub</span></div>
+    <span class="domain-pill" style="background:#a855f718;color:#a855f7;border-color:#a855f740;">Technology</span>
+    <div class='giant-badges'><span class="giant-badge" style="background:#e2e8f018;color:#e2e8f0;border-color:#e2e8f050;">GitHub</span></div>
   </div>
 
   <h2 class="sig-title">
-    <a href='https://github.com/yorukot/superfile' target='_blank'>[GitHub Trending] yorukot/superfile (Go) <span class='ext'>↗</span></a>
+    <a href='https://github.com/citrolabs/ego-lite' target='_blank'>[GitHub Trending] citrolabs/ego-lite (JavaScript) <span class='ext'>↗</span></a>
   </h2>
 
-  <p class="explanation">Superfile is a terminal file manager written in Go. It's a modern and pretty file manager that can be used to navigate and manage files in the terminal.</p>
+  <p class="explanation">Ego-Lite is a fast browser for AI agents to run web automation. It's a zero-config, zero-cost browser that allows users to share their logged-in browser state with AI agents like <span class="entity">Codex</span> or <span class="entity">Claude Code</span>.</p>
 
   <div class="why-block">
     <p class="why-label">Why it matters</p>
-    <p class="why-text">Why it matters: Having a terminal file manager like Superfile can be beneficial for developers who frequently work with files in the terminal, as it provides a user-friendly interface for navigating and managing files. This can save time and increase productivity, especially for those who are new to the tech ecosystem and may be less familiar with terminal commands.</p>
+    <p class="why-text">Why it matters: Ego-Lite enables AI agents to automate web interactions without requiring users to share sensitive login credentials, ensuring a more secure and seamless experience. This technology has the potential to revolutionize the way AI-powered tools interact with the web, making it easier to automate tasks and access online services.</p>
   </div>
 
-  <div class="pred-links-block"><span class="pred-links-label">Watching</span><div class="pred-link">⏳ <em>By Q3 2026, at least two major cloud vendors will launch production serverless products natively supporting GC-enabled W…</em></div><div class="pred-link">⏳ <em>By late 2026, at least one major foundation model provider will officially integrate dedicated low-resource African lang…</em></div></div>
+  <div class="pred-links-block"><span class="pred-links-label">Watching</span><div class="pred-link">⏳ <em>Major commercial vector database providers will adopt TurboQuant-style quantization techniques into their core engines w…</em></div><div class="pred-link">⏳ <em>ECC or similar specialized agent optimization harnesses will be natively integrated into mainstream developer IDEs withi…</em></div></div>
+
+  <p class='prediction'>🔮 Ego-Lite will be used by at least 2 major AI companies within the next 6 months.</p>
+
+</article>
+
+<article class="card" style="border-top:3px solid #a855f7;">
+  <div class="card-meta-row">
+    <span class="domain-pill" style="background:#a855f718;color:#a855f7;border-color:#a855f740;">Technology</span>
+    <div class='giant-badges'><span class="giant-badge" style="background:#0082fb18;color:#0082fb;border-color:#0082fb50;">Meta</span></div>
+  </div>
+
+  <h2 class="sig-title">
+    <a href='https://tldr.tech/tech/2026-07-08' target='_blank'>Meta AI images 🖼️, inside XBox layoffs 📉, tech worker sentiment 💼 <span class='ext'>↗</span></a>
+  </h2>
+
+  <p class="explanation"><span class="entity">Meta</span> has released <span class="entity">AI images</span>, and there are layoffs inside <span class="entity">Xbox</span>. Additionally, there is a mention of tech worker sentiment, which could be a reference to a survey or a report on the mood of the tech industry.</p>
+
+  <div class="why-block">
+    <p class="why-label">Why it matters</p>
+    <p class="why-text">Why it matters: The release of <span class="entity">AI images</span> by <span class="entity">Meta</span> and the layoffs inside <span class="entity">Xbox</span> indicate significant shifts in the tech industry, which can impact the jobs and livelihoods of tech workers. Understanding these developments is crucial for anyone new to the tech ecosystem, as they can influence the direction of the industry and the opportunities available to those working within it.</p>
+  </div>
+
+  <div class="pred-links-block"><span class="pred-links-label">Watching</span><div class="pred-link">⏳ <em>Major commercial vector database providers will adopt TurboQuant-style quantization techniques into their core engines w…</em></div><div class="pred-link">⏳ <em>ECC or similar specialized agent optimization harnesses will be natively integrated into mainstream developer IDEs withi…</em></div></div>
 
   
 
@@ -329,22 +319,22 @@ details[open] .wchev{transform:rotate(90deg);}
 
 <article class="card" style="border-top:3px solid #a855f7;">
   <div class="card-meta-row">
-    <span class="domain-pill" style="background:#a855f722;border-left:3px solid #a855f7;border-color:#a855f750;">Technology</span>
-    
+    <span class="domain-pill" style="background:#a855f718;color:#a855f7;border-color:#a855f740;">Technology</span>
+    <div class='giant-badges'><span class="giant-badge" style="background:#10a37f18;color:#10a37f;border-color:#10a37f50;">OpenAI</span></div>
   </div>
 
   <h2 class="sig-title">
-    <a href='https://arxiv.org/abs/2607.20538' target='_blank'>Codec-Gauge: Learning Compression-Friendly Gauges for Transformer KV Caches <span class='ext'>↗</span></a>
+    <a href='https://techcrunch.com/2026/07/24/openais-new-voice-mode-makes-it-to-the-chatgpt-desktop-app/' target='_blank'>OpenAI’s new voice mode makes it to the ChatGPT desktop app <span class='ext'>↗</span></a>
   </h2>
 
-  <p class="explanation">Researchers introduced <span class="entity">Codec-Gauge</span>, a tool that helps compress data in Transformer KV caches. This can improve the performance of long-context Transformer inference. The tool learns to preserve model behavior by analyzing the channel basis of key/value vectors.</p>
+  <p class="explanation"><span class="entity">OpenAI</span> has added a voice mode to its <span class="entity">ChatGPT</span> desktop app, allowing users to control agents and complete tasks with voice commands. This feature can work with both <span class="entity">ChatGPT</span> Work and <span class="entity">Codex</span>.</p>
 
   <div class="why-block">
     <p class="why-label">Why it matters</p>
-    <p class="why-text">Why it matters: In the context of artificial intelligence and machine learning, Transformer KV caches play a crucial role in processing and storing large amounts of data, which can be a significant bottleneck in model performance. By developing tools like <span class="entity">Codec-Gauge</span> that can compress this data efficiently, researchers can improve the speed and accuracy of AI models, enabling them to tackle more complex tasks and applications.</p>
+    <p class="why-text">Why it matters: This new voice mode in the <span class="entity">ChatGPT</span> desktop app makes it easier for people to interact with AI assistants, especially those who may have difficulty typing or prefer a more hands-free experience. It also opens up new possibilities for people with disabilities, as voice commands can be a more accessible way to use AI-powered tools.</p>
   </div>
 
-  <div class="pred-links-block"><span class="pred-links-label">Watching</span><div class="pred-link">⏳ <em>By Q3 2026, at least two major cloud vendors will launch production serverless products natively supporting GC-enabled W…</em></div><div class="pred-link">⏳ <em>By late 2026, at least one major foundation model provider will officially integrate dedicated low-resource African lang…</em></div></div>
+  <div class="pred-links-block"><span class="pred-links-label">Watching</span><div class="pred-link">⏳ <em>Major commercial vector database providers will adopt TurboQuant-style quantization techniques into their core engines w…</em></div><div class="pred-link">⏳ <em>ECC or similar specialized agent optimization harnesses will be natively integrated into mainstream developer IDEs withi…</em></div></div>
 
   
 
@@ -352,137 +342,114 @@ details[open] .wchev{transform:rotate(90deg);}
 
 <article class="card" style="border-top:3px solid #a855f7;">
   <div class="card-meta-row">
-    <span class="domain-pill" style="background:#a855f722;border-left:3px solid #a855f7;border-color:#a855f750;">Technology</span>
-    
+    <span class="domain-pill" style="background:#a855f718;color:#a855f7;border-color:#a855f740;">Technology</span>
+    <div class='giant-badges'><span class="giant-badge" style="background:#4a90d918;color:#4a90d9;border-color:#4a90d950;">SpaceX</span></div>
   </div>
 
   <h2 class="sig-title">
-    <a href='https://arxiv.org/abs/2607.20537' target='_blank'>ReliableTableQA:How Much Supervision Does Reliability Annotation Need? <span class='ext'>↗</span></a>
+    <a href='https://techcrunch.com/2026/07/24/spacex-launches-new-v3-starlink-satellites-but-suffers-another-booster-failure/' target='_blank'>SpaceX launches new V3 Starlink satellites but suffers another booster failure <span class='ext'>↗</span></a>
   </h2>
 
-  <p class="explanation">A new framework called <span class="entity">ReliableTableQA</span> was introduced to improve the reliability of tabular QA results. This framework trains a language model to annotate the statistical reliability of computed answers, rather than just determining whether the query is answerable.</p>
+  <p class="explanation"><span class="entity">SpaceX</span> launched new V3 Starlink satellites but suffered another booster failure. The company is working on its Starship program, and this incident is a setback. However, it's not a major shift in the industry, and the relevance is relatively low.</p>
 
   <div class="why-block">
     <p class="why-label">Why it matters</p>
-    <p class="why-text">Why it matters: In the context of tabular question-answering (QA), <span class="entity">ReliableTableQA</span> aims to provide more accurate and reliable results by assessing the statistical reliability of computed answers. This is crucial because it can help users trust the information they receive, especially in situations where the answers have a high degree of uncertainty or variability.</p>
+    <p class="why-text">Why it matters: The failure of a booster is a setback for <span class="entity">SpaceX</span>, but it's not a significant disruption to the satellite internet industry, as other companies like Amazon and OneWeb are also working on similar projects. This incident is more of a minor speed bump for <span class="entity">SpaceX</span>, which is still pushing the boundaries of space technology with its ambitious Starship program.</p>
   </div>
 
-  <div class="pred-links-block"><span class="pred-links-label">Watching</span><div class="pred-link">⏳ <em>By Q3 2026, at least two major cloud vendors will launch production serverless products natively supporting GC-enabled W…</em></div><div class="pred-link">⏳ <em>By late 2026, at least one major foundation model provider will officially integrate dedicated low-resource African lang…</em></div></div>
+  <div class="pred-links-block"><span class="pred-links-label">Watching</span><div class="pred-link">⏳ <em>Major commercial vector database providers will adopt TurboQuant-style quantization techniques into their core engines w…</em></div><div class="pred-link">⏳ <em>ECC or similar specialized agent optimization harnesses will be natively integrated into mainstream developer IDEs withi…</em></div></div>
 
   
 
 </article>
 
-<article class="card" style="border-top:3px solid #a855f7;">
+<article class="card" style="border-top:3px solid #ef4444;">
   <div class="card-meta-row">
-    <span class="domain-pill" style="background:#a855f722;border-left:3px solid #a855f7;border-color:#a855f750;">Technology</span>
+    <span class="domain-pill" style="background:#ef444418;color:#ef4444;border-color:#ef444440;">Power</span>
     
   </div>
 
   <h2 class="sig-title">
-    <a href='https://arxiv.org/abs/2607.20535' target='_blank'>A Graph Neural Network approach to zero-shot Digital Twins <span class='ext'>↗</span></a>
+    <a href='https://techcrunch.com/2026/07/24/social-media-ban-children-countries-list/' target='_blank'>Vietnam is looking to restrict social media for kids; here are the growing number of other countries doing the same <span class='ext'>↗</span></a>
   </h2>
 
-  <p class="explanation">A new approach to digital twins was proposed using graph neural networks. This approach allows for zero-shot digital twins that can adapt to changing physical domains or boundary conditions without requiring extensive retraining.</p>
+  <p class="explanation">Several countries, including <span class="entity">Vietnam</span> and <span class="entity">Australia</span>, are restricting social media use for kids due to concerns about cyberbullying, addiction, and exposure to predators. This move is part of a growing trend to regulate social media and protect young users.</p>
 
   <div class="why-block">
     <p class="why-label">Why it matters</p>
-    <p class="why-text">Why it matters: This new approach to digital twins enables the creation of more flexible and adaptable digital replicas of physical systems, which can be applied to a wide range of industries and applications. By allowing digital twins to learn and adapt without extensive retraining, this technology has the potential to save time, reduce costs, and improve decision-making in fields such as manufacturing, energy, and transportation.</p>
+    <p class="why-text">Why it matters: This trend of restricting social media use for kids highlights the increasing awareness of the potential risks associated with social media, such as online harassment and exploitation, which can have long-lasting effects on a child's mental health and well-being. By regulating social media, governments are taking steps to protect young users and ensure their safety in the digital world.</p>
   </div>
 
-  <div class="pred-links-block"><span class="pred-links-label">Watching</span><div class="pred-link">⏳ <em>By Q3 2026, at least two major cloud vendors will launch production serverless products natively supporting GC-enabled W…</em></div><div class="pred-link">⏳ <em>By late 2026, at least one major foundation model provider will officially integrate dedicated low-resource African lang…</em></div></div>
+  
 
   
 
 </article>
 
-<article class="card" style="border-top:3px solid #a855f7;">
+<article class="card" style="border-top:3px solid #3b82f6;">
   <div class="card-meta-row">
-    <span class="domain-pill" style="background:#a855f722;border-left:3px solid #a855f7;border-color:#a855f750;">Technology</span>
+    <span class="domain-pill" style="background:#3b82f618;color:#3b82f6;border-color:#3b82f640;">Talent</span>
     
   </div>
 
   <h2 class="sig-title">
-    <a href='https://arxiv.org/abs/2607.20533' target='_blank'>Grounding Investor Views: Neural Predicates in the Black-Litterman Model <span class='ext'>↗</span></a>
+    <a href='https://techcrunch.com/2026/07/24/why-cognition-bought-poke-ai-personality-is-becoming-a-competitive-advantage/' target='_blank'>Why Cognition bought Poke: AI personality is becoming a competitive advantage <span class='ext'>↗</span></a>
   </h2>
 
-  <p class="explanation">A new method for grounding investor views in the <span class="entity">Black-Litterman model</span> was proposed using neural predicates. This method provides a structured and probabilistic approach to view generation, making portfolio construction more scalable.</p>
+  <p class="explanation"><span class="entity">Cognition</span> acquired <span class="entity">Poke</span>, bringing <span class="entity">Poke</span>'s conversational style and interaction model to <span class="entity">Cognition</span>'s coding agent <span class="entity">Devin</span>. This move reflects a growing belief that how AI assistants interact with users is as important as the models powering them.</p>
 
   <div class="why-block">
     <p class="why-label">Why it matters</p>
-    <p class="why-text">Why it matters: This innovation allows investors to make more informed decisions by incorporating their views in a structured and probabilistic way, which can lead to more accurate and efficient portfolio construction. By making portfolio construction more scalable, this method can help investors and financial institutions manage their assets more effectively, ultimately leading to better investment outcomes.</p>
+    <p class="why-text">Why it matters: The acquisition highlights the increasing importance of user experience in AI, where a well-designed interface can make a significant difference in how users engage with and adopt AI-powered tools. This shift in focus from just the AI model's capabilities to its interaction style can lead to more user-friendly and effective AI assistants.</p>
   </div>
 
-  <div class="pred-links-block"><span class="pred-links-label">Watching</span><div class="pred-link">⏳ <em>By Q3 2026, at least two major cloud vendors will launch production serverless products natively supporting GC-enabled W…</em></div><div class="pred-link">⏳ <em>By late 2026, at least one major foundation model provider will officially integrate dedicated low-resource African lang…</em></div></div>
+  <div class="pred-links-block"><span class="pred-links-label">Watching</span><div class="pred-link">⏳ <em>Localized, open-source AI curriculum repositories will contribute to a 20% increase in regional developer contributions …</em></div></div>
 
   
 
 </article>
 
-<article class="card" style="border-top:3px solid #a855f7;">
+<article class="card" style="border-top:3px solid #3b82f6;">
   <div class="card-meta-row">
-    <span class="domain-pill" style="background:#a855f722;border-left:3px solid #a855f7;border-color:#a855f750;">Technology</span>
+    <span class="domain-pill" style="background:#3b82f618;color:#3b82f6;border-color:#3b82f640;">Talent</span>
     
   </div>
 
   <h2 class="sig-title">
-    <a href='https://arxiv.org/abs/2607.20532' target='_blank'>Position: Stop Reactively Patching Your Model Every Time and Start Proactive Test-Driven AI Development <span class='ext'>↗</span></a>
+    <a href='https://techcrunch.com/2026/07/24/prentis-new-ai-lab-co-founded-by-reid-hoffman-mark-pincus-in-talks-to-raise-100m/' target='_blank'>Prentis, new AI lab co-founded by Reid Hoffman, Mark Pincus in talks to raise $100M <span class='ext'>↗</span></a>
   </h2>
 
-  <p class="explanation">A new approach to AI development was proposed, advocating for proactive test-driven development over reactive patching. This approach aims to improve the generalizability of deployed AI systems by focusing on proactive testing and maintenance.</p>
+  <p class="explanation"><span class="entity">Prentis</span>, a new AI lab co-founded by <span class="entity">Reid Hoffman</span> and <span class="entity">Mark Pincus</span>, is in talks to raise <span class="num">$100M</span>. The lab is focused on automating routine computer tasks and believes that AI will soon outpace coding as its biggest use case. This move is a significant strategic development in the AI industry.</p>
 
   <div class="why-block">
     <p class="why-label">Why it matters</p>
-    <p class="why-text">Why it matters: In the context of AI development, proactive test-driven development ensures that AI systems are thoroughly tested and validated before deployment, reducing the risk of errors and improving overall reliability. This approach is crucial because it enables the creation of more robust and trustworthy AI systems that can adapt to changing environments and user needs.</p>
+    <p class="why-text">Why it matters: This investment in <span class="entity">Prentis</span> highlights the growing importance of AI in the tech industry, with major players like <span class="entity">Reid Hoffman</span> and <span class="entity">Mark Pincus</span> backing the lab. The potential for AI to automate routine tasks could significantly impact the job market and the way companies approach coding, making it a crucial development for anyone interested in the future of work and technology.</p>
   </div>
 
-  <div class="pred-links-block"><span class="pred-links-label">Watching</span><div class="pred-link">⏳ <em>By Q3 2026, at least two major cloud vendors will launch production serverless products natively supporting GC-enabled W…</em></div><div class="pred-link">⏳ <em>By late 2026, at least one major foundation model provider will officially integrate dedicated low-resource African lang…</em></div></div>
+  <div class="pred-links-block"><span class="pred-links-label">Watching</span><div class="pred-link">⏳ <em>Localized, open-source AI curriculum repositories will contribute to a 20% increase in regional developer contributions …</em></div></div>
 
   
 
 </article>
 
-<article class="card" style="border-top:3px solid #a855f7;">
+<article class="card" style="border-top:3px solid #22c55e;">
   <div class="card-meta-row">
-    <span class="domain-pill" style="background:#a855f722;border-left:3px solid #a855f7;border-color:#a855f750;">Technology</span>
+    <span class="domain-pill" style="background:#22c55e18;color:#22c55e;border-color:#22c55e40;">Capital</span>
     
   </div>
 
   <h2 class="sig-title">
-    <a href='https://arxiv.org/abs/2607.20517' target='_blank'>Multimodal CoLRAG-TF: Triple-Filtered Retrieval for Complex PDFs <span class='ext'>↗</span></a>
+    <a href='https://techcrunch.com/2026/07/24/sam-altmans-biometric-startup-world-raises-52-5-million-via-crypto-sale/' target='_blank'>Sam Altman’s biometric startup World raises $52.5M via crypto sale <span class='ext'>↗</span></a>
   </h2>
 
-  <p class="explanation">Researchers have developed a new retrieval system called <span class="entity">Multimodal CoLRAG-TF</span> that can handle complex PDFs. This system uses a four-axis fusion architecture to integrate different types of information. It's designed to improve the accuracy of retrieval-augmented generation, which is a technique that uses AI to generate text based on the content of a document.</p>
+  <p class="explanation"><span class="entity">Sam Altman</span>'s biometric startup, <span class="entity">World</span>, has raised <span class="num">$52.<span class="num">5 million</span></span> through a crypto sale. This is a significant funding round for the company, which aims to scan eyeballs and turn them into unique digital identifiers.</p>
 
   <div class="why-block">
     <p class="why-label">Why it matters</p>
-    <p class="why-text">Why it matters: This technology has the potential to revolutionize the way we interact with complex documents, such as PDFs, by making it easier to find and generate relevant information. For example, a doctor could use this system to quickly search for relevant medical research and generate a summary of the key findings, saving time and improving patient care.</p>
+    <p class="why-text">Why it matters: This funding round is significant because it highlights the growing interest in biometric technologies, which have the potential to revolutionize the way we identify and authenticate ourselves online. The success of <span class="entity">World</span>'s crypto sale also underscores the increasing adoption of cryptocurrency as a viable funding option for startups, particularly those in the tech and biotech sectors.</p>
   </div>
-
-  <div class="pred-links-block"><span class="pred-links-label">Watching</span><div class="pred-link">⏳ <em>By Q3 2026, at least two major cloud vendors will launch production serverless products natively supporting GC-enabled W…</em></div><div class="pred-link">⏳ <em>By late 2026, at least one major foundation model provider will officially integrate dedicated low-resource African lang…</em></div></div>
 
   
-
-</article>
-
-<article class="card" style="border-top:3px solid #a855f7;">
-  <div class="card-meta-row">
-    <span class="domain-pill" style="background:#a855f722;border-left:3px solid #a855f7;border-color:#a855f750;">Technology</span>
-    
-  </div>
-
-  <h2 class="sig-title">
-    <a href='https://arxiv.org/abs/2607.20516' target='_blank'>Scaling Closed-Loop Feature Channel Configuration with LLMs <span class='ext'>↗</span></a>
-  </h2>
-
-  <p class="explanation">Scientists have developed a new method for optimizing the performance of large language models. This method uses a technique called closed-loop feature channel configuration, which involves generating executable code and using accuracy feedback to improve the model's performance.</p>
-
-  <div class="why-block">
-    <p class="why-label">Why it matters</p>
-    <p class="why-text">Why it matters: This breakthrough in closed-loop feature channel configuration enables large language models to learn and adapt more efficiently, leading to significant improvements in their accuracy and overall performance. As a result, this technology has the potential to revolutionize various applications, such as chatbots, virtual assistants, and language translation tools, making them more intelligent and user-friendly.</p>
-  </div>
-
-  <div class="pred-links-block"><span class="pred-links-label">Watching</span><div class="pred-link">⏳ <em>By Q3 2026, at least two major cloud vendors will launch production serverless products natively supporting GC-enabled W…</em></div><div class="pred-link">⏳ <em>By late 2026, at least one major foundation model provider will officially integrate dedicated low-resource African lang…</em></div></div>
 
   
 
@@ -495,7 +462,7 @@ details[open] .wchev{transform:rotate(90deg);}
     <summary>
       <p class="eyebrow">Predictions</p>
       <div class="sum-right">
-        <span class="sum-count">6 total</span>
+        <span class="sum-count">20 total</span>
         <span class="sum-chev">›</span>
       </div>
     </summary>
@@ -504,66 +471,220 @@ details[open] .wchev{transform:rotate(90deg);}
 <details class="pred-row">
   <summary class="pred-summary">
     <span class="pred-status" style="color:#f97316;">⏳ STILL WATCHING</span>
+    <span class="pred-text">Localized, open-source AI curriculum repositories will contribute to a 20% incre…</span>
+    <span class="wchev">›</span>
+  </summary>
+  <div class="pred-body">
+    <p class="pred-full">Localized, open-source AI curriculum repositories will contribute to a 20% increase in regional developer contributions to open-weight AI models over the next 12 months.</p>
+    <p class="pred-note">Localized, open-source AI curriculum repositories will contribute to a 20% increase in regional developer contributions to open-weight AI models over the next 12 months.</p>
+  </div>
+</details>
+<details class="pred-row">
+  <summary class="pred-summary">
+    <span class="pred-status" style="color:#f97316;">⏳ STILL WATCHING</span>
+    <span class="pred-text">Major commercial vector database providers will adopt TurboQuant-style quantizat…</span>
+    <span class="wchev">›</span>
+  </summary>
+  <div class="pred-body">
+    <p class="pred-full">Major commercial vector database providers will adopt TurboQuant-style quantization techniques into their core engines within the next 9 months.</p>
+    <p class="pred-note">Major commercial vector database providers will adopt TurboQuant-style quantization techniques into their core engines within the next 9 months.</p>
+  </div>
+</details>
+<details class="pred-row">
+  <summary class="pred-summary">
+    <span class="pred-status" style="color:#f97316;">⏳ STILL WATCHING</span>
+    <span class="pred-text">ECC or similar specialized agent optimization harnesses will be natively integra…</span>
+    <span class="wchev">›</span>
+  </summary>
+  <div class="pred-body">
+    <p class="pred-full">ECC or similar specialized agent optimization harnesses will be natively integrated into mainstream developer IDEs within the next 12 months.</p>
+    <p class="pred-note">ECC or similar specialized agent optimization harnesses will be natively integrated into mainstream developer IDEs within the next 12 months.</p>
+  </div>
+</details>
+<details class="pred-row">
+  <summary class="pred-summary">
+    <span class="pred-status" style="color:#ef4444;">❌ WRONG</span>
+    <span class="pred-text">Anthropic will release interactive cloud-hosted versions of these cookbooks by Q…</span>
+    <span class="wchev">›</span>
+  </summary>
+  <div class="pred-body">
+    <p class="pred-full">Anthropic will release interactive cloud-hosted versions of these cookbooks by Q3 2025.</p>
+    <p class="pred-note">Anthropic will release interactive cloud-hosted versions of these cookbooks by Q3 2025.</p>
+  </div>
+</details>
+<details class="pred-row">
+  <summary class="pred-summary">
+    <span class="pred-status" style="color:#f97316;">⏳ STILL WATCHING</span>
+    <span class="pred-text">Frameworks like superpowers will be incorporated into mainstream developer envir…</span>
+    <span class="wchev">›</span>
+  </summary>
+  <div class="pred-body">
+    <p class="pred-full">Frameworks like superpowers will be incorporated into mainstream developer environments like VS Code within the next 12 months.</p>
+    <p class="pred-note">Frameworks like superpowers will be incorporated into mainstream developer environments like VS Code within the next 12 months.</p>
+  </div>
+</details>
+<details class="pred-row">
+  <summary class="pred-summary">
+    <span class="pred-status" style="color:#f97316;">⏳ STILL WATCHING</span>
+    <span class="pred-text">By December 2026, at least two major open-source foundations will require develo…</span>
+    <span class="wchev">›</span>
+  </summary>
+  <div class="pred-body">
+    <p class="pred-full">By December 2026, at least two major open-source foundations will require developer commits to include automated attestation metadata declaring whether AI tools were used.</p>
+    <p class="pred-note">By December 2026, at least two major open-source foundations will require developer commits to include automated attestation metadata declaring whether AI tools were used.</p>
+  </div>
+</details>
+<details class="pred-row">
+  <summary class="pred-summary">
+    <span class="pred-status" style="color:#f97316;">⏳ STILL WATCHING</span>
+    <span class="pred-text">Buz will release an official benchmark comparison against Bun within 6 months.…</span>
+    <span class="wchev">›</span>
+  </summary>
+  <div class="pred-body">
+    <p class="pred-full">Buz will release an official benchmark comparison against Bun within 6 months.</p>
+    <p class="pred-note">Buz will release an official benchmark comparison against Bun within 6 months.</p>
+  </div>
+</details>
+<details class="pred-row">
+  <summary class="pred-summary">
+    <span class="pred-status" style="color:#f97316;">⏳ STILL WATCHING</span>
+    <span class="pred-text">Skim will reach at least 1,000 GitHub stars within the next 6 months.…</span>
+    <span class="wchev">›</span>
+  </summary>
+  <div class="pred-body">
+    <p class="pred-full">Skim will reach at least 1,000 GitHub stars within the next 6 months.</p>
+    <p class="pred-note">Skim will reach at least 1,000 GitHub stars within the next 6 months.</p>
+  </div>
+</details>
+<details class="pred-row">
+  <summary class="pred-summary">
+    <span class="pred-status" style="color:#f97316;">⏳ STILL WATCHING</span>
+    <span class="pred-text">By late 2025, automated VRAM budgeting tools will be standard features integrate…</span>
+    <span class="wchev">›</span>
+  </summary>
+  <div class="pred-body">
+    <p class="pred-full">By late 2025, automated VRAM budgeting tools will be standard features integrated directly into mainstream local LLM runners like Ollama.</p>
+    <p class="pred-note">By late 2025, automated VRAM budgeting tools will be standard features integrated directly into mainstream local LLM runners like Ollama.</p>
+  </div>
+</details>
+<details class="pred-row">
+  <summary class="pred-summary">
+    <span class="pred-status" style="color:#f97316;">⏳ STILL WATCHING</span>
     <span class="pred-text">By Q3 2026, at least two major cloud vendors will launch production serverless p…</span>
     <span class="wchev">›</span>
   </summary>
   <div class="pred-body">
     <p class="pred-full">By Q3 2026, at least two major cloud vendors will launch production serverless products natively supporting GC-enabled WebAssembly workloads.</p>
-    <p class="pred-note">No information available on cloud vendors launching production serverless products natively supporting GC-enabled WebAssembly workloads.</p>
-  </div>
-</details>
-<details class="pred-row">
-  <summary class="pred-summary">
-    <span class="pred-status" style="color:#f97316;">⏳ STILL WATCHING</span>
-    <span class="pred-text">By Q4 2026, the UK AISI will mandate formal cyber-risk evaluations before non-do…</span>
-    <span class="wchev">›</span>
-  </summary>
-  <div class="pred-body">
-    <p class="pred-full">By Q4 2026, the UK AISI will mandate formal cyber-risk evaluations before non-domestic frontier AI models can be deployed in critical national infrastructure.</p>
-    <p class="pred-note">No information available on the UK AISI mandating formal cyber-risk evaluations before non-domestic frontier AI models can be deployed in critical national infrastructure.</p>
-  </div>
-</details>
-<details class="pred-row">
-  <summary class="pred-summary">
-    <span class="pred-status" style="color:#f97316;">⏳ STILL WATCHING</span>
-    <span class="pred-text">By late 2026, at least one major foundation model provider will officially integ…</span>
-    <span class="wchev">›</span>
-  </summary>
-  <div class="pred-body">
-    <p class="pred-full">By late 2026, at least one major foundation model provider will officially integrate dedicated low-resource African language evaluation benchmarks into its public releases.</p>
-    <p class="pred-note">No information available on major foundation model providers integrating dedicated low-resource African language evaluation benchmarks into their public releases.</p>
+    <p class="pred-note">By Q3 2026, at least two major cloud vendors will launch production serverless products natively supporting GC-enabled WebAssembly workloads.</p>
   </div>
 </details>
 <details class="pred-row">
   <summary class="pred-summary">
     <span class="pred-status" style="color:#f97316;">⏳ WATCHING</span>
-    <span class="pred-text">By Q3 2026, at least two major cloud vendors will launch production serverless p…</span>
+    <span class="pred-text">Localized, open-source AI curriculum repositories will contribute to a 20% incre…</span>
     <span class="wchev">›</span>
   </summary>
   <div class="pred-body">
-    <p class="pred-full">By Q3 2026, at least two major cloud vendors will launch production serverless products natively supporting GC-enabled WebAssembly workloads.</p>
+    <p class="pred-full">Localized, open-source AI curriculum repositories will contribute to a 20% increase in regional developer contributions to open-weight AI models over the next 12 months.</p>
+    <p class="pred-meta">Domain: Talent · Made: 2026-07-25</p>
+  </div>
+</details>
+<details class="pred-row">
+  <summary class="pred-summary">
+    <span class="pred-status" style="color:#f97316;">⏳ WATCHING</span>
+    <span class="pred-text">Major commercial vector database providers will adopt TurboQuant-style quantizat…</span>
+    <span class="wchev">›</span>
+  </summary>
+  <div class="pred-body">
+    <p class="pred-full">Major commercial vector database providers will adopt TurboQuant-style quantization techniques into their core engines within the next 9 months.</p>
     <p class="pred-meta">Domain: Technology · Made: 2026-07-25</p>
   </div>
 </details>
 <details class="pred-row">
   <summary class="pred-summary">
     <span class="pred-status" style="color:#f97316;">⏳ WATCHING</span>
-    <span class="pred-text">By Q4 2026, the UK AISI will mandate formal cyber-risk evaluations before non-do…</span>
+    <span class="pred-text">ECC or similar specialized agent optimization harnesses will be natively integra…</span>
     <span class="wchev">›</span>
   </summary>
   <div class="pred-body">
-    <p class="pred-full">By Q4 2026, the UK AISI will mandate formal cyber-risk evaluations before non-domestic frontier AI models can be deployed in critical national infrastructure.</p>
-    <p class="pred-meta">Domain: Security · Made: 2026-07-25</p>
+    <p class="pred-full">ECC or similar specialized agent optimization harnesses will be natively integrated into mainstream developer IDEs within the next 12 months.</p>
+    <p class="pred-meta">Domain: Technology · Made: 2026-07-25</p>
   </div>
 </details>
 <details class="pred-row">
   <summary class="pred-summary">
     <span class="pred-status" style="color:#f97316;">⏳ WATCHING</span>
-    <span class="pred-text">By late 2026, at least one major foundation model provider will officially integ…</span>
+    <span class="pred-text">Anthropic will release interactive cloud-hosted versions of these cookbooks by Q…</span>
     <span class="wchev">›</span>
   </summary>
   <div class="pred-body">
-    <p class="pred-full">By late 2026, at least one major foundation model provider will officially integrate dedicated low-resource African language evaluation benchmarks into its public releases.</p>
+    <p class="pred-full">Anthropic will release interactive cloud-hosted versions of these cookbooks by Q3 2025.</p>
+    <p class="pred-meta">Domain: Technology · Made: 2026-07-25</p>
+  </div>
+</details>
+<details class="pred-row">
+  <summary class="pred-summary">
+    <span class="pred-status" style="color:#f97316;">⏳ WATCHING</span>
+    <span class="pred-text">Frameworks like superpowers will be incorporated into mainstream developer envir…</span>
+    <span class="wchev">›</span>
+  </summary>
+  <div class="pred-body">
+    <p class="pred-full">Frameworks like superpowers will be incorporated into mainstream developer environments like VS Code within the next 12 months.</p>
+    <p class="pred-meta">Domain: Technology · Made: 2026-07-25</p>
+  </div>
+</details>
+<details class="pred-row">
+  <summary class="pred-summary">
+    <span class="pred-status" style="color:#f97316;">⏳ WATCHING</span>
+    <span class="pred-text">By December 2026, at least two major open-source foundations will require develo…</span>
+    <span class="wchev">›</span>
+  </summary>
+  <div class="pred-body">
+    <p class="pred-full">By December 2026, at least two major open-source foundations will require developer commits to include automated attestation metadata declaring whether AI tools were used.</p>
+    <p class="pred-meta">Domain: Technology · Made: 2026-07-25</p>
+  </div>
+</details>
+<details class="pred-row">
+  <summary class="pred-summary">
+    <span class="pred-status" style="color:#f97316;">⏳ WATCHING</span>
+    <span class="pred-text">Buz will release an official benchmark comparison against Bun within 6 months.…</span>
+    <span class="wchev">›</span>
+  </summary>
+  <div class="pred-body">
+    <p class="pred-full">Buz will release an official benchmark comparison against Bun within 6 months.</p>
+    <p class="pred-meta">Domain: Technology · Made: 2026-07-25</p>
+  </div>
+</details>
+<details class="pred-row">
+  <summary class="pred-summary">
+    <span class="pred-status" style="color:#f97316;">⏳ WATCHING</span>
+    <span class="pred-text">Skim will reach at least 1,000 GitHub stars within the next 6 months.…</span>
+    <span class="wchev">›</span>
+  </summary>
+  <div class="pred-body">
+    <p class="pred-full">Skim will reach at least 1,000 GitHub stars within the next 6 months.</p>
+    <p class="pred-meta">Domain: Technology · Made: 2026-07-25</p>
+  </div>
+</details>
+<details class="pred-row">
+  <summary class="pred-summary">
+    <span class="pred-status" style="color:#f97316;">⏳ WATCHING</span>
+    <span class="pred-text">By late 2025, automated VRAM budgeting tools will be standard features integrate…</span>
+    <span class="wchev">›</span>
+  </summary>
+  <div class="pred-body">
+    <p class="pred-full">By late 2025, automated VRAM budgeting tools will be standard features integrated directly into mainstream local LLM runners like Ollama.</p>
+    <p class="pred-meta">Domain: Technology · Made: 2026-07-25</p>
+  </div>
+</details>
+<details class="pred-row">
+  <summary class="pred-summary">
+    <span class="pred-status" style="color:#f97316;">⏳ WATCHING</span>
+    <span class="pred-text">By Q3 2026, at least two major cloud vendors will launch production serverless p…</span>
+    <span class="wchev">›</span>
+  </summary>
+  <div class="pred-body">
+    <p class="pred-full">By Q3 2026, at least two major cloud vendors will launch production serverless products natively supporting GC-enabled WebAssembly workloads.</p>
     <p class="pred-meta">Domain: Technology · Made: 2026-07-25</p>
   </div>
 </details>
@@ -585,7 +706,7 @@ details[open] .wchev{transform:rotate(90deg);}
 
 <details class="wrow">
   <summary class="wrow-summary">
-    <span class="wdot" style="background:#6a717360;border:1.5px solid #6a7173;"></span>
+    <span class="wdot" style="background:#a2aaad60;border:1.5px solid #a2aaad;"></span>
     <span class="wname" style="color:var(--fg-body);font-weight:500;">Apple</span>
     <span class="wcat">US Big Tech</span>
     <span class="wtag wtag-has">5 signals</span>
@@ -598,10 +719,10 @@ details[open] .wchev{transform:rotate(90deg);}
 
 <details class="wrow">
   <summary class="wrow-summary">
-    <span class="wdot" style="background:#0082fb60;border:1.5px solid #0082fb;"></span>
-    <span class="wname" style="color:var(--fg-body);font-weight:500;">Meta</span>
+    <span class="wdot" style="background:#0082fb;box-shadow:0 0 5px #0082fb80;"></span>
+    <span class="wname" style="color:var(--fg);font-weight:600;">Meta</span>
     <span class="wcat">US Big Tech</span>
-    <span class="wtag wtag-has">5 signals</span>
+    <span class="wtag wtag-today">in today's briefing #2</span>
     <span class="wchev">›</span>
   </summary>
   <div class="wrow-body">
@@ -637,7 +758,7 @@ details[open] .wchev{transform:rotate(90deg);}
 
 <details class="wrow">
   <summary class="wrow-summary">
-    <span class="wdot" style="background:#6a717360;border:1.5px solid #6a7173;"></span>
+    <span class="wdot" style="background:#ff990060;border:1.5px solid #ff9900;"></span>
     <span class="wname" style="color:var(--fg-body);font-weight:500;">Amazon</span>
     <span class="wcat">US Big Tech</span>
     <span class="wtag wtag-has">3 signals</span>
@@ -650,7 +771,7 @@ details[open] .wchev{transform:rotate(90deg);}
 
 <details class="wrow">
   <summary class="wrow-summary">
-    <span class="wdot" style="background:#6a717360;border:1.5px solid #6a7173;"></span>
+    <span class="wdot" style="background:#76b90060;border:1.5px solid #76b900;"></span>
     <span class="wname" style="color:var(--fg-body);font-weight:500;">Nvidia</span>
     <span class="wcat">US Big Tech</span>
     <span class="wtag wtag-has">5 signals</span>
@@ -729,10 +850,10 @@ details[open] .wchev{transform:rotate(90deg);}
 
 <details class="wrow">
   <summary class="wrow-summary">
-    <span class="wdot" style="background:#10a37f60;border:1.5px solid #10a37f;"></span>
-    <span class="wname" style="color:var(--fg-body);font-weight:500;">OpenAI</span>
+    <span class="wdot" style="background:#10a37f;box-shadow:0 0 5px #10a37f80;"></span>
+    <span class="wname" style="color:var(--fg);font-weight:600;">OpenAI</span>
     <span class="wcat">AI / LLM</span>
-    <span class="wtag wtag-has">5 signals</span>
+    <span class="wtag wtag-today">in today's briefing #3</span>
     <span class="wchev">›</span>
   </summary>
   <div class="wrow-body">
@@ -742,7 +863,7 @@ details[open] .wchev{transform:rotate(90deg);}
 
 <details class="wrow">
   <summary class="wrow-summary">
-    <span class="wdot" style="background:#6a717360;border:1.5px solid #6a7173;"></span>
+    <span class="wdot" style="background:#d9775760;border:1.5px solid #d97757;"></span>
     <span class="wname" style="color:var(--fg-body);font-weight:500;">Anthropic</span>
     <span class="wcat">AI / LLM</span>
     <span class="wtag wtag-has">5 signals</span>
@@ -755,7 +876,7 @@ details[open] .wchev{transform:rotate(90deg);}
 
 <details class="wrow">
   <summary class="wrow-summary">
-    <span class="wdot" style="background:#47556960;border:1.5px solid #475569;"></span>
+    <span class="wdot" style="background:#e2e8f060;border:1.5px solid #e2e8f0;"></span>
     <span class="wname" style="color:var(--fg-body);font-weight:500;">xAI</span>
     <span class="wcat">AI / LLM</span>
     <span class="wtag wtag-has">1 signal</span>
@@ -768,7 +889,7 @@ details[open] .wchev{transform:rotate(90deg);}
 
 <details class="wrow">
   <summary class="wrow-summary">
-    <span class="wdot" style="background:#6a717360;border:1.5px solid #6a7173;"></span>
+    <span class="wdot" style="background:#f9731660;border:1.5px solid #f97316;"></span>
     <span class="wname" style="color:var(--fg-body);font-weight:500;">Mistral</span>
     <span class="wcat">AI / LLM</span>
     <span class="wtag wtag-has">1 signal</span>
@@ -807,7 +928,7 @@ details[open] .wchev{transform:rotate(90deg);}
 
 <details class="wrow">
   <summary class="wrow-summary">
-    <span class="wdot" style="background:#6a717360;border:1.5px solid #6a7173;"></span>
+    <span class="wdot" style="background:#ffd21e60;border:1.5px solid #ffd21e;"></span>
     <span class="wname" style="color:var(--fg-body);font-weight:500;">Hugging Face</span>
     <span class="wcat">AI / LLM</span>
     <span class="wtag wtag-has">1 signal</span>
@@ -911,7 +1032,7 @@ details[open] .wchev{transform:rotate(90deg);}
 
 <details class="wrow">
   <summary class="wrow-summary">
-    <span class="wdot" style="background:#4a4a4a60;border:1.5px solid #4a4a4a;"></span>
+    <span class="wdot" style="background:#ffffff60;border:1.5px solid #ffffff;"></span>
     <span class="wname" style="color:var(--fg-body);font-weight:500;">Midjourney</span>
     <span class="wcat">AI / LLM</span>
     <span class="wtag wtag-has">1 signal</span>
@@ -951,7 +1072,7 @@ details[open] .wchev{transform:rotate(90deg);}
 
 <details class="wrow">
   <summary class="wrow-summary">
-    <span class="wdot" style="background:#1a1a1a60;border:1.5px solid #1a1a1a;"></span>
+    <span class="wdot" style="background:#e2e8f060;border:1.5px solid #e2e8f0;"></span>
     <span class="wname" style="color:var(--fg-body);font-weight:500;">Vercel</span>
     <span class="wcat">Cloud / Infra</span>
     <span class="wtag wtag-has">1 signal</span>
@@ -1043,7 +1164,7 @@ details[open] .wchev{transform:rotate(90deg);}
 
 <details class="wrow">
   <summary class="wrow-summary">
-    <span class="wdot" style="background:#24292f;box-shadow:0 0 5px #24292f80;"></span>
+    <span class="wdot" style="background:#e2e8f0;box-shadow:0 0 5px #e2e8f080;"></span>
     <span class="wname" style="color:var(--fg);font-weight:600;">GitHub</span>
     <span class="wcat">DevOps / Platform</span>
     <span class="wtag wtag-today">in today's briefing #1</span>
@@ -1659,7 +1780,7 @@ details[open] .wchev{transform:rotate(90deg);}
 
 <details class="wrow">
   <summary class="wrow-summary">
-    <span class="wdot" style="background:#1a1a1a60;border:1.5px solid #1a1a1a;"></span>
+    <span class="wdot" style="background:#e2e8f060;border:1.5px solid #e2e8f0;"></span>
     <span class="wname" style="color:var(--fg-body);font-weight:500;">Block</span>
     <span class="wcat">Fintech / Crypto</span>
     <span class="wtag wtag-has">1 signal</span>
@@ -1764,10 +1885,10 @@ details[open] .wchev{transform:rotate(90deg);}
 
 <details class="wrow">
   <summary class="wrow-summary">
-    <span class="wdot" style="background:#4a90d960;border:1.5px solid #4a90d9;"></span>
-    <span class="wname" style="color:var(--fg-body);font-weight:500;">SpaceX</span>
+    <span class="wdot" style="background:#4a90d9;box-shadow:0 0 5px #4a90d980;"></span>
+    <span class="wname" style="color:var(--fg);font-weight:600;">SpaceX</span>
     <span class="wcat">Hardware / Transport</span>
-    <span class="wtag wtag-has">5 signals</span>
+    <span class="wtag wtag-today">in today's briefing #4</span>
     <span class="wchev">›</span>
   </summary>
   <div class="wrow-body">
@@ -2620,7 +2741,7 @@ details[open] .wchev{transform:rotate(90deg);}
     <p class="eyebrow">Question to sit with</p>
     <hr>
   </div>
-  <div class="q-box">The increasing reliance on large language models (LLMs) and graph neural networks in various applications is shifting the balance of power from traditional software development to proactive, test-driven AI development.</div>
+  <div class="q-box">How will the growing trend of countries restricting social media for kids impact the future of online platforms and their ability to monetize user data?</div>
 </section>
 
 <section class="section">
@@ -2638,28 +2759,7 @@ details[open] .wchev{transform:rotate(90deg);}
 </section>
 
 <footer class="footer">
-  tech-intel · Saturday, 25 July 2026 · 18:05 · <a href="archive.html">archive</a>
+  tech-intel · Saturday, 25 July 2026 · 17:46 · <a href="archive.html">archive</a>
 </footer>
-
-<button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">🌙</button>
-
-<script>
-(function(){
-  var btn = document.getElementById('themeToggle');
-  var html = document.documentElement;
-  function update(){
-    var dark = html.getAttribute('data-theme') === 'dark';
-    btn.textContent = dark ? '☀️' : '🌙';
-  }
-  update();
-  btn.addEventListener('click', function(){
-    var dark = html.getAttribute('data-theme') === 'dark';
-    var next = dark ? 'light' : 'dark';
-    html.setAttribute('data-theme', next);
-    try{ localStorage.setItem('ti-theme', next); }catch(e){}
-    update();
-  });
-})();
-</script>
 </body>
 </html>

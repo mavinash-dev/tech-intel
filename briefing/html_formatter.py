@@ -30,7 +30,7 @@ COMPANY_BRAND = {
     # ── AI / LLM ─────────────────────────────────────────
     "OpenAI":         {"color": "#10a37f", "cat": "AI / LLM"},
     "Anthropic":      {"color": "#d97757", "cat": "AI / LLM"},
-    "xAI":            {"color": "#e2e8f0", "cat": "AI / LLM"},
+    "xAI":            {"color": "#475569", "cat": "AI / LLM"},
     "Mistral":        {"color": "#f97316", "cat": "AI / LLM"},
     "Cohere":         {"color": "#39b2d5", "cat": "AI / LLM"},
     "Stability AI":   {"color": "#7c3aed", "cat": "AI / LLM"},
@@ -42,11 +42,11 @@ COMPANY_BRAND = {
     "ElevenLabs":     {"color": "#f59e0b", "cat": "AI / LLM"},
     "Cursor":         {"color": "#8b5cf6", "cat": "AI / LLM"},
     "DeepSeek":       {"color": "#4f8ef7", "cat": "AI / LLM"},
-    "Midjourney":     {"color": "#ffffff", "cat": "AI / LLM"},
+    "Midjourney":     {"color": "#4a4a4a", "cat": "AI / LLM"},
     "Replicate":      {"color": "#6366f1", "cat": "AI / LLM"},
     # ── Cloud / Infra ────────────────────────────────────
     "Cloudflare":     {"color": "#f38020", "cat": "Cloud / Infra"},
-    "Vercel":         {"color": "#e2e8f0", "cat": "Cloud / Infra"},
+    "Vercel":         {"color": "#1a1a1a", "cat": "Cloud / Infra"},
     "Netlify":        {"color": "#00c7b7", "cat": "Cloud / Infra"},
     "DigitalOcean":   {"color": "#0080ff", "cat": "Cloud / Infra"},
     "Hetzner":        {"color": "#d50c2d", "cat": "Cloud / Infra"},
@@ -54,7 +54,7 @@ COMPANY_BRAND = {
     "Akamai":         {"color": "#009bde", "cat": "Cloud / Infra"},
     "Equinix":        {"color": "#ed2224", "cat": "Cloud / Infra"},
     # ── DevOps / Platform ────────────────────────────────
-    "GitHub":         {"color": "#e2e8f0", "cat": "DevOps / Platform"},
+    "GitHub":         {"color": "#24292f", "cat": "DevOps / Platform"},
     "GitLab":         {"color": "#e24329", "cat": "DevOps / Platform"},
     "HashiCorp":      {"color": "#844fba", "cat": "DevOps / Platform"},
     "Docker":         {"color": "#2496ed", "cat": "DevOps / Platform"},
@@ -62,7 +62,7 @@ COMPANY_BRAND = {
     "Pulumi":         {"color": "#8a3391", "cat": "DevOps / Platform"},
     "Atlassian":      {"color": "#0052cc", "cat": "DevOps / Platform"},
     "Linear":         {"color": "#5e6ad2", "cat": "DevOps / Platform"},
-    "Notion":         {"color": "#e2e8f0", "cat": "DevOps / Platform"},
+    "Notion":         {"color": "#37352f", "cat": "DevOps / Platform"},
     # ── Observability ────────────────────────────────────
     "Datadog":        {"color": "#632ca6", "cat": "Observability"},
     "Grafana":        {"color": "#f46800", "cat": "Observability"},
@@ -106,7 +106,7 @@ COMPANY_BRAND = {
     "Figma":          {"color": "#1abcfe", "cat": "SaaS / Enterprise"},
     # ── Fintech / Crypto ─────────────────────────────────
     "Coinbase":       {"color": "#0052ff", "cat": "Fintech / Crypto"},
-    "Block":          {"color": "#e2e8f0", "cat": "Fintech / Crypto"},
+    "Block":          {"color": "#1a1a1a", "cat": "Fintech / Crypto"},
     "Robinhood":      {"color": "#00c805", "cat": "Fintech / Crypto"},
     "Plaid":          {"color": "#111111", "cat": "Fintech / Crypto"},
     "Brex":           {"color": "#ff6b35", "cat": "Fintech / Crypto"},
@@ -258,7 +258,7 @@ def _signal_card(i: int, s: dict, why: str, watching_predictions: list = None) -
         if c.lower() in s["title"].lower() or c.lower() in (s.get("entities_json") or "").lower()
     ]
     giant_badges = "".join(
-        f'<span class="giant-badge" style="background:{COMPANY_BRAND[c]["color"]}18;color:{COMPANY_BRAND[c]["color"]};border-color:{COMPANY_BRAND[c]["color"]}50;">{c}</span>'
+        f'<span class="giant-badge" style="background:{COMPANY_BRAND[c]["color"]}22;border-color:{COMPANY_BRAND[c]["color"]}55;">{c}</span>'
         for c in mentioned_giants
     )
 
@@ -281,7 +281,7 @@ def _signal_card(i: int, s: dict, why: str, watching_predictions: list = None) -
         )
         pred_links_html = f'<div class="pred-links-block"><span class="pred-links-label">Watching</span>{items}</div>'
 
-    domain_label = f'<span class="domain-pill" style="background:{color}18;color:{color};border-color:{color}40;">{domain}</span>'
+    domain_label = f'<span class="domain-pill" style="background:{color}22;border-left:3px solid {color};border-color:{color}50;">{domain}</span>'
 
     return f"""
 <article class="card" style="border-top:3px solid {color};">
@@ -308,23 +308,39 @@ def _signal_card(i: int, s: dict, why: str, watching_predictions: list = None) -
 </article>"""
 
 
+def _visible_color(hex_color: str) -> str:
+    """Return the brand color, or a darkened fallback if it's too light for light-mode backgrounds."""
+    try:
+        h = hex_color.lstrip("#")
+        r, g, b = int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16)
+        # relative luminance — anything above 0.55 is too light on cream #fdfcf0
+        lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255
+        if lum > 0.55:
+            return "#6a7173"  # fg-muted — readable in both themes
+    except Exception:
+        pass
+    return hex_color
+
+
 def _watch_row(company: str, top_signal=None, signal_idx: int = 0) -> str:
     brand = COMPANY_BRAND.get(company, {"color": "#6b7280"})
-    c = brand["color"]
+    c = _visible_color(brand["color"])
 
     recent = _company_recent_signals(company, limit=5)
     has_signals = bool(recent)
+    sig_count = len(recent)
+    sig_label = str(sig_count) + (" signals" if sig_count != 1 else " signal")
 
     if top_signal:
         status_dot = f'<span class="wdot" style="background:{c};box-shadow:0 0 5px {c}80;"></span>'
-        name_style = f'color:var(--fg);font-weight:600;'
+        name_style = 'color:var(--fg);font-weight:600;'
         signal_tag = f'<span class="wtag wtag-today">in today\'s briefing #{signal_idx}</span>'
     elif has_signals:
         status_dot = f'<span class="wdot" style="background:{c}60;border:1.5px solid {c};"></span>'
         name_style = 'color:var(--fg-body);font-weight:500;'
-        signal_tag = f'<span class="wtag wtag-has">{len(recent)} signal{"s" if len(recent) != 1 else ""}</span>'
+        signal_tag = f'<span class="wtag wtag-has">{sig_label}</span>'
     else:
-        status_dot = f'<span class="wdot" style="background:var(--border-subtle);border:1.5px solid var(--border-default);"></span>'
+        status_dot = '<span class="wdot" style="background:var(--border-subtle);border:1.5px solid var(--border-default);"></span>'
         name_style = 'color:var(--fg-muted);font-weight:400;'
         signal_tag = '<span class="wtag wtag-none">no data</span>'
 
@@ -450,25 +466,48 @@ def generate_html(signals: list, why_map: dict, question: str,
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Tech Intel · {now_str}</title>
+<script>
+  (function(){{
+    try{{
+      var t = localStorage.getItem('ti-theme');
+      if(t) document.documentElement.setAttribute('data-theme', t);
+    }}catch(e){{}}
+  }})();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* ── Design tokens ── */
+/* ── Design tokens — light (default) ── */
 :root{{
-  --canvas:   #fdfcf0;
-  --surface:  #f1f0e4;
-  --elevated: #fffefa;
+  --canvas:        #fdfcf0;
+  --surface:       #f1f0e4;
+  --elevated:      #fffefa;
   --border-subtle: #e5e4d8;
-  --border-default: #cdc9b8;
-  --fg:       #080f11;
-  --fg-body:  #1a242a;
-  --fg-muted: #6a7173;
-  --green:    #1ce783;
-  --green-tint:#aaf2ce;
-  --blue:     #3d9dff;
-  --ember:    #ff7f4d;
-  --yellow:   #f7d354;
+  --border-default:#cdc9b8;
+  --fg:            #080f11;
+  --fg-body:       #1a242a;
+  --fg-muted:      #6a7173;
+  --pill-text:     #080f11;
+  --green:         #3d9dff;
+  --green-tint:    #bfdbfe;
+  --blue:          #3d9dff;
+  --ember:         #ff7f4d;
+  --toggle-icon:   "🌙";
+}}
+
+/* ── Design tokens — dark ── */
+[data-theme="dark"]{{
+  --canvas:        #080f11;
+  --surface:       #0e1518;
+  --elevated:      #141c20;
+  --border-subtle: #1f272b;
+  --border-default:#2a343a;
+  --fg:            #fdfcf0;
+  --fg-body:       #f1f0e4;
+  --fg-muted:      #888c8d;
+  --pill-text:     #fdfcf0;
+  --toggle-icon:   "☀️";
 }}
 
 *{{box-sizing:border-box;margin:0;padding:0}}
@@ -479,8 +518,19 @@ body{{
   padding:32px 20px 80px;max-width:900px;margin:0 auto;
 }}
 a{{color:var(--fg);text-decoration:underline;text-underline-offset:3px;}}
-a:hover{{color:#1a242a;}}
+a:hover{{opacity:0.75;}}
 hr{{border:none;border-top:1px solid var(--border-subtle);margin:0;}}
+
+/* ── Theme toggle ── */
+.theme-toggle{{
+  position:fixed;bottom:24px;right:20px;
+  width:44px;height:44px;border-radius:50%;
+  background:var(--surface);border:1px solid var(--border-default);
+  cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 8px rgba(0,0,0,0.12);transition:background 0.2s,border-color 0.2s;
+  z-index:100;
+}}
+.theme-toggle:hover{{background:var(--elevated);border-color:var(--fg-muted);}}
 
 /* ── Eyebrow (mono uppercase label) ── */
 .eyebrow{{
@@ -509,26 +559,24 @@ hr{{border:none;border-top:1px solid var(--border-subtle);margin:0;}}
 .section-head{{display:flex;align-items:center;gap:10px;margin-bottom:18px;}}
 .section-head hr{{flex:1;}}
 
-/* ── Signal cards — gradient slab pattern ── */
-.cards-slab{{
-  border-radius:20px;padding:5px;gap:4px;
-  background:linear-gradient(135deg, var(--green-tint) 0%, var(--green) 100%);
-  display:flex;flex-direction:column;
-}}
+/* ── Signal cards — standalone floating ── */
+.cards-slab{{display:flex;flex-direction:column;gap:20px;}}
 .card{{
-  background:var(--elevated);border-radius:15px;
-  padding:28px 28px;color:var(--fg);
+  background:var(--surface);border-radius:16px;
+  padding:28px 30px;color:var(--fg);
+  border:1px solid var(--border-subtle);
 }}
 .card-meta-row{{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px;}}
 .domain-pill{{
   font-family:monospace;font-size:10px;font-weight:500;letter-spacing:0.12em;
   text-transform:uppercase;padding:3px 9px;border-radius:4px;border:1px solid;
+  color:var(--pill-text);
 }}
 .giant-badges{{display:flex;flex-wrap:wrap;gap:5px;}}
-.giant-badge{{font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;border:1px solid;}}
+.giant-badge{{font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;border:1px solid;color:var(--pill-text);}}
 .sig-title{{font-size:clamp(16px,2.5vw,19px);font-weight:600;color:var(--fg);
   margin-bottom:10px;line-height:1.4;letter-spacing:-0.01em;}}
-.sig-title a{{color:var(--fg);text-decoration:underline;text-decoration-color:rgba(8,15,17,0.2);text-underline-offset:3px;}}
+.sig-title a{{color:var(--fg);text-decoration:underline;text-decoration-color:var(--border-default);text-underline-offset:3px;}}
 .sig-title a:hover{{text-decoration-color:var(--fg);}}
 .ext{{font-size:12px;color:var(--fg-muted);}}
 .explanation{{color:var(--fg-body);font-size:15px;margin-bottom:16px;line-height:1.8;}}
@@ -622,8 +670,8 @@ details[open] .sum-chev{{transform:rotate(90deg);}}
   font-family:monospace;font-size:10px;font-weight:500;letter-spacing:0.08em;
   padding:2px 8px;border-radius:4px;flex-shrink:0;text-transform:uppercase;
 }}
-.wtag-today{{background:rgba(28,231,131,0.15);color:#059669;border:1px solid rgba(28,231,131,0.4);}}
-.wtag-has{{background:rgba(61,157,255,0.1);color:#2563eb;border:1px solid rgba(61,157,255,0.3);}}
+.wtag-today{{background:rgba(28,231,131,0.18);color:var(--pill-text);border:1px solid rgba(28,231,131,0.5);}}
+.wtag-has{{background:rgba(61,157,255,0.14);color:var(--pill-text);border:1px solid rgba(61,157,255,0.35);}}
 .wtag-none{{background:var(--surface);color:var(--fg-muted);border:1px solid var(--border-subtle);}}
 .wchev{{font-size:14px;color:var(--fg-muted);flex-shrink:0;transition:transform 0.15s;}}
 details[open] .wchev{{transform:rotate(90deg);}}
@@ -659,11 +707,12 @@ details[open] .wchev{{transform:rotate(90deg);}}
 .footer{{
   margin-top:48px;padding:20px;
   background:var(--fg);border-radius:14px;
-  font-family:monospace;font-size:12px;color:rgba(253,252,240,0.5);
+  font-family:monospace;font-size:12px;color:var(--canvas);
   text-align:center;letter-spacing:0.1em;text-transform:uppercase;
+  opacity:0.85;
 }}
-.footer a{{color:rgba(28,231,131,0.8);text-decoration:none;}}
-.footer a:hover{{color:#1ce783;}}
+.footer a{{color:var(--green);text-decoration:none;opacity:0.8;}}
+.footer a:hover{{opacity:1;}}
 
 /* ── Mobile ── */
 @media(max-width:600px){{
@@ -673,7 +722,7 @@ details[open] .wchev{{transform:rotate(90deg);}}
   .stats{{gap:8px;}}
   .stat{{padding:14px 16px;min-width:0;flex:1;}}
   .stat strong{{font-size:24px;}}
-  .cards-slab{{border-radius:18px;padding:5px;gap:4px;}}
+  .cards-slab{{gap:16px;}}
   .card{{padding:22px 20px;}}
   .explanation{{font-size:15px;line-height:1.8;}}
   .sig-title{{font-size:17px;margin-bottom:12px;}}
@@ -762,5 +811,26 @@ details[open] .wchev{{transform:rotate(90deg);}}
 <footer class="footer">
   tech-intel · {now_str} · <a href="archive.html">archive</a>
 </footer>
+
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">🌙</button>
+
+<script>
+(function(){{
+  var btn = document.getElementById('themeToggle');
+  var html = document.documentElement;
+  function update(){{
+    var dark = html.getAttribute('data-theme') === 'dark';
+    btn.textContent = dark ? '☀️' : '🌙';
+  }}
+  update();
+  btn.addEventListener('click', function(){{
+    var dark = html.getAttribute('data-theme') === 'dark';
+    var next = dark ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    try{{ localStorage.setItem('ti-theme', next); }}catch(e){{}}
+    update();
+  }});
+}})();
+</script>
 </body>
 </html>"""

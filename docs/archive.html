@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Tech Intel · Archive</title>
+<script>
+  try{var _t=localStorage.getItem('ti-theme');if(_t)document.documentElement.setAttribute('data-theme',_t);}catch(_e){}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -12,7 +15,13 @@
   --canvas:#fdfcf0;--surface:#f1f0e4;--elevated:#fffefa;
   --border-subtle:#e5e4d8;--border-default:#cdc9b8;
   --fg:#080f11;--fg-body:#1a242a;--fg-muted:#6a7173;
-  --green:#1ce783;
+  --pill-text:#080f11;--green:#3d9dff;
+}
+[data-theme="dark"]{
+  --canvas:#080f11;--surface:#0e1518;--elevated:#141c20;
+  --border-subtle:#1f272b;--border-default:#2a343a;
+  --fg:#fdfcf0;--fg-body:#f1f0e4;--fg-muted:#888c8d;
+  --pill-text:#fdfcf0;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{
@@ -61,15 +70,22 @@ a:hover{opacity:0.7;}
 .atags{display:flex;flex-wrap:wrap;gap:5px;}
 .atag{
   font-family:monospace;font-size:10px;font-weight:500;letter-spacing:0.06em;
-  padding:2px 8px;border-radius:4px;border:1px solid;
+  padding:2px 8px;border-radius:4px;border:1px solid;color:var(--pill-text);
 }
 .atag-domain{background:transparent;}
 .barrow{font-size:16px;color:var(--green);flex-shrink:0;}
+.theme-toggle{
+  position:fixed;bottom:24px;right:20px;width:44px;height:44px;border-radius:50%;
+  background:var(--surface);border:1px solid var(--border-default);cursor:pointer;
+  font-size:18px;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 8px rgba(0,0,0,0.12);z-index:100;
+}
+.theme-toggle:hover{background:var(--elevated);}
 .footer{
   margin-top:48px;padding:18px;
   background:var(--fg);border-radius:14px;
-  font-family:monospace;font-size:12px;color:rgba(253,252,240,0.45);
-  text-align:center;letter-spacing:0.1em;text-transform:uppercase;
+  font-family:monospace;font-size:12px;color:var(--canvas);
+  text-align:center;letter-spacing:0.1em;text-transform:uppercase;opacity:0.85;
 }
 </style>
 </head>
@@ -80,19 +96,54 @@ a:hover{opacity:0.7;}
   <p class="sub">Every briefing, ever. Updated hourly.</p>
 </header>
 <a class="back" href="index.html">← Latest briefing</a>
-<p class="count">8 briefings stored</p>
+<p class="count">13 briefings stored</p>
 <div class="day-group"><div class="day-label">Saturday, 25 July 2026</div>
+<a class="briefing-link" href="briefings/briefing_20260725_1805.html">
+  <div class="blink-left">
+    <span class="btime">18:05</span>
+    <div class="atags"><span class="atag" style="background:#24292f18;color:#24292f;border-color:#24292f40;">GitHub</span><span class="atag atag-domain" style="color:#a855f7;border-color:#a855f730;">Technology</span></div>
+  </div>
+  <span class="barrow">→</span>
+</a>
+<a class="briefing-link" href="briefings/briefing_20260725_1802.html">
+  <div class="blink-left">
+    <span class="btime">18:02</span>
+    <div class="atags"><span class="atag atag-domain" style="color:#3b82f6;border-color:#3b82f630;">Talent</span><span class="atag atag-domain" style="color:#a855f7;border-color:#a855f730;">Technology</span></div>
+  </div>
+  <span class="barrow">→</span>
+</a>
+<a class="briefing-link" href="briefings/briefing_20260725_1801.html">
+  <div class="blink-left">
+    <span class="btime">18:01</span>
+    <div class="atags"><span class="atag" style="background:#d9775718;color:#d97757;border-color:#d9775740;">Anthropic</span><span class="atag" style="background:#326ce518;color:#326ce5;border-color:#326ce540;">Kubernetes</span><span class="atag" style="background:#276ef118;color:#276ef1;border-color:#276ef140;">Uber</span><span class="atag atag-domain" style="color:#a855f7;border-color:#a855f730;">Technology</span></div>
+  </div>
+  <span class="barrow">→</span>
+</a>
+<a class="briefing-link" href="briefings/briefing_20260725_1758.html">
+  <div class="blink-left">
+    <span class="btime">17:58</span>
+    <div class="atags"><span class="atag" style="background:#24292f18;color:#24292f;border-color:#24292f40;">GitHub</span><span class="atag atag-domain" style="color:#a855f7;border-color:#a855f730;">Technology</span><span class="atag atag-domain" style="color:#94a3b8;border-color:#94a3b830;">Narrative</span></div>
+  </div>
+  <span class="barrow">→</span>
+</a>
+<a class="briefing-link" href="briefings/briefing_20260725_1756.html">
+  <div class="blink-left">
+    <span class="btime">17:56</span>
+    <div class="atags"><span class="atag" style="background:#24292f18;color:#24292f;border-color:#24292f40;">GitHub</span><span class="atag atag-domain" style="color:#a855f7;border-color:#a855f730;">Technology</span><span class="atag atag-domain" style="color:#eab308;border-color:#eab30830;">Security</span><span class="atag atag-domain" style="color:#94a3b8;border-color:#94a3b830;">Narrative</span></div>
+  </div>
+  <span class="barrow">→</span>
+</a>
 <a class="briefing-link" href="briefings/briefing_20260725_1746.html">
   <div class="blink-left">
     <span class="btime">17:46</span>
-    <div class="atags"><span class="atag" style="background:#e2e8f018;color:#e2e8f0;border-color:#e2e8f040;">GitHub</span><span class="atag" style="background:#0082fb18;color:#0082fb;border-color:#0082fb40;">Meta</span><span class="atag" style="background:#10a37f18;color:#10a37f;border-color:#10a37f40;">OpenAI</span><span class="atag" style="background:#4a90d918;color:#4a90d9;border-color:#4a90d940;">SpaceX</span><span class="atag atag-domain" style="color:#a855f7;border-color:#a855f730;">Technology</span><span class="atag atag-domain" style="color:#ef4444;border-color:#ef444430;">Power</span><span class="atag atag-domain" style="color:#3b82f6;border-color:#3b82f630;">Talent</span></div>
+    <div class="atags"><span class="atag" style="background:#24292f18;color:#24292f;border-color:#24292f40;">GitHub</span><span class="atag" style="background:#0082fb18;color:#0082fb;border-color:#0082fb40;">Meta</span><span class="atag" style="background:#10a37f18;color:#10a37f;border-color:#10a37f40;">OpenAI</span><span class="atag" style="background:#4a90d918;color:#4a90d9;border-color:#4a90d940;">SpaceX</span><span class="atag atag-domain" style="color:#a855f7;border-color:#a855f730;">Technology</span><span class="atag atag-domain" style="color:#ef4444;border-color:#ef444430;">Power</span><span class="atag atag-domain" style="color:#3b82f6;border-color:#3b82f630;">Talent</span></div>
   </div>
   <span class="barrow">→</span>
 </a>
 <a class="briefing-link" href="briefings/briefing_20260725_1745.html">
   <div class="blink-left">
     <span class="btime">17:45</span>
-    <div class="atags"><span class="atag" style="background:#00b1d218;color:#00b1d2;border-color:#00b1d240;">Rivian</span><span class="atag" style="background:#0082fb18;color:#0082fb;border-color:#0082fb40;">Meta</span><span class="atag" style="background:#e2e8f018;color:#e2e8f0;border-color:#e2e8f040;">GitHub</span><span class="atag" style="background:#4285f418;color:#4285f4;border-color:#4285f440;">Google</span><span class="atag atag-domain" style="color:#ef4444;border-color:#ef444430;">Power</span><span class="atag atag-domain" style="color:#a855f7;border-color:#a855f730;">Technology</span><span class="atag atag-domain" style="color:#22c55e;border-color:#22c55e30;">Capital</span></div>
+    <div class="atags"><span class="atag" style="background:#00b1d218;color:#00b1d2;border-color:#00b1d240;">Rivian</span><span class="atag" style="background:#0082fb18;color:#0082fb;border-color:#0082fb40;">Meta</span><span class="atag" style="background:#24292f18;color:#24292f;border-color:#24292f40;">GitHub</span><span class="atag" style="background:#4285f418;color:#4285f4;border-color:#4285f440;">Google</span><span class="atag atag-domain" style="color:#ef4444;border-color:#ef444430;">Power</span><span class="atag atag-domain" style="color:#a855f7;border-color:#a855f730;">Technology</span><span class="atag atag-domain" style="color:#22c55e;border-color:#22c55e30;">Capital</span></div>
   </div>
   <span class="barrow">→</span>
 </a>
@@ -138,6 +189,21 @@ a:hover{opacity:0.7;}
   </div>
   <span class="barrow">→</span>
 </a></div>
-<footer class="footer">tech-intel · generated 25 Jul 2026 17:46</footer>
+<footer class="footer">tech-intel · generated 25 Jul 2026 18:05</footer>
+
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">&#127769;</button>
+<script>
+!function(){
+  var b=document.getElementById('themeToggle'),h=document.documentElement;
+  function u(){b.textContent=h.getAttribute('data-theme')==='dark'?'☀️':'🌙';}
+  u();
+  b.onclick=function(){
+    var n=h.getAttribute('data-theme')==='dark'?'light':'dark';
+    h.setAttribute('data-theme',n);
+    try{localStorage.setItem('ti-theme',n);}catch(e){}
+    u();
+  };
+}();
+</script>
 </body>
 </html>

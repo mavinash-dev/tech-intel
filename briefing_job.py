@@ -89,6 +89,8 @@ def _generate_archive():
 
     count = len(briefing_files)
     now_str = datetime.now().strftime("%d %b %Y %H:%M")
+    count_label = str(count) + (" briefings" if count != 1 else " briefing") + " stored"
+    rows_html = "".join(rows)
 
     html = f"""<!DOCTYPE html>
 <html lang="en">
@@ -96,6 +98,9 @@ def _generate_archive():
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Tech Intel · Archive</title>
+<script>
+  try{{var _t=localStorage.getItem('ti-theme');if(_t)document.documentElement.setAttribute('data-theme',_t);}}catch(_e){{}}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -104,7 +109,13 @@ def _generate_archive():
   --canvas:#fdfcf0;--surface:#f1f0e4;--elevated:#fffefa;
   --border-subtle:#e5e4d8;--border-default:#cdc9b8;
   --fg:#080f11;--fg-body:#1a242a;--fg-muted:#6a7173;
-  --green:#1ce783;
+  --pill-text:#080f11;--green:#3d9dff;
+}}
+[data-theme="dark"]{{
+  --canvas:#080f11;--surface:#0e1518;--elevated:#141c20;
+  --border-subtle:#1f272b;--border-default:#2a343a;
+  --fg:#fdfcf0;--fg-body:#f1f0e4;--fg-muted:#888c8d;
+  --pill-text:#fdfcf0;
 }}
 *{{box-sizing:border-box;margin:0;padding:0}}
 body{{
@@ -153,15 +164,22 @@ a:hover{{opacity:0.7;}}
 .atags{{display:flex;flex-wrap:wrap;gap:5px;}}
 .atag{{
   font-family:monospace;font-size:10px;font-weight:500;letter-spacing:0.06em;
-  padding:2px 8px;border-radius:4px;border:1px solid;
+  padding:2px 8px;border-radius:4px;border:1px solid;color:var(--pill-text);
 }}
 .atag-domain{{background:transparent;}}
 .barrow{{font-size:16px;color:var(--green);flex-shrink:0;}}
+.theme-toggle{{
+  position:fixed;bottom:24px;right:20px;width:44px;height:44px;border-radius:50%;
+  background:var(--surface);border:1px solid var(--border-default);cursor:pointer;
+  font-size:18px;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 8px rgba(0,0,0,0.12);z-index:100;
+}}
+.theme-toggle:hover{{background:var(--elevated);}}
 .footer{{
   margin-top:48px;padding:18px;
   background:var(--fg);border-radius:14px;
-  font-family:monospace;font-size:12px;color:rgba(253,252,240,0.45);
-  text-align:center;letter-spacing:0.1em;text-transform:uppercase;
+  font-family:monospace;font-size:12px;color:var(--canvas);
+  text-align:center;letter-spacing:0.1em;text-transform:uppercase;opacity:0.85;
 }}
 </style>
 </head>
@@ -172,11 +190,27 @@ a:hover{{opacity:0.7;}}
   <p class="sub">Every briefing, ever. Updated hourly.</p>
 </header>
 <a class="back" href="index.html">← Latest briefing</a>
-<p class="count">{count} briefing{"s" if count != 1 else ""} stored</p>
-{"".join(rows)}
+<p class="count">{count_label}</p>
+{rows_html}
 <footer class="footer">tech-intel · generated {now_str}</footer>
+
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">&#127769;</button>
+<script>
+!function(){{
+  var b=document.getElementById('themeToggle'),h=document.documentElement;
+  function u(){{b.textContent=h.getAttribute('data-theme')==='dark'?'☀️':'\U0001f319';}}
+  u();
+  b.onclick=function(){{
+    var n=h.getAttribute('data-theme')==='dark'?'light':'dark';
+    h.setAttribute('data-theme',n);
+    try{{localStorage.setItem('ti-theme',n);}}catch(e){{}}
+    u();
+  }};
+}}();
+</script>
 </body>
 </html>"""
+
 
     with open("docs/archive.html", "w") as f:
         f.write(html)

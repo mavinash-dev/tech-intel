@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Tech Intel · Saturday, 25 July 2026 · 18:05</title>
+<title>Tech Intel · Saturday, 25 July 2026 · 18:02</title>
 <script>
   (function(){
     try{
@@ -27,8 +27,8 @@
   --fg-body:       #1a242a;
   --fg-muted:      #6a7173;
   --pill-text:     #080f11;
-  --green:         #3d9dff;
-  --green-tint:    #bfdbfe;
+  --green:         #e11d48;
+  --green-tint:    #fecdd3;
   --blue:          #3d9dff;
   --ember:         #ff7f4d;
   --toggle-icon:   "🌙";
@@ -97,12 +97,15 @@ hr{border:none;border-top:1px solid var(--border-subtle);margin:0;}
 .section-head{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
 .section-head hr{flex:1;}
 
-/* ── Signal cards — standalone floating ── */
-.cards-slab{display:flex;flex-direction:column;gap:20px;}
+/* ── Signal cards — gradient slab pattern ── */
+.cards-slab{
+  border-radius:20px;padding:5px;gap:4px;
+  background:linear-gradient(135deg, var(--green-tint) 0%, var(--green) 100%);
+  display:flex;flex-direction:column;
+}
 .card{
-  background:var(--surface);border-radius:16px;
-  padding:28px 30px;color:var(--fg);
-  border:1px solid var(--border-subtle);
+  background:var(--elevated);border-radius:15px;
+  padding:28px 28px;color:var(--fg);
 }
 .card-meta-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
 .domain-pill{
@@ -260,7 +263,7 @@ details[open] .wchev{transform:rotate(90deg);}
   .stats{gap:8px;}
   .stat{padding:14px 16px;min-width:0;flex:1;}
   .stat strong{font-size:24px;}
-  .cards-slab{gap:16px;}
+  .cards-slab{border-radius:18px;padding:5px;gap:4px;}
   .card{padding:22px 20px;}
   .explanation{font-size:15px;line-height:1.8;}
   .sig-title{font-size:17px;margin-bottom:12px;}
@@ -289,11 +292,11 @@ details[open] .wchev{transform:rotate(90deg);}
 <header class="page-header">
   <p class="eyebrow">Signal Intelligence</p>
   <h1 class="brand">Tech <em>Intel</em></h1>
-  <p class="dateline">Saturday, 25 July 2026 · 18:05</p>
+  <p class="dateline">Saturday, 25 July 2026 · 18:02</p>
   <div class="stats">
     <div class="stat"><strong>8</strong><span>Top signals</span></div>
     <div class="stat"><strong>261</strong><span>Articles scanned</span></div>
-    <div class="stat"><strong>3</strong><span>Predictions resolved</span></div>
+    <div class="stat"><strong>7</strong><span>Predictions resolved</span></div>
   </div>
 </header>
 
@@ -304,21 +307,44 @@ details[open] .wchev{transform:rotate(90deg);}
   </div>
   <div class="cards-slab">
     
-<article class="card" style="border-top:3px solid #a855f7;">
+<article class="card" style="border-top:3px solid #3b82f6;">
   <div class="card-meta-row">
-    <span class="domain-pill" style="background:#a855f722;border-left:3px solid #a855f7;border-color:#a855f750;">Technology</span>
-    <div class='giant-badges'><span class="giant-badge" style="background:#24292f22;border-color:#24292f55;">GitHub</span></div>
+    <span class="domain-pill" style="background:#3b82f622;border-left:3px solid #3b82f6;border-color:#3b82f650;">Talent</span>
+    
   </div>
 
   <h2 class="sig-title">
-    <a href='https://github.com/yorukot/superfile' target='_blank'>[GitHub Trending] yorukot/superfile (Go) <span class='ext'>↗</span></a>
+    <a href='https://www.maths.cam.ac.uk/features/professor-hannah-fry-wins-leelavati-prize' target='_blank'>Hannah Fry Wins the Leelavati Prize in 2026 for Mathematics Outreach <span class='ext'>↗</span></a>
   </h2>
 
-  <p class="explanation">Superfile is a terminal file manager written in Go. It's a modern and pretty file manager that can be used to navigate and manage files in the terminal.</p>
+  <p class="explanation">Mathematician and communicator <span class="entity">Hannah Fry</span> was awarded the <span class="entity">Leelavati Prize</span> for outstanding contributions to public mathematics outreach. The award highlights the role of science communication in inspiring technical education and public discourse around quantitative fields. While notable in academia and public media, the immediate impact on commercial IT remains indirect.</p>
 
   <div class="why-block">
     <p class="why-label">Why it matters</p>
-    <p class="why-text">Why it matters: Having a terminal file manager like Superfile can be beneficial for developers who frequently work with files in the terminal, as it provides a user-friendly interface for navigating and managing files. This can save time and increase productivity, especially for those who are new to the tech ecosystem and may be less familiar with terminal commands.</p>
+    <p class="why-text">Why it matters: The <span class="entity">Leelavati Prize</span> recognizes <span class="entity">Hannah Fry</span>'s efforts to make mathematics more accessible to the general public, which can inspire more people to pursue careers in quantitative fields, potentially leading to a more diverse and skilled workforce in the tech industry. This increased interest in mathematics and science can also drive innovation and advancements in various fields, including commercial IT, by attracting talented individuals who can develop new technologies and solutions.</p>
+  </div>
+
+  
+
+  
+
+</article>
+
+<article class="card" style="border-top:3px solid #a855f7;">
+  <div class="card-meta-row">
+    <span class="domain-pill" style="background:#a855f722;border-left:3px solid #a855f7;border-color:#a855f750;">Technology</span>
+    
+  </div>
+
+  <h2 class="sig-title">
+    <a href='https://dev.to/arshtechpro/unlimited-ocr-parsing-a-40-page-pdf-in-one-pass-without-your-gpu-melting-4mc4' target='_blank'>Unlimited-OCR: Parsing a 40-Page PDF in One Pass Without Your GPU Melting <span class='ext'>↗</span></a>
+  </h2>
+
+  <p class="explanation">An open-source developer introduced <span class="entity">Unlimited-OCR</span>, a technique designed to parse large PDF documents in a single operational step without overloading modern graphics processing units (GPUs). Optical Character Recognition (OCR) extracts readable text from visual document files. Efficient processing routines like this reduce hardware overhead and costs for enterprise data extraction pipelines.</p>
+
+  <div class="why-block">
+    <p class="why-label">Why it matters</p>
+    <p class="why-text">Why it matters: For companies that handle large volumes of documents, <span class="entity">Unlimited-OCR</span> can significantly reduce the time and resources required to extract valuable information from these files, allowing them to process more documents with less equipment. This can lead to cost savings and improved efficiency in data extraction pipelines, making it a valuable tool for businesses and organizations in the tech ecosystem.</p>
   </div>
 
   <div class="pred-links-block"><span class="pred-links-label">Watching</span><div class="pred-link">⏳ <em>By Q3 2026, at least two major cloud vendors will launch production serverless products natively supporting GC-enabled W…</em></div><div class="pred-link">⏳ <em>By late 2026, at least one major foundation model provider will officially integrate dedicated low-resource African lang…</em></div></div>
@@ -334,14 +360,14 @@ details[open] .wchev{transform:rotate(90deg);}
   </div>
 
   <h2 class="sig-title">
-    <a href='https://arxiv.org/abs/2607.20538' target='_blank'>Codec-Gauge: Learning Compression-Friendly Gauges for Transformer KV Caches <span class='ext'>↗</span></a>
+    <a href='https://dev.to/gunnargrosch/sinch-from-the-command-line-numbers-calls-messages-logs-3eg2' target='_blank'>Sinch from the Command Line: Numbers, Calls, Messages, Logs <span class='ext'>↗</span></a>
   </h2>
 
-  <p class="explanation">Researchers introduced <span class="entity">Codec-Gauge</span>, a tool that helps compress data in Transformer KV caches. This can improve the performance of long-context Transformer inference. The tool learns to preserve model behavior by analyzing the channel basis of key/value vectors.</p>
+  <p class="explanation">Communications platform <span class="entity">Sinch</span> detailed its Command Line Interface tool, which allows software developers to interact with telephony APIs directly from their terminal. The tool enables developers to provision phone numbers, send text messages, and inspect live logs without using a web dashboard. Streamlining these developer workflows speeds up the integration of communications capabilities into software products.</p>
 
   <div class="why-block">
     <p class="why-label">Why it matters</p>
-    <p class="why-text">Why it matters: In the context of artificial intelligence and machine learning, Transformer KV caches play a crucial role in processing and storing large amounts of data, which can be a significant bottleneck in model performance. By developing tools like <span class="entity">Codec-Gauge</span> that can compress this data efficiently, researchers can improve the speed and accuracy of AI models, enabling them to tackle more complex tasks and applications.</p>
+    <p class="why-text">Why it matters: This tool is important because it helps software developers work more efficiently by giving them a direct way to interact with <span class="entity">Sinch</span>'s telephony services from their computer terminal, saving them time and effort. This streamlined workflow enables developers to focus on creating innovative software products that integrate communications features, ultimately leading to better user experiences.</p>
   </div>
 
   <div class="pred-links-block"><span class="pred-links-label">Watching</span><div class="pred-link">⏳ <em>By Q3 2026, at least two major cloud vendors will launch production serverless products natively supporting GC-enabled W…</em></div><div class="pred-link">⏳ <em>By late 2026, at least one major foundation model provider will officially integrate dedicated low-resource African lang…</em></div></div>
@@ -357,14 +383,14 @@ details[open] .wchev{transform:rotate(90deg);}
   </div>
 
   <h2 class="sig-title">
-    <a href='https://arxiv.org/abs/2607.20537' target='_blank'>ReliableTableQA:How Much Supervision Does Reliability Annotation Need? <span class='ext'>↗</span></a>
+    <a href='https://dev.to/androve2k/removing-a-photos-background-in-the-browser-with-no-upload-ai-licenses-onnx-models-and-a-1cc0' target='_blank'>Removing a Photo's Background in the Browser, With No Upload: AI Licenses, ONNX Models, and a Frozen Tab <span class='ext'>↗</span></a>
   </h2>
 
-  <p class="explanation">A new framework called <span class="entity">ReliableTableQA</span> was introduced to improve the reliability of tabular QA results. This framework trains a language model to annotate the statistical reliability of computed answers, rather than just determining whether the query is answerable.</p>
+  <p class="explanation">A web developer shared a technical case study on executing AI background removal locally within a web browser using <span class="entity">ONNX</span> models. <span class="entity">ONNX</span> (Open Neural Network Exchange) is an open framework allowing machine learning models to run efficiently across different hardware and runtime environments. The signal demonstrates how local edge AI execution improves privacy by eliminating server uploads, despite client-side browser performance constraints.</p>
 
   <div class="why-block">
     <p class="why-label">Why it matters</p>
-    <p class="why-text">Why it matters: In the context of tabular question-answering (QA), <span class="entity">ReliableTableQA</span> aims to provide more accurate and reliable results by assessing the statistical reliability of computed answers. This is crucial because it can help users trust the information they receive, especially in situations where the answers have a high degree of uncertainty or variability.</p>
+    <p class="why-text">Why it matters: This technology allows for more private and efficient use of AI, as it eliminates the need for uploading sensitive data to servers, which is a significant concern for users who value their online security and data protection. By executing AI locally within the browser, developers can create applications that are more responsive and secure, which is particularly important for applications that handle sensitive or personal information.</p>
   </div>
 
   <div class="pred-links-block"><span class="pred-links-label">Watching</span><div class="pred-link">⏳ <em>By Q3 2026, at least two major cloud vendors will launch production serverless products natively supporting GC-enabled W…</em></div><div class="pred-link">⏳ <em>By late 2026, at least one major foundation model provider will officially integrate dedicated low-resource African lang…</em></div></div>
@@ -380,14 +406,37 @@ details[open] .wchev{transform:rotate(90deg);}
   </div>
 
   <h2 class="sig-title">
-    <a href='https://arxiv.org/abs/2607.20535' target='_blank'>A Graph Neural Network approach to zero-shot Digital Twins <span class='ext'>↗</span></a>
+    <a href='https://dev.to/fissible/i-built-an-eval-harness-to-prove-an-llm-worked-it-proved-the-opposite-327m' target='_blank'>I built an eval harness to prove an LLM worked. It proved the opposite. <span class='ext'>↗</span></a>
   </h2>
 
-  <p class="explanation">A new approach to digital twins was proposed using graph neural networks. This approach allows for zero-shot digital twins that can adapt to changing physical domains or boundary conditions without requiring extensive retraining.</p>
+  <p class="explanation">An engineer detailed their experience building an evaluation harness—an automated testing framework—to measure how reliably a large language model (<span class="entity">LLM</span>) classifies system integration failures. Rather than confirming the model's readiness, the structured tests revealed that the AI performed worse than expected in real-world scenarios. This highlights a broader trend in software development where teams are moving away from subjective AI demos toward rigorous, empirical benchmark testing.</p>
 
   <div class="why-block">
     <p class="why-label">Why it matters</p>
-    <p class="why-text">Why it matters: This new approach to digital twins enables the creation of more flexible and adaptable digital replicas of physical systems, which can be applied to a wide range of industries and applications. By allowing digital twins to learn and adapt without extensive retraining, this technology has the potential to save time, reduce costs, and improve decision-making in fields such as manufacturing, energy, and transportation.</p>
+    <p class="why-text">Why it matters: This situation shows that relying solely on subjective demonstrations of AI capabilities can be misleading, and it's crucial to test AI systems through rigorous, empirical methods to ensure their actual performance. In the tech industry, this shift towards more objective testing methods can help prevent overestimating AI capabilities and lead to more accurate and reliable AI solutions.</p>
+  </div>
+
+  <div class="pred-links-block"><span class="pred-links-label">Watching</span><div class="pred-link">⏳ <em>By Q3 2026, at least two major cloud vendors will launch production serverless products natively supporting GC-enabled W…</em></div><div class="pred-link">⏳ <em>By late 2026, at least one major foundation model provider will officially integrate dedicated low-resource African lang…</em></div></div>
+
+  <p class='prediction'>🔮 By Q4 2025, automated LLM evaluation harnesses will become a mandatory requirement in standard enterprise CI/CD software pipelines for deployed AI models.</p>
+
+</article>
+
+<article class="card" style="border-top:3px solid #a855f7;">
+  <div class="card-meta-row">
+    <span class="domain-pill" style="background:#a855f722;border-left:3px solid #a855f7;border-color:#a855f750;">Technology</span>
+    
+  </div>
+
+  <h2 class="sig-title">
+    <a href='https://dev.to/danilo1/i-turned-a-photo-of-my-handwriting-into-a-real-font-then-open-sourced-the-whole-pipeline-m7m' target='_blank'>I turned a photo of my handwriting into a real font, then open-sourced the whole pipeline <span class='ext'>↗</span></a>
+  </h2>
+
+  <p class="explanation">A person created a font from their handwriting by taking a photo of it and then open-sourcing the process. This shows the potential for creative uses of AI and <span class="entity">image processing</span>.</p>
+
+  <div class="why-block">
+    <p class="why-label">Why it matters</p>
+    <p class="why-text">Why it matters: This innovation showcases the power of combining AI and <span class="entity">image processing</span> to create unique digital products, such as custom fonts, which can be used in various creative applications. By open-sourcing the process, the creator is contributing to the growth of the tech ecosystem and making it easier for others to replicate and build upon this idea.</p>
   </div>
 
   <div class="pred-links-block"><span class="pred-links-label">Watching</span><div class="pred-link">⏳ <em>By Q3 2026, at least two major cloud vendors will launch production serverless products natively supporting GC-enabled W…</em></div><div class="pred-link">⏳ <em>By late 2026, at least one major foundation model provider will officially integrate dedicated low-resource African lang…</em></div></div>
@@ -403,14 +452,14 @@ details[open] .wchev{transform:rotate(90deg);}
   </div>
 
   <h2 class="sig-title">
-    <a href='https://arxiv.org/abs/2607.20533' target='_blank'>Grounding Investor Views: Neural Predicates in the Black-Litterman Model <span class='ext'>↗</span></a>
+    <a href='https://news.crunchbase.com/ai/saas-deep-tech-startup-qa-docter-dell-technologies-capital/' target='_blank'>Dell Technologies Capital: How To Build A Deep-Tech Startup For A Market That Isn’t Ready Yet And Why AI Won’t Kill SaaS <span class='ext'>↗</span></a>
   </h2>
 
-  <p class="explanation">A new method for grounding investor views in the <span class="entity">Black-Litterman model</span> was proposed using neural predicates. This method provides a structured and probabilistic approach to view generation, making portfolio construction more scalable.</p>
+  <p class="explanation"><span class="entity">Daniel Docter</span>, a managing director at <span class="entity">Dell Technologies Capital</span>, discussed how AI is changing the <span class="entity">SaaS</span> industry. He believes that AI won't kill the <span class="entity">SaaS</span> business model, but rather change how companies distribute their products.</p>
 
   <div class="why-block">
     <p class="why-label">Why it matters</p>
-    <p class="why-text">Why it matters: This innovation allows investors to make more informed decisions by incorporating their views in a structured and probabilistic way, which can lead to more accurate and efficient portfolio construction. By making portfolio construction more scalable, this method can help investors and financial institutions manage their assets more effectively, ultimately leading to better investment outcomes.</p>
+    <p class="why-text">Why it matters: The evolution of the <span class="entity">SaaS</span> industry due to AI has significant implications for entrepreneurs and investors, as it may alter the way companies create and distribute their products, potentially opening up new opportunities for innovation and growth. Understanding this shift can help individuals navigate the changing tech landscape and make informed decisions about their investments and business strategies.</p>
   </div>
 
   <div class="pred-links-block"><span class="pred-links-label">Watching</span><div class="pred-link">⏳ <em>By Q3 2026, at least two major cloud vendors will launch production serverless products natively supporting GC-enabled W…</em></div><div class="pred-link">⏳ <em>By late 2026, at least one major foundation model provider will officially integrate dedicated low-resource African lang…</em></div></div>
@@ -426,60 +475,14 @@ details[open] .wchev{transform:rotate(90deg);}
   </div>
 
   <h2 class="sig-title">
-    <a href='https://arxiv.org/abs/2607.20532' target='_blank'>Position: Stop Reactively Patching Your Model Every Time and Start Proactive Test-Driven AI Development <span class='ext'>↗</span></a>
+    <a href='https://dev.to/hannahjwhitfield/automatic-page-layout-is-a-search-problem-10c9' target='_blank'>Automatic Page Layout Is a Search Problem <span class='ext'>↗</span></a>
   </h2>
 
-  <p class="explanation">A new approach to AI development was proposed, advocating for proactive test-driven development over reactive patching. This approach aims to improve the generalizability of deployed AI systems by focusing on proactive testing and maintenance.</p>
+  <p class="explanation">A blog post discusses the challenges of automatic page layout, framing it as a search problem. The author highlights the need for a more systematic approach to layout design. This is a meaningful signal in the world of software development, showcasing a new perspective on a common problem.</p>
 
   <div class="why-block">
     <p class="why-label">Why it matters</p>
-    <p class="why-text">Why it matters: In the context of AI development, proactive test-driven development ensures that AI systems are thoroughly tested and validated before deployment, reducing the risk of errors and improving overall reliability. This approach is crucial because it enables the creation of more robust and trustworthy AI systems that can adapt to changing environments and user needs.</p>
-  </div>
-
-  <div class="pred-links-block"><span class="pred-links-label">Watching</span><div class="pred-link">⏳ <em>By Q3 2026, at least two major cloud vendors will launch production serverless products natively supporting GC-enabled W…</em></div><div class="pred-link">⏳ <em>By late 2026, at least one major foundation model provider will officially integrate dedicated low-resource African lang…</em></div></div>
-
-  
-
-</article>
-
-<article class="card" style="border-top:3px solid #a855f7;">
-  <div class="card-meta-row">
-    <span class="domain-pill" style="background:#a855f722;border-left:3px solid #a855f7;border-color:#a855f750;">Technology</span>
-    
-  </div>
-
-  <h2 class="sig-title">
-    <a href='https://arxiv.org/abs/2607.20517' target='_blank'>Multimodal CoLRAG-TF: Triple-Filtered Retrieval for Complex PDFs <span class='ext'>↗</span></a>
-  </h2>
-
-  <p class="explanation">Researchers have developed a new retrieval system called <span class="entity">Multimodal CoLRAG-TF</span> that can handle complex PDFs. This system uses a four-axis fusion architecture to integrate different types of information. It's designed to improve the accuracy of retrieval-augmented generation, which is a technique that uses AI to generate text based on the content of a document.</p>
-
-  <div class="why-block">
-    <p class="why-label">Why it matters</p>
-    <p class="why-text">Why it matters: This technology has the potential to revolutionize the way we interact with complex documents, such as PDFs, by making it easier to find and generate relevant information. For example, a doctor could use this system to quickly search for relevant medical research and generate a summary of the key findings, saving time and improving patient care.</p>
-  </div>
-
-  <div class="pred-links-block"><span class="pred-links-label">Watching</span><div class="pred-link">⏳ <em>By Q3 2026, at least two major cloud vendors will launch production serverless products natively supporting GC-enabled W…</em></div><div class="pred-link">⏳ <em>By late 2026, at least one major foundation model provider will officially integrate dedicated low-resource African lang…</em></div></div>
-
-  
-
-</article>
-
-<article class="card" style="border-top:3px solid #a855f7;">
-  <div class="card-meta-row">
-    <span class="domain-pill" style="background:#a855f722;border-left:3px solid #a855f7;border-color:#a855f750;">Technology</span>
-    
-  </div>
-
-  <h2 class="sig-title">
-    <a href='https://arxiv.org/abs/2607.20516' target='_blank'>Scaling Closed-Loop Feature Channel Configuration with LLMs <span class='ext'>↗</span></a>
-  </h2>
-
-  <p class="explanation">Scientists have developed a new method for optimizing the performance of large language models. This method uses a technique called closed-loop feature channel configuration, which involves generating executable code and using accuracy feedback to improve the model's performance.</p>
-
-  <div class="why-block">
-    <p class="why-label">Why it matters</p>
-    <p class="why-text">Why it matters: This breakthrough in closed-loop feature channel configuration enables large language models to learn and adapt more efficiently, leading to significant improvements in their accuracy and overall performance. As a result, this technology has the potential to revolutionize various applications, such as chatbots, virtual assistants, and language translation tools, making them more intelligent and user-friendly.</p>
+    <p class="why-text">Why it matters: This signal highlights the importance of innovative thinking in software development, demonstrating how a fresh perspective can lead to new solutions for long-standing problems. By framing automatic page layout as a search problem, the author encourages developers to adopt a more structured and efficient approach to design, which can have a significant impact on the quality and user experience of software applications.</p>
   </div>
 
   <div class="pred-links-block"><span class="pred-links-label">Watching</span><div class="pred-link">⏳ <em>By Q3 2026, at least two major cloud vendors will launch production serverless products natively supporting GC-enabled W…</em></div><div class="pred-link">⏳ <em>By late 2026, at least one major foundation model provider will officially integrate dedicated low-resource African lang…</em></div></div>
@@ -495,7 +498,7 @@ details[open] .wchev{transform:rotate(90deg);}
     <summary>
       <p class="eyebrow">Predictions</p>
       <div class="sum-right">
-        <span class="sum-count">6 total</span>
+        <span class="sum-count">14 total</span>
         <span class="sum-chev">›</span>
       </div>
     </summary>
@@ -509,7 +512,7 @@ details[open] .wchev{transform:rotate(90deg);}
   </summary>
   <div class="pred-body">
     <p class="pred-full">By Q3 2026, at least two major cloud vendors will launch production serverless products natively supporting GC-enabled WebAssembly workloads.</p>
-    <p class="pred-note">No information available on cloud vendors launching production serverless products natively supporting GC-enabled WebAssembly workloads.</p>
+    <p class="pred-note">No information available on major cloud vendors launching production serverless products natively supporting GC-enabled WebAssembly workloads.</p>
   </div>
 </details>
 <details class="pred-row">
@@ -525,6 +528,17 @@ details[open] .wchev{transform:rotate(90deg);}
 </details>
 <details class="pred-row">
   <summary class="pred-summary">
+    <span class="pred-status" style="color:#ef4444;">❌ WRONG</span>
+    <span class="pred-text">NIST will establish a dedicated standardized framework for evaluating AI agent t…</span>
+    <span class="wchev">›</span>
+  </summary>
+  <div class="pred-body">
+    <p class="pred-full">NIST will establish a dedicated standardized framework for evaluating AI agent tool-use accuracy by the end of 2025.</p>
+    <p class="pred-note">NIST has not established a dedicated standardized framework for evaluating AI agent tool-use accuracy by the end of 2025.</p>
+  </div>
+</details>
+<details class="pred-row">
+  <summary class="pred-summary">
     <span class="pred-status" style="color:#f97316;">⏳ STILL WATCHING</span>
     <span class="pred-text">By late 2026, at least one major foundation model provider will officially integ…</span>
     <span class="wchev">›</span>
@@ -532,6 +546,39 @@ details[open] .wchev{transform:rotate(90deg);}
   <div class="pred-body">
     <p class="pred-full">By late 2026, at least one major foundation model provider will officially integrate dedicated low-resource African language evaluation benchmarks into its public releases.</p>
     <p class="pred-note">No information available on major foundation model providers integrating dedicated low-resource African language evaluation benchmarks into their public releases.</p>
+  </div>
+</details>
+<details class="pred-row">
+  <summary class="pred-summary">
+    <span class="pred-status" style="color:#22c55e;">✅ CONFIRMED</span>
+    <span class="pred-text">By mid-2026, at least three major universities will officially discontinue the u…</span>
+    <span class="wchev">›</span>
+  </summary>
+  <div class="pred-body">
+    <p class="pred-full">By mid-2026, at least three major universities will officially discontinue the use of automated AI text detectors due to accuracy concerns.</p>
+    <p class="pred-note">At least three major universities have officially discontinued the use of automated AI text detectors due to accuracy concerns.</p>
+  </div>
+</details>
+<details class="pred-row">
+  <summary class="pred-summary">
+    <span class="pred-status" style="color:#ef4444;">❌ WRONG</span>
+    <span class="pred-text">By late 2025, major AI agent frameworks will integrate centralized error-sharing…</span>
+    <span class="wchev">›</span>
+  </summary>
+  <div class="pred-body">
+    <p class="pred-full">By late 2025, major AI agent frameworks will integrate centralized error-sharing mechanisms to reduce runtime crashes.</p>
+    <p class="pred-note">Major AI agent frameworks have not integrated centralized error-sharing mechanisms to reduce runtime crashes by late 2025.</p>
+  </div>
+</details>
+<details class="pred-row">
+  <summary class="pred-summary">
+    <span class="pred-status" style="color:#22c55e;">✅ CONFIRMED</span>
+    <span class="pred-text">Major text-to-speech AI platforms will shift toward prosody-focused fine-tuning …</span>
+    <span class="wchev">›</span>
+  </summary>
+  <div class="pred-body">
+    <p class="pred-full">Major text-to-speech AI platforms will shift toward prosody-focused fine-tuning benchmarks over dataset length by Q3 2025.</p>
+    <p class="pred-note">Major text-to-speech AI platforms have shifted toward prosody-focused fine-tuning benchmarks over dataset length.</p>
   </div>
 </details>
 <details class="pred-row">
@@ -559,11 +606,55 @@ details[open] .wchev{transform:rotate(90deg);}
 <details class="pred-row">
   <summary class="pred-summary">
     <span class="pred-status" style="color:#f97316;">⏳ WATCHING</span>
+    <span class="pred-text">NIST will establish a dedicated standardized framework for evaluating AI agent t…</span>
+    <span class="wchev">›</span>
+  </summary>
+  <div class="pred-body">
+    <p class="pred-full">NIST will establish a dedicated standardized framework for evaluating AI agent tool-use accuracy by the end of 2025.</p>
+    <p class="pred-meta">Domain: Security · Made: 2026-07-25</p>
+  </div>
+</details>
+<details class="pred-row">
+  <summary class="pred-summary">
+    <span class="pred-status" style="color:#f97316;">⏳ WATCHING</span>
     <span class="pred-text">By late 2026, at least one major foundation model provider will officially integ…</span>
     <span class="wchev">›</span>
   </summary>
   <div class="pred-body">
     <p class="pred-full">By late 2026, at least one major foundation model provider will officially integrate dedicated low-resource African language evaluation benchmarks into its public releases.</p>
+    <p class="pred-meta">Domain: Technology · Made: 2026-07-25</p>
+  </div>
+</details>
+<details class="pred-row">
+  <summary class="pred-summary">
+    <span class="pred-status" style="color:#f97316;">⏳ WATCHING</span>
+    <span class="pred-text">By mid-2026, at least three major universities will officially discontinue the u…</span>
+    <span class="wchev">›</span>
+  </summary>
+  <div class="pred-body">
+    <p class="pred-full">By mid-2026, at least three major universities will officially discontinue the use of automated AI text detectors due to accuracy concerns.</p>
+    <p class="pred-meta">Domain: Narrative · Made: 2026-07-25</p>
+  </div>
+</details>
+<details class="pred-row">
+  <summary class="pred-summary">
+    <span class="pred-status" style="color:#f97316;">⏳ WATCHING</span>
+    <span class="pred-text">By late 2025, major AI agent frameworks will integrate centralized error-sharing…</span>
+    <span class="wchev">›</span>
+  </summary>
+  <div class="pred-body">
+    <p class="pred-full">By late 2025, major AI agent frameworks will integrate centralized error-sharing mechanisms to reduce runtime crashes.</p>
+    <p class="pred-meta">Domain: Technology · Made: 2026-07-25</p>
+  </div>
+</details>
+<details class="pred-row">
+  <summary class="pred-summary">
+    <span class="pred-status" style="color:#f97316;">⏳ WATCHING</span>
+    <span class="pred-text">Major text-to-speech AI platforms will shift toward prosody-focused fine-tuning …</span>
+    <span class="wchev">›</span>
+  </summary>
+  <div class="pred-body">
+    <p class="pred-full">Major text-to-speech AI platforms will shift toward prosody-focused fine-tuning benchmarks over dataset length by Q3 2025.</p>
     <p class="pred-meta">Domain: Technology · Made: 2026-07-25</p>
   </div>
 </details>
@@ -1043,10 +1134,10 @@ details[open] .wchev{transform:rotate(90deg);}
 
 <details class="wrow">
   <summary class="wrow-summary">
-    <span class="wdot" style="background:#24292f;box-shadow:0 0 5px #24292f80;"></span>
-    <span class="wname" style="color:var(--fg);font-weight:600;">GitHub</span>
+    <span class="wdot" style="background:#24292f60;border:1.5px solid #24292f;"></span>
+    <span class="wname" style="color:var(--fg-body);font-weight:500;">GitHub</span>
     <span class="wcat">DevOps / Platform</span>
-    <span class="wtag wtag-today">in today's briefing #1</span>
+    <span class="wtag wtag-has">5 signals</span>
     <span class="wchev">›</span>
   </summary>
   <div class="wrow-body">
@@ -2620,7 +2711,7 @@ details[open] .wchev{transform:rotate(90deg);}
     <p class="eyebrow">Question to sit with</p>
     <hr>
   </div>
-  <div class="q-box">The increasing reliance on large language models (LLMs) and graph neural networks in various applications is shifting the balance of power from traditional software development to proactive, test-driven AI development.</div>
+  <div class="q-box">The shift towards AI-powered tools and models is democratizing access to previously exclusive technologies, such as font creation and background removal, and may ultimately disrupt traditional SaaS business models.</div>
 </section>
 
 <section class="section">
@@ -2638,7 +2729,7 @@ details[open] .wchev{transform:rotate(90deg);}
 </section>
 
 <footer class="footer">
-  tech-intel · Saturday, 25 July 2026 · 18:05 · <a href="archive.html">archive</a>
+  tech-intel · Saturday, 25 July 2026 · 18:02 · <a href="archive.html">archive</a>
 </footer>
 
 <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">🌙</button>

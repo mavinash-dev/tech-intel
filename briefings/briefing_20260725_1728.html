@@ -1,0 +1,2629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Tech Intel · Saturday, 25 July 2026 · 17:28</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:#f8f9fa;color:#1f2937;
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+  font-size:16px;line-height:1.7;
+  padding:24px 20px 64px;max-width:900px;margin:0 auto;
+}
+a{color:#4f46e5;text-decoration:underline;text-underline-offset:3px;}
+a:hover{color:#4338ca;}
+
+/* ── Header ── */
+.header{padding:28px 0 20px;border-bottom:2px solid #e5e7eb;margin-bottom:28px;}
+.eyebrow{font-size:11px;letter-spacing:3px;color:#9ca3af;text-transform:uppercase;margin-bottom:8px;}
+.brand{font-size:clamp(26px,4vw,34px);font-weight:800;color:#111827;letter-spacing:-0.5px;}
+.brand em{color:#4f46e5;font-style:normal;}
+.dateline{font-size:13px;color:#6b7280;margin-top:6px;}
+.stats{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;}
+.stat{background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:10px 16px;min-width:90px;box-shadow:0 1px 3px rgba(0,0,0,0.06);}
+.stat strong{font-size:clamp(20px,3vw,24px);font-weight:800;color:#111827;display:block;line-height:1.2;}
+.stat span{font-size:11px;color:#9ca3af;}
+
+/* ── Section ── */
+.section{margin-bottom:36px;}
+.sec-title{font-size:11px;letter-spacing:3px;color:#9ca3af;text-transform:uppercase;font-weight:700;
+  margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid #e5e7eb;}
+
+/* ── Signal card ── */
+.card{border-radius:12px;padding:20px 22px;margin-bottom:14px;border:1px solid #e5e7eb;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,0.05);}
+.giant-badges{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;}
+.giant-badge{font-size:10px;font-weight:700;letter-spacing:0.5px;padding:2px 9px;border-radius:4px;border:1px solid;background:transparent;}
+.pred-links-block{margin:12px 0;padding:10px 14px;background:#f3f4f6;border-radius:6px;border-left:3px solid #4f46e5;}
+.pred-links-label{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#4f46e5;display:block;margin-bottom:6px;}
+.pred-link{font-size:13px;color:#6b7280;margin-top:4px;}
+.sig-title{font-size:clamp(16px,2.5vw,18px);font-weight:700;color:#111827;margin-bottom:10px;line-height:1.4;}
+.sig-title a{color:#111827;text-decoration:underline;text-decoration-color:#11182720;text-underline-offset:3px;}
+.sig-title a:hover{color:#4f46e5;text-decoration-color:#4f46e5;}
+.ext{font-size:12px;color:#9ca3af;}
+.explanation{color:#374151;font-size:15px;margin-bottom:12px;line-height:1.7;}
+.entity{color:#4f46e5;font-weight:600;}
+.num{color:#059669;font-weight:700;}
+.why-block{margin:12px 0;padding:12px 14px;background:#faf5ff;border-radius:6px;border-left:3px solid #f97316;}
+.why-heading{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;
+  color:#f97316;display:block;margin-bottom:6px;}
+.why-text{font-size:14px;color:#374151;line-height:1.65;}
+.prediction{font-size:14px;color:#6b7280;font-style:italic;
+  margin-top:12px;padding-top:12px;border-top:1px solid #e5e7eb;}
+
+/* ── Collapsible section wrapper ── */
+.section-accordion{margin-bottom:36px;}
+.section-accordion > details{border:1px solid #e5e7eb;border-radius:10px;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,0.05);}
+.section-accordion > details > summary{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 18px;cursor:pointer;list-style:none;user-select:none;font-weight:700;
+  font-size:11px;letter-spacing:3px;color:#9ca3af;text-transform:uppercase;
+}
+.section-accordion > details > summary::-webkit-details-marker{display:none;}
+.section-accordion > details > summary:hover{background:#f9fafb;border-radius:10px;}
+.section-accordion > details[open] > summary{border-bottom:1px solid #e5e7eb;border-radius:10px 10px 0 0;}
+.section-accordion-body{padding:16px 18px;}
+.sum-right{display:flex;align-items:center;gap:10px;}
+.sum-count{font-size:12px;color:#d1d5db;font-weight:600;letter-spacing:0;text-transform:none;}
+.sum-chev{font-size:16px;color:#d1d5db;transition:transform 0.12s;}
+details[open] .sum-chev{transform:rotate(90deg);}
+
+/* ── Predictions rows ── */
+.pred-row{border-bottom:1px solid #f3f4f6;}
+.pred-row:last-child{border-bottom:none;}
+.pred-summary{
+  display:flex;align-items:center;gap:10px;
+  padding:11px 6px;cursor:pointer;list-style:none;user-select:none;
+}
+.pred-summary::-webkit-details-marker{display:none;}
+.pred-status{font-size:10px;font-weight:800;letter-spacing:1px;flex-shrink:0;width:100px;}
+.pred-text{font-size:14px;color:#6b7280;flex:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+.pred-body{padding:8px 0 14px 28px;}
+.pred-full{font-size:15px;color:#374151;line-height:1.6;}
+.pred-note{font-size:13px;color:#6b7280;margin-top:6px;}
+.pred-meta{font-size:11px;color:#9ca3af;margin-top:6px;}
+
+/* ── Company watch rows ── */
+.wcat-header{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#9ca3af;
+  padding:14px 0 6px;border-bottom:1px solid #e5e7eb;margin-bottom:2px;font-weight:700;}
+.wrow{border-bottom:1px solid #f3f4f6;}
+.wrow:last-child{border-bottom:none;}
+.wrow-summary{
+  display:flex;align-items:center;gap:8px;
+  padding:9px 6px;cursor:pointer;list-style:none;user-select:none;
+}
+.wrow-summary::-webkit-details-marker{display:none;}
+.wrow-summary:hover .wname{color:#111827 !important;}
+.wdot{width:8px;height:8px;border-radius:50%;flex-shrink:0;background:transparent;}
+.wname{font-size:14px;flex-shrink:0;min-width:120px;color:#374151;}
+.wcat{font-size:11px;color:#d1d5db;flex:1;}
+.wref{font-size:10px;color:#4f46e5;margin-left:auto;flex-shrink:0;}
+.wchev{font-size:14px;color:#d1d5db;flex-shrink:0;transition:transform 0.12s;}
+details[open] .wchev{transform:rotate(90deg);}
+.wrow-body{padding:6px 0 12px 24px;}
+.wlinks{list-style:none;}
+.wlinks li{padding:3px 0;border-bottom:1px solid #f3f4f6;}
+.wlinks li:last-child{border-bottom:none;}
+.wlink{font-size:13px;color:#6b7280;text-decoration:none;display:block;line-height:1.5;}
+.wlink:hover{color:#4f46e5;}
+.wno-data{font-size:12px;color:#d1d5db;}
+
+/* ── Question ── */
+.q-box{
+  background:#fff;border:1px solid #c7d2fe;
+  border-left:4px solid #4f46e5;border-radius:0 10px 10px 0;
+  padding:18px 22px;font-size:clamp(15px,2.2vw,17px);font-style:italic;
+  color:#4338ca;line-height:1.7;box-shadow:0 1px 3px rgba(0,0,0,0.05);
+}
+
+/* ── Archive card ── */
+.archive-card{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 20px;background:#fff;border:1px solid #e5e7eb;
+  border-radius:10px;text-decoration:none;transition:border-color 0.15s;box-shadow:0 1px 3px rgba(0,0,0,0.05);
+}
+.archive-card:hover{border-color:#4f46e5;}
+.archive-card-title{font-size:16px;font-weight:700;color:#111827;}
+.archive-card-sub{font-size:13px;color:#6b7280;margin-top:3px;}
+.archive-card-arrow{font-size:20px;color:#4f46e5;}
+
+/* ── Footer ── */
+.footer{margin-top:40px;padding-top:20px;border-top:1px solid #e5e7eb;
+  font-size:12px;color:#9ca3af;text-align:center;letter-spacing:0.5px;}
+
+/* ── Mobile ── */
+@media(max-width:480px){
+  body{padding:16px 14px 48px;font-size:15px;}
+  .stats{gap:8px;}
+  .stat{padding:8px 12px;min-width:80px;}
+  .card{padding:16px;}
+  .wname{min-width:100px;}
+  .pred-status{width:85px;}
+  .explanation{font-size:14px;}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="eyebrow">Signal Intelligence</div>
+  <div class="brand">Tech <em>Intel</em></div>
+  <div class="dateline">Saturday, 25 July 2026 · 17:28</div>
+  <div class="stats">
+    <div class="stat"><strong>8</strong><span>Surfaced</span></div>
+    <div class="stat"><strong>260</strong><span>Ingested (24h)</span></div>
+    <div class="stat"><strong>155</strong><span>Tracked</span></div>
+    <div class="stat"><strong>10</strong><span>Resolved</span></div>
+  </div>
+</div>
+
+<section class="section">
+  <h3 class="sec-title">Top Signals</h3>
+  
+<div class="card" style="border-left:4px solid #a855f7; background:linear-gradient(135deg,#a855f708 0%,#0f0f18 60%);">
+
+  <div class='giant-badges'><span class="giant-badge" style="color:#e2e8f0;border-color:#e2e8f040;">GitHub</span></div>
+
+  <h2 class="sig-title">
+    <a href='https://github.com/Automattic/harper' target='_blank'>[GitHub Trending] Automattic/harper (Rust) <span class='ext'>↗</span></a>
+  </h2>
+
+  <p class="explanation"><span class="entity">Automattic</span> has released an open-source Rust project called <span class="entity">Harper</span>, a privacy-first grammar checker. This is a notable development in the tech space, particularly for those interested in Rust and open-source projects.</p>
+
+  <div class="why-block">
+    <span class="why-heading">Why it matters</span>
+    <p class="why-text">Why it matters: <span class="entity">Harper</span>'s release highlights the growing adoption of Rust, a programming language known for its performance and security features, which could lead to more opportunities for developers interested in this field. This open-source project also demonstrates <span class="entity">Automattic</span>'s commitment to providing tools that prioritize user privacy, setting a precedent for other companies to follow in the tech industry.</p>
+  </div>
+
+  <div class="pred-links-block"><span class="pred-links-label">Watching prediction</span><div class="pred-link">⏳ <em>Script-specific token optimization methods will be integrated into major global open-source LLM tokenizers by Q4 2025 to…</em></div><div class="pred-link">⏳ <em>Palmier-pro will integrate direct API support for real-time video generation models like Sora or Runway Gen-3 by the end…</em></div></div>
+
+  
+
+</div>
+
+<div class="card" style="border-left:4px solid #ef4444; background:linear-gradient(135deg,#ef444408 0%,#0f0f18 60%);">
+
+  
+
+  <h2 class="sig-title">
+    <a href='https://www.ycombinator.com/blog/adding-canada-back/' target='_blank'>Adding Canada Back to Our List of Accepted Countries of Incorporation <span class='ext'>↗</span></a>
+  </h2>
+
+  <p class="explanation">YC has added Canada back to its list of accepted countries of incorporation, responding to feedback from Canadian founders in their network.</p>
+
+  <div class="why-block">
+    <span class="why-heading">Why it matters</span>
+    <p class="why-text">Why it matters: This change allows Canadian founders to more easily apply to YC's startup accelerator program, potentially giving them access to valuable resources, mentorship, and funding opportunities that can help their businesses grow. By accepting Canadian companies, YC is also expanding its global reach and diversity, which can lead to new ideas, perspectives, and partnerships that benefit the entire tech ecosystem.</p>
+  </div>
+
+  
+
+  
+
+</div>
+
+<div class="card" style="border-left:4px solid #f97316; background:linear-gradient(135deg,#f9731608 0%,#0f0f18 60%);">
+
+  
+
+  <h2 class="sig-title">
+    <a href='https://dev.to/nolanvale/the-trade-offs-of-building-an-internal-platform-team-1l40' target='_blank'>The Trade-Offs of Building an Internal Platform Team <span class='ext'>↗</span></a>
+  </h2>
+
+  <p class="explanation">An architectural report breaks down the organizational and technical trade-offs of building dedicated internal platform teams. Platform engineering involves creating standardized tools and self-service infrastructure to streamline developer workflows and reduce operational friction. Understanding these dynamics helps engineering leaders balance developer productivity against organizational headcount costs.</p>
+
+  <div class="why-block">
+    <span class="why-heading">Why it matters</span>
+    <p class="why-text">Why it matters: In the tech industry, companies often face a dilemma between investing in internal teams to improve developer efficiency and managing the costs associated with maintaining those teams. Understanding the trade-offs between these two factors is crucial for engineering leaders to make informed decisions about resource allocation and prioritize the growth of their organization.</p>
+  </div>
+
+  
+
+  
+
+</div>
+
+<div class="card" style="border-left:4px solid #3b82f6; background:linear-gradient(135deg,#3b82f608 0%,#0f0f18 60%);">
+
+  
+
+  <h2 class="sig-title">
+    <a href='https://dev.to/xulingfeng/the-person-who-fixed-the-bugs-just-vanished-34gm' target='_blank'>The Person Who Fixed the Bugs Just Vanished <span class='ext'>↗</span></a>
+  </h2>
+
+  <p class="explanation">A key team member working on a project has left unexpectedly. This could impact the project's progress and overall success. <span class="entity">Upper management</span> is likely scrambling to find a replacement or adjust the project's timeline.</p>
+
+  <div class="why-block">
+    <span class="why-heading">Why it matters</span>
+    <p class="why-text">Why it matters: In a tech project, a key team member leaving unexpectedly can cause significant disruptions and delays, affecting the project's overall quality and timeline. This can be especially challenging for new team members who may struggle to adjust to the loss of a crucial team member and the subsequent changes to the project's scope and goals.</p>
+  </div>
+
+  <div class="pred-links-block"><span class="pred-links-label">Watching prediction</span><div class="pred-link">⏳ <em>Localized, open-source AI curriculum repositories will contribute to a 20% increase in regional developer contributions …</em></div></div>
+
+  
+
+</div>
+
+<div class="card" style="border-left:4px solid #3b82f6; background:linear-gradient(135deg,#3b82f608 0%,#0f0f18 60%);">
+
+  
+
+  <h2 class="sig-title">
+    <a href='https://news.crunchbase.com/ai/biggest-talent-challenge-resilience-vaidya-crafting/' target='_blank'>The Biggest AI Talent Challenge Is Resilience, Not Speed <span class='ext'>↗</span></a>
+  </h2>
+
+  <p class="explanation">Engineering leaders should focus on building adaptable, vendor-agnostic infrastructure to pair <span class="entity">AI agents</span> with human teams. This allows enterprises to safely switch between top-tier and cost-free <span class="entity">open-source models</span> as the industry evolves.</p>
+
+  <div class="why-block">
+    <span class="why-heading">Why it matters</span>
+    <p class="why-text">Why it matters: In the rapidly changing AI landscape, companies need to be able to quickly adapt to new technologies and models without being locked into expensive or outdated solutions. By focusing on building adaptable infrastructure, businesses can stay ahead of the curve and make the most of emerging AI innovations.</p>
+  </div>
+
+  <div class="pred-links-block"><span class="pred-links-label">Watching prediction</span><div class="pred-link">⏳ <em>Localized, open-source AI curriculum repositories will contribute to a 20% increase in regional developer contributions …</em></div></div>
+
+  
+
+</div>
+
+<div class="card" style="border-left:4px solid #94a3b8; background:linear-gradient(135deg,#94a3b808 0%,#0f0f18 60%);">
+
+  
+
+  <h2 class="sig-title">
+    <a href='https://news.crunchbase.com/fintech/ai-wave-banking-innovation-morris-qed/' target='_blank'>This Time Is Different: Why AI Is Unlike Any Wave I Have Seen In 40 Years Of Financial Services <span class='ext'>↗</span></a>
+  </h2>
+
+  <p class="explanation"><span class="entity">Nigel Morris</span>, a guest columnist at <span class="entity">QED Investors</span>, argues that AI will fundamentally change the financial industry. He believes that success will depend on whether incumbent banks and fintechs are willing to adapt to this new technology.</p>
+
+  <div class="why-block">
+    <span class="why-heading">Why it matters</span>
+    <p class="why-text">Why it matters: The adoption of AI in the financial industry has the potential to disrupt traditional banking systems and create new opportunities for fintech companies, which could significantly impact the way people manage their finances. The ability of banks and fintechs to adapt to AI technology will determine their success in this new landscape, making it crucial for them to invest in AI development and training.</p>
+  </div>
+
+  
+
+  
+
+</div>
+
+<div class="card" style="border-left:4px solid #eab308; background:linear-gradient(135deg,#eab30808 0%,#0f0f18 60%);">
+
+  
+
+  <h2 class="sig-title">
+    <a href='https://dev.to/marcusykim/what-beginners-should-check-before-trusting-ai-generated-code-in-2026-58bg' target='_blank'>What Beginners Should Check Before Trusting AI-Generated Code In 2026 <span class='ext'>↗</span></a>
+  </h2>
+
+  <p class="explanation">The article outlines best practices for beginner developers to evaluate and verify AI-generated code before running it in production environments. It focuses on identifying logic flaws, edge-case failures, and security vulnerabilities commonly introduced by LLM code generators. The core message stresses that syntactically correct AI output often masks functional and security bugs.</p>
+
+  <div class="why-block">
+    <span class="why-heading">Why it matters</span>
+    <p class="why-text">Why it matters: As a beginner in the tech ecosystem, understanding the limitations and potential risks of AI-generated code is crucial to avoid introducing security vulnerabilities and logic flaws into production environments, which can lead to costly errors and damage to one's reputation. By learning to evaluate and verify AI-generated code, you can develop essential skills to ensure the reliability and security of your projects, even when working with cutting-edge technologies like AI and machine learning.</p>
+  </div>
+
+  <div class="pred-links-block"><span class="pred-links-label">Watching prediction</span><div class="pred-link">⏳ <em>By 2026, mainstream IDEs will integrate automated safety scanners specifically designed to flag unverified AI-generated …</em></div><div class="pred-link">⏳ <em>At least one major software supply chain breach in 2025 will be traced directly to an AI assistant recommending a halluc…</em></div></div>
+
+  <p class='prediction'>🔮 By 2026, mainstream IDEs will integrate automated safety scanners specifically designed to flag unverified AI-generated code patterns before execution.</p>
+
+</div>
+
+<div class="card" style="border-left:4px solid #eab308; background:linear-gradient(135deg,#eab30808 0%,#0f0f18 60%);">
+
+  
+
+  <h2 class="sig-title">
+    <a href='https://dev.to/hqqqqy/five-percentage-change-bugs-ive-shipped-to-production-4f8f' target='_blank'>Five percentage-change bugs I've shipped to production <span class='ext'>↗</span></a>
+  </h2>
+
+  <p class="explanation">The author shares five examples of percentage-change bugs they've shipped to production, highlighting the importance of careful arithmetic when displaying percentage changes. This is a meaningful signal in the world of software development, showcasing common pitfalls and the need for attention to detail.</p>
+
+  <div class="why-block">
+    <span class="why-heading">Why it matters</span>
+    <p class="why-text">Why it matters: In software development, even small arithmetic mistakes can have significant consequences, making it crucial for developers to double-check their calculations, especially when displaying percentage changes. This signal serves as a reminder to prioritize attention to detail and thorough testing to ensure the accuracy and reliability of software applications.</p>
+  </div>
+
+  <div class="pred-links-block"><span class="pred-links-label">Watching prediction</span><div class="pred-link">⏳ <em>By 2026, mainstream IDEs will integrate automated safety scanners specifically designed to flag unverified AI-generated …</em></div><div class="pred-link">⏳ <em>At least one major software supply chain breach in 2025 will be traced directly to an AI assistant recommending a halluc…</em></div></div>
+
+  
+
+</div>
+</section>
+
+<div class="section-accordion">
+  <details>
+    <summary>
+      Predictions
+      <div class="sum-right">
+        <span class="sum-count">20 total</span>
+        <span class="sum-chev">›</span>
+      </div>
+    </summary>
+    <div class="section-accordion-body">
+      
+<details class="pred-row">
+  <summary class="pred-summary">
+    <span class="pred-status" style="color:#f97316;">⏳ STILL WATCHING</span>
+    <span class="pred-text">Localized, open-source AI curriculum repositories will contribute to a 20% incre…</span>
+    <span class="wchev">›</span>
+  </summary>
+  <div class="pred-body">
+    <p class="pred-full">Localized, open-source AI curriculum repositories will contribute to a 20% increase in regional developer contributions to open-weight AI models over the next 12 months.</p>
+    <p class="pred-note">Localized, open-source AI curriculum repositories will contribute to a 20% increase in regional developer contributions to open-weight AI models over the next 12 months.</p>
+  </div>
+</details>
+<details class="pred-row">
+  <summary class="pred-summary">
+    <span class="pred-status" style="color:#f97316;">⏳ STILL WATCHING</span>
+    <span class="pred-text">Script-specific token optimization methods will be integrated into major global …</span>
+    <span class="wchev">›</span>
+  </summary>
+  <div class="pred-body">
+    <p class="pred-full">Script-specific token optimization methods will be integrated into major global open-source LLM tokenizers by Q4 2025 to drastically lower regional inference costs.</p>
+    <p class="pred-note">Script-specific token optimization methods will be integrated into major global open-source LLM tokenizers by Q4 2025 to drastically lower regional inference costs.</p>
+  </div>
+</details>
+<details class="pred-row">
+  <summary class="pred-summary">
+    <span class="pred-status" style="color:#f97316;">⏳ STILL WATCHING</span>
+    <span class="pred-text">Palmier-pro will integrate direct API support for real-time video generation mod…</span>
+    <span class="wchev">›</span>
+  </summary>
+  <div class="pred-body">
+    <p class="pred-full">Palmier-pro will integrate direct API support for real-time video generation models like Sora or Runway Gen-3 by the end of 2025.</p>
+    <p class="pred-note">Palmier-pro will integrate direct API support for real-time video generation models like Sora or Runway Gen-3 by the end of 2025.</p>
+  </div>
+</details>
+<details class="pred-row">
+  <summary class="pred-summary">
+    <span class="pred-status" style="color:#f97316;">⏳ STILL WATCHING</span>
+    <span class="pred-text">aisuite will exceed 30,000 GitHub stars and become one of the top three multi-pr…</span>
+    <span class="wchev">›</span>
+  </summary>
+  <div class="pred-body">
+    <p class="pred-full">aisuite will exceed 30,000 GitHub stars and become one of the top three multi-provider Python wrappers by Q4 2025.</p>
+    <p class="pred-note">aisuite will exceed 30,000 GitHub stars and become one of the top three multi-provider Python wrappers by Q4 2025.</p>
+  </div>
+</details>
+<details class="pred-row">
+  <summary class="pred-summary">
+    <span class="pred-status" style="color:#f97316;">⏳ STILL WATCHING</span>
+    <span class="pred-text">Major commercial vector database providers will adopt TurboQuant-style quantizat…</span>
+    <span class="wchev">›</span>
+  </summary>
+  <div class="pred-body">
+    <p class="pred-full">Major commercial vector database providers will adopt TurboQuant-style quantization techniques into their core engines within the next 9 months.</p>
+    <p class="pred-note">Major commercial vector database providers will adopt TurboQuant-style quantization techniques into their core engines within the next 9 months.</p>
+  </div>
+</details>
+<details class="pred-row">
+  <summary class="pred-summary">
+    <span class="pred-status" style="color:#f97316;">⏳ STILL WATCHING</span>
+    <span class="pred-text">ECC or similar specialized agent optimization harnesses will be natively integra…</span>
+    <span class="wchev">›</span>
+  </summary>
+  <div class="pred-body">
+    <p class="pred-full">ECC or similar specialized agent optimization harnesses will be natively integrated into mainstream developer IDEs within the next 12 months.</p>
+    <p class="pred-note">ECC or similar specialized agent optimization harnesses will be natively integrated into mainstream developer IDEs within the next 12 months.</p>
+  </div>
+</details>
+<details class="pred-row">
+  <summary class="pred-summary">
+    <span class="pred-status" style="color:#f97316;">⏳ STILL WATCHING</span>
+    <span class="pred-text">By 2026, mainstream IDEs will integrate automated safety scanners specifically d…</span>
+    <span class="wchev">›</span>
+  </summary>
+  <div class="pred-body">
+    <p class="pred-full">By 2026, mainstream IDEs will integrate automated safety scanners specifically designed to flag unverified AI-generated code patterns before execution.</p>
+    <p class="pred-note">By 2026, mainstream IDEs will integrate automated safety scanners specifically designed to flag unverified AI-generated code patterns before execution.</p>
+  </div>
+</details>
+<details class="pred-row">
+  <summary class="pred-summary">
+    <span class="pred-status" style="color:#f97316;">⏳ STILL WATCHING</span>
+    <span class="pred-text">At least one major software supply chain breach in 2025 will be traced directly …</span>
+    <span class="wchev">›</span>
+  </summary>
+  <div class="pred-body">
+    <p class="pred-full">At least one major software supply chain breach in 2025 will be traced directly to an AI assistant recommending a hallucinated malicious package.</p>
+    <p class="pred-note">At least one major software supply chain breach in 2025 will be traced directly to an AI assistant recommending a hallucinated malicious package.</p>
+  </div>
+</details>
+<details class="pred-row">
+  <summary class="pred-summary">
+    <span class="pred-status" style="color:#f97316;">⏳ STILL WATCHING</span>
+    <span class="pred-text">By late 2025, major LLM API providers will introduce automated context-pruning s…</span>
+    <span class="wchev">›</span>
+  </summary>
+  <div class="pred-body">
+    <p class="pred-full">By late 2025, major LLM API providers will introduce automated context-pruning safeguards by default to prevent unexpected runaway usage costs.</p>
+    <p class="pred-note">By late 2025, major LLM API providers will introduce automated context-pruning safeguards by default to prevent unexpected runaway usage costs.</p>
+  </div>
+</details>
+<details class="pred-row">
+  <summary class="pred-summary">
+    <span class="pred-status" style="color:#f97316;">⏳ STILL WATCHING</span>
+    <span class="pred-text">Alibaba's open-code-review tool will reach over 25,000 GitHub stars by the end o…</span>
+    <span class="wchev">›</span>
+  </summary>
+  <div class="pred-body">
+    <p class="pred-full">Alibaba's open-code-review tool will reach over 25,000 GitHub stars by the end of 2025.</p>
+    <p class="pred-note">Alibaba's open-code-review tool will reach over 25,000 GitHub stars by the end of 2025.</p>
+  </div>
+</details>
+<details class="pred-row">
+  <summary class="pred-summary">
+    <span class="pred-status" style="color:#f97316;">⏳ WATCHING</span>
+    <span class="pred-text">Localized, open-source AI curriculum repositories will contribute to a 20% incre…</span>
+    <span class="wchev">›</span>
+  </summary>
+  <div class="pred-body">
+    <p class="pred-full">Localized, open-source AI curriculum repositories will contribute to a 20% increase in regional developer contributions to open-weight AI models over the next 12 months.</p>
+    <p class="pred-meta">Domain: Talent · Made: 2026-07-25</p>
+  </div>
+</details>
+<details class="pred-row">
+  <summary class="pred-summary">
+    <span class="pred-status" style="color:#f97316;">⏳ WATCHING</span>
+    <span class="pred-text">Script-specific token optimization methods will be integrated into major global …</span>
+    <span class="wchev">›</span>
+  </summary>
+  <div class="pred-body">
+    <p class="pred-full">Script-specific token optimization methods will be integrated into major global open-source LLM tokenizers by Q4 2025 to drastically lower regional inference costs.</p>
+    <p class="pred-meta">Domain: Technology · Made: 2026-07-25</p>
+  </div>
+</details>
+<details class="pred-row">
+  <summary class="pred-summary">
+    <span class="pred-status" style="color:#f97316;">⏳ WATCHING</span>
+    <span class="pred-text">Palmier-pro will integrate direct API support for real-time video generation mod…</span>
+    <span class="wchev">›</span>
+  </summary>
+  <div class="pred-body">
+    <p class="pred-full">Palmier-pro will integrate direct API support for real-time video generation models like Sora or Runway Gen-3 by the end of 2025.</p>
+    <p class="pred-meta">Domain: Technology · Made: 2026-07-25</p>
+  </div>
+</details>
+<details class="pred-row">
+  <summary class="pred-summary">
+    <span class="pred-status" style="color:#f97316;">⏳ WATCHING</span>
+    <span class="pred-text">aisuite will exceed 30,000 GitHub stars and become one of the top three multi-pr…</span>
+    <span class="wchev">›</span>
+  </summary>
+  <div class="pred-body">
+    <p class="pred-full">aisuite will exceed 30,000 GitHub stars and become one of the top three multi-provider Python wrappers by Q4 2025.</p>
+    <p class="pred-meta">Domain: Technology · Made: 2026-07-25</p>
+  </div>
+</details>
+<details class="pred-row">
+  <summary class="pred-summary">
+    <span class="pred-status" style="color:#f97316;">⏳ WATCHING</span>
+    <span class="pred-text">Major commercial vector database providers will adopt TurboQuant-style quantizat…</span>
+    <span class="wchev">›</span>
+  </summary>
+  <div class="pred-body">
+    <p class="pred-full">Major commercial vector database providers will adopt TurboQuant-style quantization techniques into their core engines within the next 9 months.</p>
+    <p class="pred-meta">Domain: Technology · Made: 2026-07-25</p>
+  </div>
+</details>
+<details class="pred-row">
+  <summary class="pred-summary">
+    <span class="pred-status" style="color:#f97316;">⏳ WATCHING</span>
+    <span class="pred-text">ECC or similar specialized agent optimization harnesses will be natively integra…</span>
+    <span class="wchev">›</span>
+  </summary>
+  <div class="pred-body">
+    <p class="pred-full">ECC or similar specialized agent optimization harnesses will be natively integrated into mainstream developer IDEs within the next 12 months.</p>
+    <p class="pred-meta">Domain: Technology · Made: 2026-07-25</p>
+  </div>
+</details>
+<details class="pred-row">
+  <summary class="pred-summary">
+    <span class="pred-status" style="color:#f97316;">⏳ WATCHING</span>
+    <span class="pred-text">By 2026, mainstream IDEs will integrate automated safety scanners specifically d…</span>
+    <span class="wchev">›</span>
+  </summary>
+  <div class="pred-body">
+    <p class="pred-full">By 2026, mainstream IDEs will integrate automated safety scanners specifically designed to flag unverified AI-generated code patterns before execution.</p>
+    <p class="pred-meta">Domain: Security · Made: 2026-07-25</p>
+  </div>
+</details>
+<details class="pred-row">
+  <summary class="pred-summary">
+    <span class="pred-status" style="color:#f97316;">⏳ WATCHING</span>
+    <span class="pred-text">At least one major software supply chain breach in 2025 will be traced directly …</span>
+    <span class="wchev">›</span>
+  </summary>
+  <div class="pred-body">
+    <p class="pred-full">At least one major software supply chain breach in 2025 will be traced directly to an AI assistant recommending a hallucinated malicious package.</p>
+    <p class="pred-meta">Domain: Security · Made: 2026-07-25</p>
+  </div>
+</details>
+<details class="pred-row">
+  <summary class="pred-summary">
+    <span class="pred-status" style="color:#f97316;">⏳ WATCHING</span>
+    <span class="pred-text">By late 2025, major LLM API providers will introduce automated context-pruning s…</span>
+    <span class="wchev">›</span>
+  </summary>
+  <div class="pred-body">
+    <p class="pred-full">By late 2025, major LLM API providers will introduce automated context-pruning safeguards by default to prevent unexpected runaway usage costs.</p>
+    <p class="pred-meta">Domain: Technology · Made: 2026-07-25</p>
+  </div>
+</details>
+<details class="pred-row">
+  <summary class="pred-summary">
+    <span class="pred-status" style="color:#f97316;">⏳ WATCHING</span>
+    <span class="pred-text">Alibaba's open-code-review tool will reach over 25,000 GitHub stars by the end o…</span>
+    <span class="wchev">›</span>
+  </summary>
+  <div class="pred-body">
+    <p class="pred-full">Alibaba's open-code-review tool will reach over 25,000 GitHub stars by the end of 2025.</p>
+    <p class="pred-meta">Domain: Technology · Made: 2026-07-25</p>
+  </div>
+</details>
+    </div>
+  </details>
+</div>
+
+<div class="section-accordion">
+  <details>
+    <summary>
+      Company Watch
+      <div class="sum-right">
+        <span class="sum-count">155 companies</span>
+        <span class="sum-chev">›</span>
+      </div>
+    </summary>
+    <div class="section-accordion-body">
+      <div class="wcat-header">US Big Tech</div>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #a2aaad;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Apple</span>
+    <span class="wcat">US Big Tech</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <ul class="wlinks"><li><a href="https://tldr.tech/tech/2026-06-30" target="_blank" class="wlink">iPhone 18 leaks 📱, Codex Micro ⌨️, verifiable outputs 👨‍💻</a></li><li><a href="https://tldr.tech/tech/2026-07-13" target="_blank" class="wlink">Apple sues OpenAI ⚖️, Apple's AI chips 🤖, not understanding your codebase 👨‍💻</a></li><li><a href="https://tldr.tech/tech/2026-07-14" target="_blank" class="wlink">Siri AI beta 📱, Starlink v3 🛰️, Apple's new speech API 👨‍💻</a></li><li><a href="https://tldr.tech/tech/2026-07-15" target="_blank" class="wlink">OpenAI's first device 📢, Apple shrinking AI 📱, vibecoding at scale 👨‍💻</a></li><li><a href="https://tldr.tech/tech/2026-07-23" target="_blank" class="wlink">OpenAI Presence 🤖, Apple overhauls Macs 💻, state of WebMCP 👨‍💻</a></li></ul>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #0082fb;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Meta</span>
+    <span class="wcat">US Big Tech</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <ul class="wlinks"><li><a href="https://news.crunchbase.com/venture/biggest-funding-rounds-physical-ai-fintech-defense-atoms/" target="_blank" class="wlink">The Week’s 10 Biggest Funding Rounds: Physical AI Startup Atoms Leads In Varied Week For L…</a></li><li><a href="https://tldr.tech/tech/2026-06-29" target="_blank" class="wlink">Starlink mobile 🛰️, Meta prediction markets 📈, local coding agents 👨‍💻</a></li><li><a href="https://tldr.tech/tech/2026-07-01" target="_blank" class="wlink">Claude Sonnet 5 🤖, Meta Kalshi talks 💸, Fable returns 🏛️</a></li><li><a href="https://tldr.tech/tech/2026-07-02" target="_blank" class="wlink">SpaceX phone 📱, OpenAI govt equity 💰, Meta Ray Ban apps 🕶️</a></li><li><a href="https://tldr.tech/tech/2026-07-03" target="_blank" class="wlink">Tesla 6-seat Model Y 🚙, Meta's AI disappointment 🤖, the understanding bottleneck 🧠</a></li></ul>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #0078d4;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Microsoft</span>
+    <span class="wcat">US Big Tech</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <ul class="wlinks"><li><a href="https://www.cnbc.com/2026/07/24/nvidia-microsoft-meta-open-weight-ai-models.html" target="_blank" class="wlink">Nvidia, Microsoft, Meta warn against overregulating open-weight models</a></li></ul>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #4285f4;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Google</span>
+    <span class="wcat">US Big Tech</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <ul class="wlinks"><li><a href="https://kitsumed.github.io/blog/posts/android-may-soon-restrict-on-device-adb/" target="_blank" class="wlink">Android May Soon Restrict On-Device ADB</a></li><li><a href="https://dev.to/shaojie/how-one-lazy-line-turned-a-simple-feature-into-a-recursive-dom-walker-454m" target="_blank" class="wlink">How one lazy line turned a simple feature into a recursive DOM walker</a></li><li><a href="https://dev.to/shaojie/how-one-lazy-line-turned-a-simple-feature-into-a-recursive-dom-walker-454m" target="_blank" class="wlink">How one lazy line turned a simple feature into a recursive DOM walker</a></li><li><a href="https://dev.to/gde/teaching-google-antigravity-to-paint-a-stateful-image-editing-skill-built-on-geminis-interactions-9g1" target="_blank" class="wlink">Teaching Google Antigravity to Paint: A Stateful Image-Editing Skill Built on Gemini's Int…</a></li><li><a href="https://tldr.tech/tech/2026-07-21" target="_blank" class="wlink">Google's Gemini chip 🤖, AMD vs Nvidia ⚡, agent economics 💰</a></li></ul>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #ff9900;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Amazon</span>
+    <span class="wcat">US Big Tech</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <ul class="wlinks"><li><a href="https://dev.to/aws-builders/devops-engineer-professional-exam-guide-4j35" target="_blank" class="wlink">DevOps Engineer Professional Exam Guide</a></li><li><a href="https://tldr.tech/tech/2026-07-06" target="_blank" class="wlink">Amazon's Starlink rival 🛰️, Nvidia revenue share 💰, agentic autonomy levels 🤖</a></li><li><a href="https://houseofsaud.com/irgc-claims-destroyed-amazon-bahrain-data-center/" target="_blank" class="wlink">IRGC claims it destroyed Amazon's Bahrain data center</a></li></ul>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #76b900;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Nvidia</span>
+    <span class="wcat">US Big Tech</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <ul class="wlinks"><li><a href="https://tldr.tech/tech/2026-07-06" target="_blank" class="wlink">Amazon's Starlink rival 🛰️, Nvidia revenue share 💰, agentic autonomy levels 🤖</a></li><li><a href="https://tldr.tech/tech/2026-07-07" target="_blank" class="wlink">Nvidia delays ⏳, iPhone Ultra pricing 📱, 100x engineers 👨‍💻</a></li><li><a href="https://tldr.tech/tech/2026-07-21" target="_blank" class="wlink">Google's Gemini chip 🤖, AMD vs Nvidia ⚡, agent economics 💰</a></li><li><a href="https://tldr.tech/tech/2026-07-22" target="_blank" class="wlink">Nvidia's new CPU ⚡, Jack Dorsey's Slack rival 💬, software factories 👨‍💻</a></li><li><a href="https://www.cnbc.com/2026/07/24/nvidia-microsoft-meta-open-weight-ai-models.html" target="_blank" class="wlink">Nvidia, Microsoft, Meta warn against overregulating open-weight models</a></li></ul>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #0071c5;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Intel</span>
+    <span class="wcat">US Big Tech</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <ul class="wlinks"><li><a href="https://dev.to/dodly-jr/i-shipped-three-ai-tools-that-run-entirely-in-the-browser-heres-everything-that-broke-1o0e" target="_blank" class="wlink">I shipped three AI tools that run entirely in the browser — here's everything that broke</a></li><li><a href="https://arxiv.org/abs/2607.20452" target="_blank" class="wlink">AINTMA: Agentic AI Architecture for Autonomous Test Management with Generative Intelligenc…</a></li><li><a href="https://artificialanalysis.ai/models" target="_blank" class="wlink">Opus 5 is currently #1 on Artificial Analysis Intelligence Leaderboard</a></li></ul>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #ed1c24;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">AMD</span>
+    <span class="wcat">US Big Tech</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <ul class="wlinks"><li><a href="https://tldr.tech/tech/2026-07-21" target="_blank" class="wlink">Google's Gemini chip 🤖, AMD vs Nvidia ⚡, agent economics 💰</a></li></ul>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #3253dc;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Qualcomm</span>
+    <span class="wcat">US Big Tech</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #cc0000;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Broadcom</span>
+    <span class="wcat">US Big Tech</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #0530ad;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">IBM</span>
+    <span class="wcat">US Big Tech</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+<div class="wcat-header">AI / LLM</div>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #10a37f;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">OpenAI</span>
+    <span class="wcat">AI / LLM</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <ul class="wlinks"><li><a href="https://github.com/alibaba/open-code-review" target="_blank" class="wlink">[GitHub Trending] alibaba/open-code-review (Go)</a></li><li><a href="https://github.com/diegosouzapw/OmniRoute" target="_blank" class="wlink">[GitHub Trending] diegosouzapw/OmniRoute (TypeScript)</a></li><li><a href="https://news.crunchbase.com/venture/biggest-funding-rounds-physical-ai-fintech-defense-atoms/" target="_blank" class="wlink">The Week’s 10 Biggest Funding Rounds: Physical AI Startup Atoms Leads In Varied Week For L…</a></li><li><a href="https://tldr.tech/tech/2026-07-02" target="_blank" class="wlink">SpaceX phone 📱, OpenAI govt equity 💰, Meta Ray Ban apps 🕶️</a></li><li><a href="https://tldr.tech/tech/2026-07-13" target="_blank" class="wlink">Apple sues OpenAI ⚖️, Apple's AI chips 🤖, not understanding your codebase 👨‍💻</a></li></ul>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #d97757;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Anthropic</span>
+    <span class="wcat">AI / LLM</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <ul class="wlinks"><li><a href="https://github.com/anthropics/claude-cookbooks" target="_blank" class="wlink">[GitHub Trending] anthropics/claude-cookbooks (Jupyter Notebook)</a></li><li><a href="https://github.com/alibaba/open-code-review" target="_blank" class="wlink">[GitHub Trending] alibaba/open-code-review (Go)</a></li><li><a href="https://dev.to/lawrencehui/one-claude-session-cost-me-1880-it-was-reading-four-novels-to-write-one-tweet-3de3" target="_blank" class="wlink">One Claude Session Cost Me $1,880. It Was Reading Four Novels to Write One Tweet.</a></li><li><a href="https://tldr.tech/tech/2026-07-20" target="_blank" class="wlink">Meta Anthropic deal 🤝, SpaceX Pentagon compute ⚡, AI code migrations 👨‍💻</a></li><li><a href="https://techcrunch.com/2026/07/24/anthropic-launches-opus-5/" target="_blank" class="wlink">Anthropic launches Opus 5</a></li></ul>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #e2e8f0;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">xAI</span>
+    <span class="wcat">AI / LLM</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <ul class="wlinks"><li><a href="https://tldr.tech/tech/2026-07-17" target="_blank" class="wlink">xAI chaos 🔥, Gemini delays ⏳, earning judgement 👨‍💻</a></li></ul>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #f97316;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Mistral</span>
+    <span class="wcat">AI / LLM</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #39b2d5;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Cohere</span>
+    <span class="wcat">AI / LLM</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #7c3aed;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Stability AI</span>
+    <span class="wcat">AI / LLM</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #ffd21e;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Hugging Face</span>
+    <span class="wcat">AI / LLM</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #20b2aa;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Perplexity</span>
+    <span class="wcat">AI / LLM</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #6366f1;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Together AI</span>
+    <span class="wcat">AI / LLM</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #ea5504;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Scale AI</span>
+    <span class="wcat">AI / LLM</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #00d8ff;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Runway</span>
+    <span class="wcat">AI / LLM</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #f59e0b;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">ElevenLabs</span>
+    <span class="wcat">AI / LLM</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #8b5cf6;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Cursor</span>
+    <span class="wcat">AI / LLM</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <ul class="wlinks"><li><a href="https://github.com/affaan-m/ECC" target="_blank" class="wlink">[GitHub Trending] affaan-m/ECC (JavaScript)</a></li></ul>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #4f8ef7;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">DeepSeek</span>
+    <span class="wcat">AI / LLM</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <ul class="wlinks"><li><a href="https://github.com/diegosouzapw/OmniRoute" target="_blank" class="wlink">[GitHub Trending] diegosouzapw/OmniRoute (TypeScript)</a></li><li><a href="https://news.crunchbase.com/venture/new-unicorn-board-startups-exits-ai-semiconductors-june-2026/" target="_blank" class="wlink">Led By DeepSeek, 10 Frontier Labs Rush Onto The Crunchbase Unicorn Board In June</a></li></ul>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #ffffff;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Midjourney</span>
+    <span class="wcat">AI / LLM</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <ul class="wlinks"><li><a href="https://techcrunch.com/2026/07/24/midjourney-acquired-the-astrology-app-co-star/" target="_blank" class="wlink">Midjourney acquired the astrology app Co-Star</a></li></ul>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #6366f1;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Replicate</span>
+    <span class="wcat">AI / LLM</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+<div class="wcat-header">Cloud / Infra</div>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #f38020;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Cloudflare</span>
+    <span class="wcat">Cloud / Infra</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #e2e8f0;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Vercel</span>
+    <span class="wcat">Cloud / Infra</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <ul class="wlinks"><li><a href="https://dev.to/zoltanszogyenyi/i-built-a-collection-of-open-source-eve-agents-for-ai-based-on-the-vercel-framework-55ab" target="_blank" class="wlink">I built a collection of open-source Eve agents for AI based on the Vercel framework</a></li></ul>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #00c7b7;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Netlify</span>
+    <span class="wcat">Cloud / Infra</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #0080ff;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">DigitalOcean</span>
+    <span class="wcat">Cloud / Infra</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #d50c2d;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Hetzner</span>
+    <span class="wcat">Cloud / Infra</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <ul class="wlinks"><li><a href="https://dev.to/code42cate/hetzner-inference-first-look-587" target="_blank" class="wlink">Hetzner Inference: First Look</a></li></ul>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #ff282d;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Fastly</span>
+    <span class="wcat">Cloud / Infra</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #009bde;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Akamai</span>
+    <span class="wcat">Cloud / Infra</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #ed2224;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Equinix</span>
+    <span class="wcat">Cloud / Infra</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+<div class="wcat-header">DevOps / Platform</div>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot active-dot" style="background:#e2e8f0;box-shadow:0 0 6px #e2e8f0;"></span>
+    <span class="wname" style="color:#e2e8f0;font-weight:700;">GitHub</span>
+    <span class="wcat">DevOps / Platform</span>
+    <span class="wref">→ in today's signal #1</span>
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <ul class="wlinks"><li><a href="https://github.com/affaan-m/ECC" target="_blank" class="wlink">[GitHub Trending] affaan-m/ECC (JavaScript)</a></li><li><a href="https://github.com/andrewyng/aisuite" target="_blank" class="wlink">[GitHub Trending] andrewyng/aisuite (Python)</a></li><li><a href="https://github.com/RyanCodrai/turbovec" target="_blank" class="wlink">[GitHub Trending] RyanCodrai/turbovec (Python)</a></li><li><a href="https://github.com/palmier-io/palmier-pro" target="_blank" class="wlink">[GitHub Trending] palmier-io/palmier-pro (Swift)</a></li><li><a href="https://github.com/permissionlesstech/bitchat" target="_blank" class="wlink">[GitHub Trending] permissionlesstech/bitchat (Swift)</a></li></ul>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #e24329;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">GitLab</span>
+    <span class="wcat">DevOps / Platform</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #844fba;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">HashiCorp</span>
+    <span class="wcat">DevOps / Platform</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #2496ed;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Docker</span>
+    <span class="wcat">DevOps / Platform</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <ul class="wlinks"><li><a href="https://dev.to/peculiarengineer/reverse-proxy-your-containers-with-caddy-and-docker-compose-on-ubuntu-2604-1n97" target="_blank" class="wlink">Reverse Proxy Your Containers with Caddy and Docker Compose on Ubuntu 26.04</a></li></ul>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #326ce5;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Kubernetes</span>
+    <span class="wcat">DevOps / Platform</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <ul class="wlinks"><li><a href="https://dev.to/vultr/deploying-mariadb-on-kubernetes-408a" target="_blank" class="wlink">Deploying MariaDB on Kubernetes</a></li><li><a href="https://dev.to/vultr/deploying-kubernetes-dashboard-and-managing-cluster-resources-4426" target="_blank" class="wlink">Deploying Kubernetes Dashboard and Managing Cluster Resources</a></li><li><a href="https://dev.to/vultr/deploying-cockroachdb-on-kubernetes-5ch8" target="_blank" class="wlink">Deploying CockroachDB on Kubernetes</a></li></ul>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #8a3391;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Pulumi</span>
+    <span class="wcat">DevOps / Platform</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #0052cc;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Atlassian</span>
+    <span class="wcat">DevOps / Platform</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #5e6ad2;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Linear</span>
+    <span class="wcat">DevOps / Platform</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #e2e8f0;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Notion</span>
+    <span class="wcat">DevOps / Platform</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+<div class="wcat-header">Observability</div>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #632ca6;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Datadog</span>
+    <span class="wcat">Observability</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #f46800;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Grafana</span>
+    <span class="wcat">Observability</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #1ce783;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">New Relic</span>
+    <span class="wcat">Observability</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #1496ff;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Dynatrace</span>
+    <span class="wcat">Observability</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #00bfb3;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Elastic</span>
+    <span class="wcat">Observability</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #65a637;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Splunk</span>
+    <span class="wcat">Observability</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #06ac38;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">PagerDuty</span>
+    <span class="wcat">Observability</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #f5a623;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Honeycomb</span>
+    <span class="wcat">Observability</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+<div class="wcat-header">Security</div>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #e8052a;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">CrowdStrike</span>
+    <span class="wcat">Security</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #fa582d;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Palo Alto</span>
+    <span class="wcat">Security</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #007dc1;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Okta</span>
+    <span class="wcat">Security</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #00d1ff;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Wiz</span>
+    <span class="wcat">Security</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #4c4a73;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Snyk</span>
+    <span class="wcat">Security</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #6f2d8b;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">SentinelOne</span>
+    <span class="wcat">Security</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #006fce;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Zscaler</span>
+    <span class="wcat">Security</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #ee3124;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Fortinet</span>
+    <span class="wcat">Security</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #f38020;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Cloudflare WAF</span>
+    <span class="wcat">Security</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #e2000f;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Check Point</span>
+    <span class="wcat">Security</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #005282;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">CyberArk</span>
+    <span class="wcat">Security</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+<div class="wcat-header">Data / Analytics</div>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #29b5e8;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Snowflake</span>
+    <span class="wcat">Data / Analytics</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #e8551b;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Databricks</span>
+    <span class="wcat">Data / Analytics</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #ff694a;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">dbt Labs</span>
+    <span class="wcat">Data / Analytics</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #0073e6;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Fivetran</span>
+    <span class="wcat">Data / Analytics</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #cc232a;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Confluent</span>
+    <span class="wcat">Data / Analytics</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #615eff;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Airbyte</span>
+    <span class="wcat">Data / Analytics</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #dd00a1;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Starburst</span>
+    <span class="wcat">Data / Analytics</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+<div class="wcat-header">SaaS / Enterprise</div>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #00a1e0;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Salesforce</span>
+    <span class="wcat">SaaS / Enterprise</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #81b5a1;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">ServiceNow</span>
+    <span class="wcat">SaaS / Enterprise</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #f5862e;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Workday</span>
+    <span class="wcat">SaaS / Enterprise</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #008fd3;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">SAP</span>
+    <span class="wcat">SaaS / Enterprise</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <ul class="wlinks"><li><a href="https://dev.to/highcenburg/the-case-of-the-disappearing-free-trial-26m2" target="_blank" class="wlink">The Case of the Disappearing Free Trial</a></li><li><a href="https://tldr.tech/tech/2026-07-03" target="_blank" class="wlink">Tesla 6-seat Model Y 🚙, Meta's AI disappointment 🤖, the understanding bottleneck 🧠</a></li></ul>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #f80000;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Oracle</span>
+    <span class="wcat">SaaS / Enterprise</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #ff7a59;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">HubSpot</span>
+    <span class="wcat">SaaS / Enterprise</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #03363d;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Zendesk</span>
+    <span class="wcat">SaaS / Enterprise</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #e11f28;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Twilio</span>
+    <span class="wcat">SaaS / Enterprise</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #635bff;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Stripe</span>
+    <span class="wcat">SaaS / Enterprise</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <ul class="wlinks"><li><a href="https://tldr.tech/tech/2026-07-16" target="_blank" class="wlink">Stripe's PayPal bid 💰, Uber vs Waymo 🚗, against SDKs 👨‍💻</a></li><li><a href="https://tldr.tech/tech/2026-07-24" target="_blank" class="wlink">Stripe's OpenRouter talks 💰, ChatGPT Health ⚕️, why software factories fail 👨‍💻</a></li></ul>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #96bf48;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Shopify</span>
+    <span class="wcat">SaaS / Enterprise</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #1abcfe;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Figma</span>
+    <span class="wcat">SaaS / Enterprise</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+<div class="wcat-header">Fintech / Crypto</div>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #0052ff;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Coinbase</span>
+    <span class="wcat">Fintech / Crypto</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <ul class="wlinks"><li><a href="https://www.ycombinator.com/blog/build-onchain/" target="_blank" class="wlink">YC x Coinbase RFS: Build Onchain</a></li></ul>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #e2e8f0;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Block</span>
+    <span class="wcat">Fintech / Crypto</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <ul class="wlinks"><li><a href="https://github.com/block/buzz" target="_blank" class="wlink">[GitHub Trending] block/buzz (Rust)</a></li></ul>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #00c805;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Robinhood</span>
+    <span class="wcat">Fintech / Crypto</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #111111;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Plaid</span>
+    <span class="wcat">Fintech / Crypto</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #ff6b35;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Brex</span>
+    <span class="wcat">Fintech / Crypto</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #346aa9;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Ripple</span>
+    <span class="wcat">Fintech / Crypto</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #f3ba2f;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Binance</span>
+    <span class="wcat">Fintech / Crypto</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #ffb3c7;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Klarna</span>
+    <span class="wcat">Fintech / Crypto</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+<div class="wcat-header">Hardware / Transport</div>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #e82127;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Tesla</span>
+    <span class="wcat">Hardware / Transport</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <ul class="wlinks"><li><a href="https://tldr.tech/tech/2026-07-03" target="_blank" class="wlink">Tesla 6-seat Model Y 🚙, Meta's AI disappointment 🤖, the understanding bottleneck 🧠</a></li></ul>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #4a90d9;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">SpaceX</span>
+    <span class="wcat">Hardware / Transport</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <ul class="wlinks"><li><a href="https://news.crunchbase.com/venture/biggest-funding-rounds-physical-ai-fintech-defense-atoms/" target="_blank" class="wlink">The Week’s 10 Biggest Funding Rounds: Physical AI Startup Atoms Leads In Varied Week For L…</a></li><li><a href="https://tldr.tech/tech/2026-07-02" target="_blank" class="wlink">SpaceX phone 📱, OpenAI govt equity 💰, Meta Ray Ban apps 🕶️</a></li><li><a href="https://tldr.tech/tech/2026-07-20" target="_blank" class="wlink">Meta Anthropic deal 🤝, SpaceX Pentagon compute ⚡, AI code migrations 👨‍💻</a></li><li><a href="https://techcrunch.com/2026/07/24/spacex-launches-new-v3-starlink-satellites-but-suffers-another-booster-failure/" target="_blank" class="wlink">SpaceX launches new V3 Starlink satellites but suffers another booster failure</a></li><li><a href="https://www.spacex.com/launches/starship-flight-13" target="_blank" class="wlink">SpaceX Starship Flight 13 livestream [video]</a></li></ul>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #276ef1;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Uber</span>
+    <span class="wcat">Hardware / Transport</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <ul class="wlinks"><li><a href="https://dev.to/vultr/deploying-mariadb-on-kubernetes-408a" target="_blank" class="wlink">Deploying MariaDB on Kubernetes</a></li><li><a href="https://dev.to/vultr/deploying-kubernetes-dashboard-and-managing-cluster-resources-4426" target="_blank" class="wlink">Deploying Kubernetes Dashboard and Managing Cluster Resources</a></li><li><a href="https://dev.to/vultr/deploying-cockroachdb-on-kubernetes-5ch8" target="_blank" class="wlink">Deploying CockroachDB on Kubernetes</a></li><li><a href="https://tldr.tech/tech/2026-07-16" target="_blank" class="wlink">Stripe's PayPal bid 💰, Uber vs Waymo 🚗, against SDKs 👨‍💻</a></li><li><a href="https://techcrunch.com/2026/07/24/waymo-reportedly-mulling-a-breakup-with-uber/" target="_blank" class="wlink">Waymo reportedly mulling a breakup with Uber</a></li></ul>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #4285f4;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Waymo</span>
+    <span class="wcat">Hardware / Transport</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <ul class="wlinks"><li><a href="https://tldr.tech/tech/2026-07-16" target="_blank" class="wlink">Stripe's PayPal bid 💰, Uber vs Waymo 🚗, against SDKs 👨‍💻</a></li><li><a href="https://techcrunch.com/2026/07/24/waymo-reportedly-mulling-a-breakup-with-uber/" target="_blank" class="wlink">Waymo reportedly mulling a breakup with Uber</a></li></ul>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #00b1d2;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Rivian</span>
+    <span class="wcat">Hardware / Transport</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <ul class="wlinks"><li><a href="https://techcrunch.com/2026/07/24/rivian-sues-the-us-government-for-full-refund-of-trump-tariffs/" target="_blank" class="wlink">Rivian sues the US government for ‘full refund’ of Trump tariffs</a></li><li><a href="https://techcrunch.com/2026/07/24/volkswagen-engineers-charged-with-insider-trading-tied-to-rivian-joint-venture/" target="_blank" class="wlink">Volkswagen engineers charged with insider trading tied to Rivian joint venture</a></li></ul>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #0091bd;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Arm</span>
+    <span class="wcat">Hardware / Transport</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <ul class="wlinks"><li><a href="https://www.wsj.com/health/taylor-farms-cyclospora-recall-delay-call-41fef0bc" target="_blank" class="wlink">Taylor Farms Called White House to Try to Delay Cyclospora Recall</a></li><li><a href="https://marimo.io/blog/pycharm" target="_blank" class="wlink">Marimo now runs in PyCharm</a></li></ul>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #009bde;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Applied Materials</span>
+    <span class="wcat">Hardware / Transport</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+<div class="wcat-header">China</div>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #2f6de1;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Baidu</span>
+    <span class="wcat">China</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #ff6a00;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Alibaba</span>
+    <span class="wcat">China</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <ul class="wlinks"><li><a href="https://github.com/alibaba/open-code-review" target="_blank" class="wlink">[GitHub Trending] alibaba/open-code-review (Go)</a></li></ul>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #07c160;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Tencent</span>
+    <span class="wcat">China</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #fe2c55;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">ByteDance</span>
+    <span class="wcat">China</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #cf0a2c;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Huawei</span>
+    <span class="wcat">China</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #ff6900;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Xiaomi</span>
+    <span class="wcat">China</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #1a1a2e;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">DJI</span>
+    <span class="wcat">China</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #ffcc00;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Meituan</span>
+    <span class="wcat">China</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #e1251b;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">JD.com</span>
+    <span class="wcat">China</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #005bac;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">CATL</span>
+    <span class="wcat">China</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #1058a7;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">BYD</span>
+    <span class="wcat">China</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #0084ff;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">SenseTime</span>
+    <span class="wcat">China</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+<div class="wcat-header">Korea / Taiwan / Japan</div>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #4a6cf7;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Samsung</span>
+    <span class="wcat">Korea / Taiwan / Japan</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #ea5504;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">SK Hynix</span>
+    <span class="wcat">Korea / Taiwan / Japan</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #a50034;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">LG</span>
+    <span class="wcat">Korea / Taiwan / Japan</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <ul class="wlinks"><li><a href="https://github.com/chrislgarry/Apollo-11" target="_blank" class="wlink">[GitHub Trending] chrislgarry/Apollo-11 (Assembly)</a></li></ul>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #fee500;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Kakao</span>
+    <span class="wcat">Korea / Taiwan / Japan</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #03c75a;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Naver</span>
+    <span class="wcat">Korea / Taiwan / Japan</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #5b9bd5;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">TSMC</span>
+    <span class="wcat">Korea / Taiwan / Japan</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #e3000f;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">MediaTek</span>
+    <span class="wcat">Korea / Taiwan / Japan</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #00539b;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">ASUSTeK</span>
+    <span class="wcat">Korea / Taiwan / Japan</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #e2000a;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Foxconn</span>
+    <span class="wcat">Korea / Taiwan / Japan</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #00439c;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Sony</span>
+    <span class="wcat">Korea / Taiwan / Japan</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #cc0000;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">SoftBank</span>
+    <span class="wcat">Korea / Taiwan / Japan</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #bf0000;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Rakuten</span>
+    <span class="wcat">Korea / Taiwan / Japan</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #eb0a1e;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Toyota</span>
+    <span class="wcat">Korea / Taiwan / Japan</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+<div class="wcat-header">Europe</div>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #009fdf;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">ASML</span>
+    <span class="wcat">Europe</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #1db954;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Spotify</span>
+    <span class="wcat">Europe</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #4285f4;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">DeepMind</span>
+    <span class="wcat">Europe</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <ul class="wlinks"><li><a href="https://dev.to/madhumithakolkar/i-replaced-a-q-table-with-a-neural-network-and-everything-changed-day-5-dqn-31ag" target="_blank" class="wlink">I Replaced a Q-Table With a Neural Network and Everything Changed - Day 5 (DQN).</a></li></ul>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #00b9ff;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Wise</span>
+    <span class="wcat">Europe</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #0075eb;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Revolut</span>
+    <span class="wcat">Europe</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #39d98a;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">N26</span>
+    <span class="wcat">Europe</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #ffb3c7;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Klarna EU</span>
+    <span class="wcat">Europe</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #fa4616;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">UiPath</span>
+    <span class="wcat">Europe</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #009999;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Siemens</span>
+    <span class="wcat">Europe</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #005aff;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Nokia</span>
+    <span class="wcat">Europe</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #007bc2;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Ericsson</span>
+    <span class="wcat">Europe</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #c9aa71;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">LVMH Tech</span>
+    <span class="wcat">Europe</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+<div class="wcat-header">India</div>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #007cc3;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Infosys</span>
+    <span class="wcat">India</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #0033a0;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">TCS</span>
+    <span class="wcat">India</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #341c6b;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Wipro</span>
+    <span class="wcat">India</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #0076c0;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">HCL</span>
+    <span class="wcat">India</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #0b2f6e;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Reliance Jio</span>
+    <span class="wcat">India</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #2874f0;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Flipkart</span>
+    <span class="wcat">India</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #8b1bff;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Zepto</span>
+    <span class="wcat">India</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #5f259f;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">PhonePe</span>
+    <span class="wcat">India</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #3395ff;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Razorpay</span>
+    <span class="wcat">India</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #25c16f;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Freshworks</span>
+    <span class="wcat">India</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #e42527;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Zoho</span>
+    <span class="wcat">India</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #9b2882;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Meesho</span>
+    <span class="wcat">India</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <ul class="wlinks"><li><a href="https://www.ycombinator.com/blog/meesho-goes-public/" target="_blank" class="wlink">Meesho Goes Public</a></li></ul>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #e23744;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Zomato</span>
+    <span class="wcat">India</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #1c1c1c;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">CRED</span>
+    <span class="wcat">India</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+<div class="wcat-header">Semiconductor</div>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #005695;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Marvell</span>
+    <span class="wcat">Semiconductor</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #e2231a;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Micron</span>
+    <span class="wcat">Semiconductor</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #c1272d;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Texas Instruments</span>
+    <span class="wcat">Semiconductor</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #667eea;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">ASIC Cloud</span>
+    <span class="wcat">Semiconductor</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #e2620e;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Cadence</span>
+    <span class="wcat">Semiconductor</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #00aeef;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Synopsys</span>
+    <span class="wcat">Semiconductor</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #0070c0;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">KLA</span>
+    <span class="wcat">Semiconductor</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <ul class="wlinks"><li><a href="https://www.ycombinator.com/blog/welcome-jon-and-andrew/" target="_blank" class="wlink">Welcoming Jon Xu and Andrew Miklas as YC’s Newest General Partners</a></li></ul>
+  </div>
+</details>
+
+<details class="wrow">
+  <summary class="wrow-summary">
+    <span class="wdot" style="border:1.5px solid #c1272d;"></span>
+    <span class="wname" style="color:#94a3b8;font-weight:600;">Lam Research</span>
+    <span class="wcat">Semiconductor</span>
+    
+    <span class="wchev">›</span>
+  </summary>
+  <div class="wrow-body">
+    <p class="wno-data">No signals ingested yet for this company.</p>
+  </div>
+</details>
+    </div>
+  </details>
+</div>
+
+<section class="section">
+  <h3 class="sec-title">Question to sit with</h3>
+  <div class="q-box">As the shift in accepted countries of incorporation and the growth of open-source projects like Automattic/harper indicate, the global distribution of power and influence in the tech industry is becoming increasingly decentralized.</div>
+</section>
+
+<section class="section">
+  <h3 class="sec-title">Past Briefings</h3>
+  <a href="archive.html" class="archive-card">
+    <div class="archive-card-left">
+      <div class="archive-card-title">Briefing Archive</div>
+      <div class="archive-card-sub">Every briefing ever — grouped by date</div>
+    </div>
+    <span class="archive-card-arrow">→</span>
+  </a>
+</section>
+<div class="footer">tech-intel · Saturday, 25 July 2026 · 17:28</div>
+</body>
+</html>
