@@ -227,9 +227,13 @@ def main():
     print("[briefing] generating...")
     path, signals = generate_briefing()
 
-    # Publish latest to docs/index.html
+    # Publish latest to docs/index.html — fix relative links (briefings/ uses ../ prefix)
     os.makedirs("docs", exist_ok=True)
-    shutil.copy(path, "docs/index.html")
+    with open(path) as f:
+        index_html = f.read()
+    index_html = index_html.replace('href="../', 'href="')
+    with open("docs/index.html", "w") as f:
+        f.write(index_html)
     print("[briefing] published to docs/index.html")
 
     # Copy to docs/briefings/ for public archive
