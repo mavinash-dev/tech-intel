@@ -258,7 +258,7 @@ def _signal_card(i: int, s: dict, why: str, watching_predictions: list = None) -
         if c.lower() in s["title"].lower() or c.lower() in (s.get("entities_json") or "").lower()
     ]
     giant_badges = "".join(
-        f'<span class="giant-badge" style="color:{COMPANY_BRAND[c]["color"]};border-color:{COMPANY_BRAND[c]["color"]}40;">{c}</span>'
+        f'<span class="giant-badge" style="background:{COMPANY_BRAND[c]["color"]}18;color:{COMPANY_BRAND[c]["color"]};border-color:{COMPANY_BRAND[c]["color"]}50;">{c}</span>'
         for c in mentioned_giants
     )
 
@@ -279,12 +279,16 @@ def _signal_card(i: int, s: dict, why: str, watching_predictions: list = None) -
             f'<div class="pred-link">⏳ <em>{_h(p["prediction_text"][:120])}{"…" if len(p["prediction_text"]) > 120 else ""}</em></div>'
             for p in related_preds[:2]
         )
-        pred_links_html = f'<div class="pred-links-block"><span class="pred-links-label">Watching prediction</span>{items}</div>'
+        pred_links_html = f'<div class="pred-links-block"><span class="pred-links-label">Watching</span>{items}</div>'
+
+    domain_label = f'<span class="domain-pill" style="background:{color}18;color:{color};border-color:{color}40;">{domain}</span>'
 
     return f"""
-<div class="card" style="border-left:4px solid {color}; background:linear-gradient(135deg,{color}08 0%,#0f0f18 60%);">
-
-  {"<div class='giant-badges'>" + giant_badges + "</div>" if giant_badges else ""}
+<article class="card" style="border-top:3px solid {color};">
+  <div class="card-meta-row">
+    {domain_label}
+    {"<div class='giant-badges'>" + giant_badges + "</div>" if giant_badges else ""}
+  </div>
 
   <h2 class="sig-title">
     {"<a href='" + url + "' target='_blank'>" + title + " <span class='ext'>↗</span></a>" if url else title}
@@ -293,7 +297,7 @@ def _signal_card(i: int, s: dict, why: str, watching_predictions: list = None) -
   <p class="explanation">{explanation}</p>
 
   {'''<div class="why-block">
-    <span class="why-heading">Why it matters</span>
+    <p class="why-label">Why it matters</p>
     <p class="why-text">''' + why_html + '''</p>
   </div>''' if why_html else ""}
 
@@ -301,7 +305,7 @@ def _signal_card(i: int, s: dict, why: str, watching_predictions: list = None) -
 
   {"<p class='prediction'>🔮 " + pred + "</p>" if pred else ""}
 
-</div>"""
+</article>"""
 
 
 def _watch_row(company: str, top_signal=None, signal_idx: int = 0) -> str:
@@ -411,7 +415,7 @@ def _predictions_accordion_html(callbacks: list, watching: list) -> str:
     return f"""<div class="section-accordion">
   <details>
     <summary>
-      Predictions
+      <p class="eyebrow">Predictions</p>
       <div class="sum-right">
         <span class="sum-count">{total} total</span>
         <span class="sum-chev">›</span>
@@ -441,163 +445,250 @@ def generate_html(signals: list, why_map: dict, question: str,
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Tech Intel · {now_str}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
+/* ── Design tokens ── */
+:root{{
+  --canvas:   #fdfcf0;
+  --surface:  #f1f0e4;
+  --elevated: #fffefa;
+  --border-subtle: #e5e4d8;
+  --border-default: #cdc9b8;
+  --fg:       #080f11;
+  --fg-body:  #1a242a;
+  --fg-muted: #6a7173;
+  --green:    #1ce783;
+  --green-tint:#aaf2ce;
+  --blue:     #3d9dff;
+  --ember:    #ff7f4d;
+  --yellow:   #f7d354;
+}}
+
 *{{box-sizing:border-box;margin:0;padding:0}}
 body{{
-  background:#f8f9fa;color:#1f2937;
-  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+  background:var(--canvas);color:var(--fg-body);
+  font-family:'Inter',system-ui,sans-serif;
   font-size:16px;line-height:1.7;
-  padding:24px 20px 64px;max-width:900px;margin:0 auto;
+  padding:32px 20px 80px;max-width:900px;margin:0 auto;
 }}
-a{{color:#4f46e5;text-decoration:underline;text-underline-offset:3px;}}
-a:hover{{color:#4338ca;}}
+a{{color:var(--fg);text-decoration:underline;text-underline-offset:3px;}}
+a:hover{{color:#1a242a;}}
+hr{{border:none;border-top:1px solid var(--border-subtle);margin:0;}}
 
-/* ── Header ── */
-.header{{padding:28px 0 20px;border-bottom:2px solid #e5e7eb;margin-bottom:28px;}}
-.eyebrow{{font-size:11px;letter-spacing:3px;color:#9ca3af;text-transform:uppercase;margin-bottom:8px;}}
-.brand{{font-size:clamp(26px,4vw,34px);font-weight:800;color:#111827;letter-spacing:-0.5px;}}
-.brand em{{color:#4f46e5;font-style:normal;}}
-.dateline{{font-size:13px;color:#6b7280;margin-top:6px;}}
-.stats{{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;}}
-.stat{{background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:10px 16px;min-width:90px;box-shadow:0 1px 3px rgba(0,0,0,0.06);}}
-.stat strong{{font-size:clamp(20px,3vw,24px);font-weight:800;color:#111827;display:block;line-height:1.2;}}
-.stat span{{font-size:11px;color:#9ca3af;}}
+/* ── Eyebrow (mono uppercase label) ── */
+.eyebrow{{
+  font-family:'SF Mono','Fira Code','Fira Mono',monospace;
+  font-size:11px;letter-spacing:0.16em;color:var(--fg-muted);
+  text-transform:uppercase;font-weight:400;
+}}
 
-/* ── Section ── */
-.section{{margin-bottom:36px;}}
-.sec-title{{font-size:11px;letter-spacing:3px;color:#9ca3af;text-transform:uppercase;font-weight:700;
-  margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid #e5e7eb;}}
+/* ── Page header ── */
+.page-header{{padding:40px 0 32px;margin-bottom:40px;}}
+.brand{{font-size:clamp(28px,4vw,38px);font-weight:700;color:var(--fg);
+  letter-spacing:-0.02em;line-height:1.15;margin:10px 0 6px;}}
+.brand em{{color:var(--green);font-style:normal;}}
+.dateline{{font-size:14px;color:var(--fg-muted);}}
+.stats{{display:flex;gap:8px;margin-top:20px;flex-wrap:wrap;}}
+.stat{{
+  background:var(--surface);border:1px solid var(--border-subtle);
+  border-radius:10px;padding:12px 18px;min-width:88px;
+}}
+.stat strong{{font-size:clamp(22px,3vw,26px);font-weight:700;color:var(--fg);
+  display:block;line-height:1.1;letter-spacing:-0.02em;}}
+.stat span{{font-size:11px;color:var(--fg-muted);font-family:monospace;text-transform:uppercase;letter-spacing:0.1em;}}
 
-/* ── Signal card ── */
-.card{{border-radius:12px;padding:20px 22px;margin-bottom:14px;border:1px solid #e5e7eb;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,0.05);}}
-.giant-badges{{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;}}
-.giant-badge{{font-size:10px;font-weight:700;letter-spacing:0.5px;padding:2px 9px;border-radius:4px;border:1px solid;background:transparent;}}
-.pred-links-block{{margin:12px 0;padding:10px 14px;background:#f3f4f6;border-radius:6px;border-left:3px solid #4f46e5;}}
-.pred-links-label{{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#4f46e5;display:block;margin-bottom:6px;}}
-.pred-link{{font-size:13px;color:#6b7280;margin-top:4px;}}
-.sig-title{{font-size:clamp(16px,2.5vw,18px);font-weight:700;color:#111827;margin-bottom:10px;line-height:1.4;}}
-.sig-title a{{color:#111827;text-decoration:underline;text-decoration-color:#11182720;text-underline-offset:3px;}}
-.sig-title a:hover{{color:#4f46e5;text-decoration-color:#4f46e5;}}
-.ext{{font-size:12px;color:#9ca3af;}}
-.explanation{{color:#374151;font-size:15px;margin-bottom:12px;line-height:1.7;}}
-.entity{{color:#4f46e5;font-weight:600;}}
+/* ── Section wrapper ── */
+.section{{margin-bottom:44px;}}
+.section-head{{display:flex;align-items:center;gap:10px;margin-bottom:18px;}}
+.section-head hr{{flex:1;}}
+
+/* ── Signal cards — gradient slab pattern ── */
+.cards-slab{{
+  border-radius:20px;padding:4px;gap:4px;
+  background:linear-gradient(135deg, var(--green-tint) 0%, var(--green) 100%);
+  display:flex;flex-direction:column;
+}}
+.card{{
+  background:var(--elevated);border-radius:16px;
+  padding:22px 24px;border:1px solid var(--fg);color:var(--fg);
+}}
+.card-meta-row{{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px;}}
+.domain-pill{{
+  font-family:monospace;font-size:10px;font-weight:500;letter-spacing:0.12em;
+  text-transform:uppercase;padding:3px 9px;border-radius:4px;border:1px solid;
+}}
+.giant-badges{{display:flex;flex-wrap:wrap;gap:5px;}}
+.giant-badge{{font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;border:1px solid;}}
+.sig-title{{font-size:clamp(16px,2.5vw,19px);font-weight:600;color:var(--fg);
+  margin-bottom:10px;line-height:1.4;letter-spacing:-0.01em;}}
+.sig-title a{{color:var(--fg);text-decoration:underline;text-decoration-color:rgba(8,15,17,0.2);text-underline-offset:3px;}}
+.sig-title a:hover{{text-decoration-color:var(--fg);}}
+.ext{{font-size:12px;color:var(--fg-muted);}}
+.explanation{{color:var(--fg-body);font-size:15px;margin-bottom:12px;line-height:1.75;}}
+.entity{{color:var(--fg);font-weight:600;border-bottom:1.5px solid var(--green);}}
 .num{{color:#059669;font-weight:700;}}
-.why-block{{margin:12px 0;padding:12px 14px;background:#faf5ff;border-radius:6px;border-left:3px solid #f97316;}}
-.why-heading{{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;
-  color:{WHY_COLOR};display:block;margin-bottom:6px;}}
-.why-text{{font-size:14px;color:#374151;line-height:1.65;}}
-.prediction{{font-size:14px;color:#6b7280;font-style:italic;
-  margin-top:12px;padding-top:12px;border-top:1px solid #e5e7eb;}}
+.why-block{{
+  margin:14px 0;padding:13px 16px;
+  background:rgba(255,127,77,0.07);
+  border-radius:8px;border-left:3px solid var(--ember);
+}}
+.why-label{{
+  font-family:monospace;font-size:10px;font-weight:500;letter-spacing:0.14em;
+  text-transform:uppercase;color:var(--ember);margin-bottom:5px;
+}}
+.why-text{{font-size:14px;color:var(--fg-body);line-height:1.65;}}
+.pred-links-block{{
+  margin:12px 0;padding:11px 14px;
+  background:rgba(28,231,131,0.07);border-radius:8px;border-left:3px solid var(--green);
+}}
+.pred-links-label{{
+  font-family:monospace;font-size:10px;font-weight:500;letter-spacing:0.14em;
+  text-transform:uppercase;color:var(--green);display:block;margin-bottom:5px;
+}}
+.pred-link{{font-size:13px;color:var(--fg-muted);margin-top:4px;}}
+.prediction{{font-size:14px;color:var(--fg-muted);font-style:italic;
+  margin-top:14px;padding-top:14px;border-top:1px solid var(--border-subtle);}}
 
-/* ── Collapsible section wrapper ── */
-.section-accordion{{margin-bottom:36px;}}
-.section-accordion > details{{border:1px solid #e5e7eb;border-radius:10px;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,0.05);}}
+/* ── Collapsible section accordion ── */
+.section-accordion{{margin-bottom:44px;}}
+.section-accordion > details{{
+  border:1px solid var(--border-subtle);border-radius:14px;
+  background:var(--surface);
+}}
 .section-accordion > details > summary{{
   display:flex;align-items:center;justify-content:space-between;
-  padding:14px 18px;cursor:pointer;list-style:none;user-select:none;font-weight:700;
-  font-size:11px;letter-spacing:3px;color:#9ca3af;text-transform:uppercase;
+  padding:15px 20px;cursor:pointer;list-style:none;user-select:none;
 }}
 .section-accordion > details > summary::-webkit-details-marker{{display:none;}}
-.section-accordion > details > summary:hover{{background:#f9fafb;border-radius:10px;}}
-.section-accordion > details[open] > summary{{border-bottom:1px solid #e5e7eb;border-radius:10px 10px 0 0;}}
-.section-accordion-body{{padding:16px 18px;}}
+.section-accordion > details > summary:hover{{background:var(--elevated);border-radius:14px;}}
+.section-accordion > details[open] > summary{{
+  border-bottom:1px solid var(--border-subtle);border-radius:14px 14px 0 0;
+}}
+.section-accordion-body{{padding:18px 20px;}}
 .sum-right{{display:flex;align-items:center;gap:10px;}}
-.sum-count{{font-size:12px;color:#d1d5db;font-weight:600;letter-spacing:0;text-transform:none;}}
-.sum-chev{{font-size:16px;color:#d1d5db;transition:transform 0.12s;}}
+.sum-count{{
+  font-family:monospace;font-size:11px;color:var(--fg-muted);
+  font-weight:400;letter-spacing:0;text-transform:none;
+}}
+.sum-chev{{font-size:15px;color:var(--border-default);transition:transform 0.15s;}}
 details[open] .sum-chev{{transform:rotate(90deg);}}
 
 /* ── Predictions rows ── */
-.pred-row{{border-bottom:1px solid #f3f4f6;}}
+.pred-row{{border-bottom:1px solid var(--border-subtle);}}
 .pred-row:last-child{{border-bottom:none;}}
 .pred-summary{{
   display:flex;align-items:center;gap:10px;
-  padding:11px 6px;cursor:pointer;list-style:none;user-select:none;
+  padding:12px 4px;cursor:pointer;list-style:none;user-select:none;
 }}
 .pred-summary::-webkit-details-marker{{display:none;}}
-.pred-status{{font-size:10px;font-weight:800;letter-spacing:1px;flex-shrink:0;width:100px;}}
-.pred-text{{font-size:14px;color:#6b7280;flex:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}}
-.pred-body{{padding:8px 0 14px 28px;}}
-.pred-full{{font-size:15px;color:#374151;line-height:1.6;}}
-.pred-note{{font-size:13px;color:#6b7280;margin-top:6px;}}
-.pred-meta{{font-size:11px;color:#9ca3af;margin-top:6px;}}
+.pred-summary:hover{{opacity:0.8;}}
+.pred-status{{
+  font-family:monospace;font-size:10px;font-weight:500;letter-spacing:0.1em;
+  flex-shrink:0;width:100px;text-transform:uppercase;
+}}
+.pred-text{{font-size:14px;color:var(--fg-muted);flex:1;
+  overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}}
+.pred-body{{padding:6px 0 14px 28px;}}
+.pred-full{{font-size:15px;color:var(--fg-body);line-height:1.6;}}
+.pred-note{{font-size:13px;color:var(--fg-muted);margin-top:6px;}}
+.pred-meta{{font-family:monospace;font-size:11px;color:var(--fg-muted);margin-top:6px;letter-spacing:0.06em;}}
 
-/* ── Company watch rows ── */
-.wcat-header{{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#9ca3af;
-  padding:14px 0 6px;border-bottom:1px solid #e5e7eb;margin-bottom:2px;font-weight:700;}}
-.wrow{{border-bottom:1px solid #f3f4f6;}}
+/* ── Company watch ── */
+.wcat-header{{
+  font-family:monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;
+  color:var(--fg-muted);padding:16px 0 8px;
+  border-bottom:1px solid var(--border-subtle);margin-bottom:2px;font-weight:400;
+}}
+.wrow{{border-bottom:1px solid var(--border-subtle);}}
 .wrow:last-child{{border-bottom:none;}}
 .wrow-summary{{
   display:flex;align-items:center;gap:8px;
-  padding:9px 6px;cursor:pointer;list-style:none;user-select:none;
+  padding:10px 4px;cursor:pointer;list-style:none;user-select:none;
 }}
 .wrow-summary::-webkit-details-marker{{display:none;}}
-.wrow-summary:hover .wname{{color:#111827 !important;}}
+.wrow-summary:hover{{opacity:0.8;}}
 .wdot{{width:8px;height:8px;border-radius:50%;flex-shrink:0;background:transparent;}}
-.wname{{font-size:14px;flex-shrink:0;min-width:120px;color:#374151;}}
-.wcat{{font-size:11px;color:#d1d5db;flex:1;}}
-.wref{{font-size:10px;color:#4f46e5;margin-left:auto;flex-shrink:0;}}
-.wchev{{font-size:14px;color:#d1d5db;flex-shrink:0;transition:transform 0.12s;}}
+.active-dot{{box-shadow:none;}}
+.wname{{font-size:14px;font-weight:500;flex-shrink:0;min-width:130px;color:var(--fg-body);}}
+.wcat{{font-size:11px;color:var(--border-default);flex:1;font-family:monospace;}}
+.wref{{font-family:monospace;font-size:10px;color:var(--green);margin-left:auto;flex-shrink:0;letter-spacing:0.05em;}}
+.wchev{{font-size:14px;color:var(--border-default);flex-shrink:0;transition:transform 0.15s;}}
 details[open] .wchev{{transform:rotate(90deg);}}
 .wrow-body{{padding:6px 0 12px 24px;}}
 .wlinks{{list-style:none;}}
-.wlinks li{{padding:3px 0;border-bottom:1px solid #f3f4f6;}}
+.wlinks li{{padding:3px 0;border-bottom:1px solid var(--border-subtle);}}
 .wlinks li:last-child{{border-bottom:none;}}
-.wlink{{font-size:13px;color:#6b7280;text-decoration:none;display:block;line-height:1.5;}}
-.wlink:hover{{color:#4f46e5;}}
-.wno-data{{font-size:12px;color:#d1d5db;}}
+.wlink{{font-size:13px;color:var(--fg-muted);text-decoration:none;display:block;line-height:1.5;}}
+.wlink:hover{{color:var(--fg);}}
+.wno-data{{font-size:12px;color:var(--border-default);font-family:monospace;}}
 
-/* ── Question ── */
+/* ── Question box ── */
 .q-box{{
-  background:#fff;border:1px solid #c7d2fe;
-  border-left:4px solid #4f46e5;border-radius:0 10px 10px 0;
-  padding:18px 22px;font-size:clamp(15px,2.2vw,17px);font-style:italic;
-  color:#4338ca;line-height:1.7;box-shadow:0 1px 3px rgba(0,0,0,0.05);
+  background:var(--surface);border:1px solid var(--border-subtle);
+  border-left:3px solid var(--green);border-radius:0 12px 12px 0;
+  padding:20px 24px;font-size:clamp(15px,2.2vw,17px);font-style:italic;
+  color:var(--fg);line-height:1.75;font-weight:500;
 }}
 
 /* ── Archive card ── */
 .archive-card{{
   display:flex;align-items:center;justify-content:space-between;
-  padding:16px 20px;background:#fff;border:1px solid #e5e7eb;
-  border-radius:10px;text-decoration:none;transition:border-color 0.15s;box-shadow:0 1px 3px rgba(0,0,0,0.05);
+  padding:18px 22px;background:var(--surface);
+  border:1px solid var(--border-subtle);border-radius:12px;
+  text-decoration:none;transition:border-color 0.15s,background 0.15s;
 }}
-.archive-card:hover{{border-color:#4f46e5;}}
-.archive-card-title{{font-size:16px;font-weight:700;color:#111827;}}
-.archive-card-sub{{font-size:13px;color:#6b7280;margin-top:3px;}}
-.archive-card-arrow{{font-size:20px;color:#4f46e5;}}
+.archive-card:hover{{border-color:var(--border-default);background:var(--elevated);}}
+.archive-card-title{{font-size:16px;font-weight:600;color:var(--fg);}}
+.archive-card-sub{{font-size:13px;color:var(--fg-muted);margin-top:3px;}}
+.archive-card-arrow{{font-size:18px;color:var(--green);}}
 
 /* ── Footer ── */
-.footer{{margin-top:40px;padding-top:20px;border-top:1px solid #e5e7eb;
-  font-size:12px;color:#9ca3af;text-align:center;letter-spacing:0.5px;}}
+.footer{{
+  margin-top:48px;padding:20px;
+  background:var(--fg);border-radius:14px;
+  font-family:monospace;font-size:12px;color:rgba(253,252,240,0.5);
+  text-align:center;letter-spacing:0.1em;text-transform:uppercase;
+}}
+.footer a{{color:rgba(28,231,131,0.8);text-decoration:none;}}
+.footer a:hover{{color:#1ce783;}}
 
 /* ── Mobile ── */
 @media(max-width:480px){{
-  body{{padding:16px 14px 48px;font-size:15px;}}
-  .stats{{gap:8px;}}
-  .stat{{padding:8px 12px;min-width:80px;}}
-  .card{{padding:16px;}}
+  body{{padding:20px 14px 56px;font-size:15px;}}
+  .stats{{gap:7px;}}
+  .stat{{padding:10px 14px;min-width:80px;}}
+  .card{{padding:16px 18px;}}
   .wname{{min-width:100px;}}
-  .pred-status{{width:85px;}}
+  .pred-status{{width:84px;}}
   .explanation{{font-size:14px;}}
+  .cards-slab{{border-radius:16px;}}
 }}
 </style>
 </head>
 <body>
 
-<div class="header">
-  <div class="eyebrow">Signal Intelligence</div>
-  <div class="brand">Tech <em>Intel</em></div>
-  <div class="dateline">{now_str}</div>
+<header class="page-header">
+  <p class="eyebrow">Signal Intelligence</p>
+  <h1 class="brand">Tech <em>Intel</em></h1>
+  <p class="dateline">{now_str}</p>
   <div class="stats">
     <div class="stat"><strong>{len(signals)}</strong><span>Surfaced</span></div>
     <div class="stat"><strong>{total_ingested}</strong><span>Ingested (24h)</span></div>
     <div class="stat"><strong>{len(GIANT_WATCH)}</strong><span>Tracked</span></div>
     <div class="stat"><strong>{len(callbacks)}</strong><span>Resolved</span></div>
   </div>
-</div>
+</header>
 
 <section class="section">
-  <h3 class="sec-title">Top Signals</h3>
-  {cards_html}
+  <div class="section-head">
+    <p class="eyebrow">Top Signals</p>
+    <hr>
+  </div>
+  <div class="cards-slab">
+    {cards_html}
+  </div>
 </section>
 
 {preds_html}
@@ -605,7 +696,7 @@ details[open] .wchev{{transform:rotate(90deg);}}
 <div class="section-accordion">
   <details>
     <summary>
-      Company Watch
+      <p class="eyebrow">Company Watch</p>
       <div class="sum-right">
         <span class="sum-count">{len(GIANT_WATCH)} companies</span>
         <span class="sum-chev">›</span>
@@ -618,20 +709,29 @@ details[open] .wchev{{transform:rotate(90deg);}}
 </div>
 
 <section class="section">
-  <h3 class="sec-title">Question to sit with</h3>
+  <div class="section-head">
+    <p class="eyebrow">Question to sit with</p>
+    <hr>
+  </div>
   <div class="q-box">{_h(question)}</div>
 </section>
 
 <section class="section">
-  <h3 class="sec-title">Past Briefings</h3>
+  <div class="section-head">
+    <p class="eyebrow">Past Briefings</p>
+    <hr>
+  </div>
   <a href="archive.html" class="archive-card">
-    <div class="archive-card-left">
+    <div>
       <div class="archive-card-title">Briefing Archive</div>
-      <div class="archive-card-sub">Every briefing ever — grouped by date</div>
+      <div class="archive-card-sub">Every briefing, grouped by date</div>
     </div>
     <span class="archive-card-arrow">→</span>
   </a>
 </section>
-<div class="footer">tech-intel · {now_str}</div>
+
+<footer class="footer">
+  tech-intel · {now_str} · <a href="archive.html">archive</a>
+</footer>
 </body>
 </html>"""

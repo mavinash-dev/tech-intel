@@ -60,52 +60,79 @@ def _generate_archive():
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Tech Intel · Archive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
+:root{{
+  --canvas:#fdfcf0;--surface:#f1f0e4;--elevated:#fffefa;
+  --border-subtle:#e5e4d8;--border-default:#cdc9b8;
+  --fg:#080f11;--fg-body:#1a242a;--fg-muted:#6a7173;
+  --green:#1ce783;
+}}
 *{{box-sizing:border-box;margin:0;padding:0}}
 body{{
-  background:#111318;color:#d1d5db;
-  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+  background:var(--canvas);color:var(--fg-body);
+  font-family:'Inter',system-ui,sans-serif;
   font-size:16px;line-height:1.7;
-  padding:24px 20px 64px;max-width:760px;margin:0 auto;
+  padding:32px 20px 80px;max-width:760px;margin:0 auto;
 }}
-a{{color:#818cf8;text-decoration:none;}}
-.header{{padding:28px 0 20px;border-bottom:1px solid #2a2d36;margin-bottom:28px;}}
-.eyebrow{{font-size:11px;letter-spacing:3px;color:#6b7280;text-transform:uppercase;margin-bottom:8px;}}
-.brand{{font-size:32px;font-weight:800;color:#f9fafb;}}
-.brand em{{color:#818cf8;font-style:normal;}}
-.sub{{font-size:13px;color:#9ca3af;margin-top:6px;}}
-.back{{font-size:13px;color:#818cf8;margin-bottom:24px;display:inline-block;}}
-.back:hover{{color:#c7d2fe;}}
-.count{{font-size:13px;color:#6b7280;margin-bottom:24px;}}
-.day-group{{margin-bottom:28px;}}
+a{{color:var(--fg);text-decoration:underline;text-underline-offset:3px;}}
+a:hover{{opacity:0.7;}}
+.eyebrow{{
+  font-family:'SF Mono','Fira Code',monospace;
+  font-size:11px;letter-spacing:0.16em;color:var(--fg-muted);
+  text-transform:uppercase;font-weight:400;
+}}
+.page-header{{padding:40px 0 28px;margin-bottom:32px;
+  border-bottom:1px solid var(--border-subtle);}}
+.brand{{font-size:clamp(26px,4vw,34px);font-weight:700;color:var(--fg);
+  letter-spacing:-0.02em;margin:10px 0 6px;}}
+.brand em{{color:var(--green);font-style:normal;}}
+.sub{{font-size:14px;color:var(--fg-muted);}}
+.back{{
+  font-family:monospace;font-size:12px;letter-spacing:0.08em;
+  color:var(--green);text-decoration:none;display:inline-block;
+  margin-bottom:28px;text-transform:uppercase;
+}}
+.back:hover{{opacity:0.8;}}
+.count{{font-family:monospace;font-size:12px;color:var(--fg-muted);
+  margin-bottom:28px;letter-spacing:0.06em;text-transform:uppercase;}}
+.day-group{{margin-bottom:32px;}}
 .day-label{{
-  font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
-  color:#9ca3af;padding-bottom:10px;border-bottom:1px solid #2a2d36;margin-bottom:8px;
+  font-family:monospace;font-size:10px;font-weight:400;letter-spacing:0.16em;
+  text-transform:uppercase;color:var(--fg-muted);
+  padding-bottom:10px;border-bottom:1px solid var(--border-subtle);margin-bottom:8px;
 }}
 .briefing-link{{
-  display:flex;align-items:center;gap:12px;
-  padding:12px 16px;margin-bottom:6px;
-  background:#1a1d24;border:1px solid #2a2d36;border-radius:8px;
-  transition:border-color 0.15s;
+  display:flex;align-items:center;gap:14px;
+  padding:13px 18px;margin-bottom:6px;
+  background:var(--surface);border:1px solid var(--border-subtle);
+  border-radius:10px;transition:border-color 0.15s,background 0.15s;
+  text-decoration:none;
 }}
-.briefing-link:hover{{border-color:#818cf8;}}
-.btime{{font-size:15px;font-weight:700;color:#f9fafb;min-width:52px;}}
-.btitle{{font-size:15px;color:#d1d5db;flex:1;}}
-.barrow{{font-size:16px;color:#6b7280;}}
-.footer{{margin-top:40px;padding-top:20px;border-top:1px solid #2a2d36;
-  font-size:12px;color:#4b5563;text-align:center;}}
+.briefing-link:hover{{border-color:var(--border-default);background:var(--elevated);opacity:1;}}
+.btime{{font-family:monospace;font-size:14px;font-weight:600;color:var(--fg);min-width:52px;}}
+.btitle{{font-size:15px;color:var(--fg-body);flex:1;}}
+.barrow{{font-size:16px;color:var(--green);}}
+.footer{{
+  margin-top:48px;padding:18px;
+  background:var(--fg);border-radius:14px;
+  font-family:monospace;font-size:12px;color:rgba(253,252,240,0.45);
+  text-align:center;letter-spacing:0.1em;text-transform:uppercase;
+}}
 </style>
 </head>
 <body>
-<div class="header">
-  <div class="eyebrow">Signal Intelligence</div>
-  <div class="brand">Tech <em>Intel</em> · Archive</div>
-  <div class="sub">Every briefing, ever. Updated hourly.</div>
-</div>
+<header class="page-header">
+  <p class="eyebrow">Signal Intelligence</p>
+  <h1 class="brand">Tech <em>Intel</em> · Archive</h1>
+  <p class="sub">Every briefing, ever. Updated hourly.</p>
+</header>
 <a class="back" href="index.html">← Latest briefing</a>
-<div class="count">{count} briefing{"s" if count != 1 else ""} stored</div>
+<p class="count">{count} briefing{"s" if count != 1 else ""} stored</p>
 {"".join(rows)}
-<div class="footer">tech-intel · generated {now_str}</div>
+<footer class="footer">tech-intel · generated {now_str}</footer>
 </body>
 </html>"""
 
