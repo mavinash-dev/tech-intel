@@ -35,6 +35,8 @@ class TursoConnection:
     """Thin wrapper around Turso's /v2/pipeline HTTP API."""
 
     def __init__(self, url: str, token: str):
+        # Turso URLs come as libsql:// but the HTTP API needs https://
+        url = url.replace("libsql://", "https://")
         self._url = url.rstrip("/") + "/v2/pipeline"
         self._headers = {
             "Authorization": f"Bearer {token}",

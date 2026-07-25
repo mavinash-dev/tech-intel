@@ -1,13 +1,12 @@
 import json
 import os
-import google.generativeai as genai
+from google import genai
 from datetime import datetime
 from db.connection import get_connection
 from config import GEMINI_API_KEY, GEMINI_MODEL, BRIEFING_STYLE
 from briefing.html_formatter import generate_html
 
-genai.configure(api_key=GEMINI_API_KEY)
-_gemini_model = genai.GenerativeModel(GEMINI_MODEL)
+_gemini_client = genai.Client(api_key=GEMINI_API_KEY)
 
 TOP_SIGNALS_LIMIT = 8
 SIGNAL_POOL_SIZE = 60   # fetch wider pool, then diversity-select 8
@@ -18,7 +17,7 @@ BRIEFING_DIR = "briefings"
 def _gemini(prompt: str, system: str = "") -> str:
     full = f"{system}\n\n{prompt}" if system else prompt
     try:
-        resp = _gemini_model.generate_content(full)
+        resp = _gemini_client.models.generate_content(model=GEMINI_MODEL, contents=full)
         return resp.text.strip()
     except Exception as e:
         print(f"[briefing] Gemini error: {e}")

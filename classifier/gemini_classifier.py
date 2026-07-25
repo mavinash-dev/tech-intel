@@ -1,10 +1,9 @@
 import json
-import google.generativeai as genai
+from google import genai
 from config import GEMINI_API_KEY, GEMINI_MODEL
 from db.connection import get_connection
 
-genai.configure(api_key=GEMINI_API_KEY)
-_model = genai.GenerativeModel(GEMINI_MODEL)
+_client = genai.Client(api_key=GEMINI_API_KEY)
 
 BATCH_SIZE = 5
 
@@ -46,7 +45,7 @@ def _classify_batch(batch: list[dict]) -> list[dict] | None:
     prompt = SYSTEM_PROMPT + "\n\n" + "\n".join(lines) + "\n\nReturn JSON array only. No preamble."
 
     try:
-        resp = _model.generate_content(prompt)
+        resp = _client.models.generate_content(model=GEMINI_MODEL, contents=prompt)
         text = resp.text.strip()
         # Strip markdown code fences if present
         if text.startswith("```"):
