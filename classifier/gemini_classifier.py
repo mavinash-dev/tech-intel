@@ -71,7 +71,7 @@ def _classify_batch(batch, batch_num):
         return None
 
 
-def run_classification_batch(batch_size=30):
+def run_classification_batch(batch_size=500):
     conn = get_connection()
     rows = conn.execute(
         """SELECT id, title, source, body, url FROM signals_raw

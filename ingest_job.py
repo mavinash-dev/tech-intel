@@ -49,7 +49,7 @@ def main():
 
     print("[main] starting classification...", flush=True)
     try:
-        run_classification_batch(batch_size=50)
+        run_classification_batch()
     except Exception as e:
         print(f"[main] classification failed: {e}", flush=True)
         traceback.print_exc()

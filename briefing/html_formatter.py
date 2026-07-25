@@ -554,6 +554,17 @@ hr{{border:none;border-top:1px solid var(--border-subtle);margin:0;}}
   display:block;line-height:1.1;letter-spacing:-0.02em;}}
 .stat span{{font-size:11px;color:var(--fg-muted);font-family:monospace;text-transform:uppercase;letter-spacing:0.1em;}}
 
+/* ── Page nav ── */
+.page-nav{{display:flex;gap:6px;margin-bottom:36px;flex-wrap:wrap;}}
+.nav-link{{
+  font-family:monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;
+  padding:5px 12px;border-radius:6px;border:1px solid var(--border-subtle);
+  color:var(--fg-muted);text-decoration:none;
+  transition:border-color 0.15s,color 0.15s;
+}}
+.nav-link:hover{{color:var(--fg);border-color:var(--border-default);opacity:1;}}
+.nav-link.active{{color:var(--green);border-color:var(--green);}}
+
 /* ── Section wrapper ── */
 .section{{margin-bottom:44px;}}
 .section-head{{display:flex;align-items:center;gap:10px;margin-bottom:18px;}}
@@ -758,6 +769,11 @@ details[open] .wchev{{transform:rotate(90deg);}}
     <div class="stat"><strong>{len(callbacks)}</strong><span>Predictions resolved</span></div>
   </div>
 </header>
+<nav class="page-nav">
+  <a href="index.html" class="nav-link active">Briefing</a>
+  <a href="firehose.html" class="nav-link">Firehose</a>
+  <a href="archive.html" class="nav-link">Archive</a>
+</nav>
 
 <section class="section">
   <div class="section-head">
@@ -806,10 +822,17 @@ details[open] .wchev{{transform:rotate(90deg);}}
     </div>
     <span class="archive-card-arrow">→</span>
   </a>
+  <a href="firehose.html" class="archive-card" style="margin-top:10px;">
+    <div>
+      <div class="archive-card-title">Signal Firehose</div>
+      <div class="archive-card-sub">All classified signals from the last 24h</div>
+    </div>
+    <span class="archive-card-arrow">→</span>
+  </a>
 </section>
 
 <footer class="footer">
-  tech-intel · {now_str} · <a href="archive.html">archive</a>
+  tech-intel · {now_str} · <a href="archive.html">archive</a> · <a href="firehose.html">firehose</a>
 </footer>
 
 <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">🌙</button>

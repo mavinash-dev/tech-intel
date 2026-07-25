@@ -7,6 +7,7 @@ import glob
 from datetime import datetime
 from briefing.generator import generate_briefing
 from briefing.html_formatter import COMPANY_BRAND
+from briefing.firehose import generate_firehose
 
 
 def _parse_briefing_dt(filename: str):
@@ -135,12 +136,15 @@ a:hover{{opacity:0.7;}}
   letter-spacing:-0.02em;margin:10px 0 6px;}}
 .brand em{{color:var(--green);font-style:normal;}}
 .sub{{font-size:14px;color:var(--fg-muted);}}
-.back{{
-  font-family:monospace;font-size:12px;letter-spacing:0.08em;
-  color:var(--green);text-decoration:none;display:inline-block;
-  margin-bottom:28px;text-transform:uppercase;
+.page-nav{{display:flex;gap:6px;margin-bottom:36px;flex-wrap:wrap;}}
+.nav-link{{
+  font-family:monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;
+  padding:5px 12px;border-radius:6px;border:1px solid var(--border-subtle);
+  color:var(--fg-muted);text-decoration:none;
+  transition:border-color 0.15s,color 0.15s;
 }}
-.back:hover{{opacity:0.8;}}
+.nav-link:hover{{color:var(--fg);border-color:var(--border-default);opacity:1;}}
+.nav-link.active{{color:var(--green);border-color:var(--green);}}
 .count{{font-family:monospace;font-size:12px;color:var(--fg-muted);
   margin-bottom:28px;letter-spacing:0.06em;text-transform:uppercase;}}
 .day-group{{margin-bottom:32px;}}
@@ -187,7 +191,11 @@ a:hover{{opacity:0.7;}}
   <h1 class="brand">Tech <em>Intel</em> · Archive</h1>
   <p class="sub">Every briefing, ever. Updated hourly.</p>
 </header>
-<a class="back" href="index.html">← Latest briefing</a>
+<nav class="page-nav">
+  <a href="index.html" class="nav-link">Briefing</a>
+  <a href="firehose.html" class="nav-link">Firehose</a>
+  <a href="archive.html" class="nav-link active">Archive</a>
+</nav>
 <p class="count">{count_label}</p>
 {rows_html}
 <footer class="footer">tech-intel · generated {now_str}</footer>
@@ -247,6 +255,10 @@ def main():
 
     # Regenerate archive index
     _generate_archive()
+
+    # Regenerate firehose
+    generate_firehose()
+
     print("[briefing] done.")
 
 

@@ -11,10 +11,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--canvas:#fdfcf0;--surface:#f1f0e4;--border-subtle:#e5e4d8;--fg:#080f11;--fg-body:#1a242a;--fg-muted:#6a7173;--green:#3d9dff;}
-[data-theme="dark"]{--canvas:#080f11;--surface:#0e1518;--border-subtle:#1f272b;--fg:#fdfcf0;--fg-body:#f1f0e4;--fg-muted:#888c8d;}
+:root{--canvas:#fdfcf0;--surface:#f1f0e4;--elevated:#fffefa;--border-subtle:#e5e4d8;--border-default:#cdc9b8;--fg:#080f11;--fg-body:#1a242a;--fg-muted:#6a7173;--green:#3d9dff;}
+[data-theme="dark"]{--canvas:#080f11;--surface:#0e1518;--elevated:#141c20;--border-subtle:#1f272b;--border-default:#2a343a;--fg:#fdfcf0;--fg-body:#f1f0e4;--fg-muted:#888c8d;}
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--canvas);color:var(--fg-body);font-family:'Inter',system-ui,sans-serif;min-height:100svh;display:flex;align-items:center;justify-content:center;padding:24px;}
+body{background:var(--canvas);color:var(--fg-body);font-family:'Inter',system-ui,sans-serif;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;}
 .wrap{max-width:480px;width:100%;text-align:center;}
 .eyebrow{font-family:monospace;font-size:11px;letter-spacing:0.16em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:16px;}
 .brand{font-size:36px;font-weight:700;color:var(--fg);letter-spacing:-0.02em;margin-bottom:12px;}
@@ -23,6 +23,10 @@ body{background:var(--canvas);color:var(--fg-body);font-family:'Inter',system-ui
 .pulse{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--green);margin-right:8px;animation:pulse 1.8s ease-in-out infinite;}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.4;transform:scale(0.85);}}
 .status{display:inline-flex;align-items:center;font-family:monospace;font-size:12px;color:var(--green);letter-spacing:0.1em;text-transform:uppercase;background:var(--surface);border:1px solid var(--border-subtle);padding:8px 16px;border-radius:20px;}
+.page-nav{display:flex;gap:6px;margin-top:36px;flex-wrap:wrap;justify-content:center;}
+.nav-link{font-family:monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;padding:5px 12px;border-radius:6px;border:1px solid var(--border-subtle);color:var(--fg-muted);text-decoration:none;transition:border-color 0.15s,color 0.15s;}
+.nav-link:hover{color:var(--fg);border-color:var(--border-default);}
+.nav-link.active{color:var(--green);border-color:var(--green);}
 </style>
 </head>
 <body>
@@ -31,6 +35,11 @@ body{background:var(--canvas);color:var(--fg-body);font-family:'Inter',system-ui
   <h1 class="brand">Tech <em>Intel</em></h1>
   <p class="msg">Pipeline reset. Fresh signals are being ingested now.<br>First briefing lands at <strong>18:30</strong>.</p>
   <div class="status"><span class="pulse"></span>Ingesting signals</div>
+  <nav class="page-nav">
+    <a href="index.html" class="nav-link active">Briefing</a>
+    <a href="firehose.html" class="nav-link">Firehose</a>
+    <a href="archive.html" class="nav-link">Archive</a>
+  </nav>
 </div>
 </body>
 </html>
