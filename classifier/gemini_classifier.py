@@ -1,6 +1,6 @@
 import json
-from google import genai
-from config import GEMINI_API_KEY, GEMINI_MODEL
+from groq import Groq
+from config import GROK_API_KEY, GROQ_MODEL
 from db.connection import get_connection
 
 BATCH_SIZE = 5
@@ -34,32 +34,38 @@ Relevance score guide:
 
 
 def _classify_batch(batch, batch_num):
-    print(f"[gemini] batch {batch_num}: creating client...", flush=True)
-    client = genai.Client(api_key=GEMINI_API_KEY)
-    print(f"[gemini] batch {batch_num}: client ready, sending to {GEMINI_MODEL}...", flush=True)
+    print(f"[groq] batch {batch_num}: sending {len(batch)} signals to {GROQ_MODEL}...", flush=True)
+    client = Groq(api_key=GROK_API_KEY)
     lines = []
     for i, s in enumerate(batch, 1):
         body = (s.get("body") or "")[:400]
         lines.append(f"Signal {i}: {s['title']} — {body}")
 
-    prompt = SYSTEM_PROMPT + "\n\n" + "\n".join(lines) + "\n\nReturn JSON array only. No preamble."
+    prompt = "\n".join(lines) + "\n\nReturn JSON array only. No preamble."
 
     try:
-        resp = client.models.generate_content(model=GEMINI_MODEL, contents=prompt)
-        text = resp.text.strip()
+        resp = client.chat.completions.create(
+            model=GROQ_MODEL,
+            messages=[
+                {"role": "system", "content": SYSTEM_PROMPT},
+                {"role": "user", "content": prompt},
+            ],
+            temperature=0.2,
+        )
+        text = resp.choices[0].message.content.strip()
         if text.startswith("```"):
             text = text.split("```")[1]
             if text.startswith("json"):
                 text = text[4:]
         result = json.loads(text.strip())
-        print(f"[gemini] batch {batch_num}: got {len(result)} results.", flush=True)
+        print(f"[groq] batch {batch_num}: got {len(result)} results.", flush=True)
         return result
     except Exception as e:
-        print(f"[gemini] batch {batch_num} error: {e}", flush=True)
+        print(f"[groq] batch {batch_num} error: {e}", flush=True)
         return None
 
 
-def run_classification_batch(batch_size: int = 30):
+def run_classification_batch(batch_size=30):
     conn = get_connection()
     rows = conn.execute(
         """SELECT id, title, source, body, url FROM signals_raw
@@ -70,21 +76,21 @@ def run_classification_batch(batch_size: int = 30):
     ).fetchall()
 
     if not rows:
-        print("[gemini] no unprocessed signals.")
+        print("[groq] no unprocessed signals.", flush=True)
         conn.close()
         return
 
     signals = [dict(r) for r in rows]
-    print(f"[gemini] classifying {len(signals)} signals in batches of {BATCH_SIZE}...", flush=True)
+    print(f"[groq] classifying {len(signals)} signals in batches of {BATCH_SIZE}...", flush=True)
     classified = 0
 
     for i in range(0, len(signals), BATCH_SIZE):
-        batch = signals[i : i + BATCH_SIZE]
+        batch = signals[i: i + BATCH_SIZE]
         batch_num = i // BATCH_SIZE + 1
         results = _classify_batch(batch, batch_num)
 
         if results is None or len(results) != len(batch):
-            print(f"[gemini] batch {batch_num}: bad response, skipping {len(batch)} signals", flush=True)
+            print(f"[groq] batch {batch_num}: bad response, skipping {len(batch)} signals", flush=True)
             continue
 
         for signal, result in zip(batch, results):
@@ -117,8 +123,8 @@ def run_classification_batch(batch_size: int = 30):
                     )
                 classified += 1
             except Exception as e:
-                print(f"[gemini] db write error for raw_id={raw_id}: {e}")
+                print(f"[groq] db write error for raw_id={raw_id}: {e}", flush=True)
 
     conn.commit()
     conn.close()
-    print(f"[gemini] done — {classified}/{len(signals)} classified.", flush=True)
+    print(f"[groq] done — {classified}/{len(signals)} classified.", flush=True)

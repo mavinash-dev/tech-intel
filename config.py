@@ -11,6 +11,8 @@ TURSO_AUTH_TOKEN = os.getenv("TURSO_AUTH_TOKEN", "")
 # --- AI ---
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
 GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.6-flash")
+GROK_API_KEY = os.getenv("GROK_API_KEY", "")
+GROQ_MODEL = os.getenv("GROQ_MODEL", "llama-3.1-8b-instant")
 
 # --- Reddit (optional) ---
 REDDIT_CLIENT_ID = os.getenv("REDDIT_CLIENT_ID", "")
