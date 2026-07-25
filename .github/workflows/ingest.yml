@@ -2,8 +2,8 @@ name: Signal Ingestion
 
 on:
   schedule:
-    - cron: '*/30 * * * *'   # every 30 minutes
-  workflow_dispatch:           # manual trigger button in GitHub UI
+    - cron: '30 */3 * * *'   # every 3 hours (0:30, 3:30, 6:30 ... UTC)
+  workflow_dispatch:           # manual trigger
 
 jobs:
   ingest:

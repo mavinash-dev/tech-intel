@@ -1,10 +1,9 @@
 name: Briefing Generation
 
 on:
-  schedule:
-    - cron: '0 3 * * *'    # 08:30 IST
-    - cron: '0 13 * * *'   # 18:30 IST
-    - cron: '0 14 * * *'   # 19:30 IST
+  workflow_run:
+    workflows: ["Signal Ingestion"]
+    types: [completed]
   workflow_dispatch:         # manual trigger
 
 permissions:
@@ -14,6 +13,7 @@ jobs:
   briefing:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
 
     steps:
       - uses: actions/checkout@v4
@@ -26,7 +26,7 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Generate briefing and send to Telegram
+      - name: Generate briefing
         run: python briefing_job.py
         env:
           TURSO_DATABASE_URL: ${{ secrets.TURSO_DATABASE_URL }}
