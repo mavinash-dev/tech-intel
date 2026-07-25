@@ -433,109 +433,110 @@ def generate_html(signals: list, why_map: dict, question: str,
 <style>
 *{{box-sizing:border-box;margin:0;padding:0}}
 body{{
-  background:#07070d;color:#c8d3e0;
-  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
-  font-size:clamp(14px,2.2vw,16px);line-height:1.65;
-  padding:16px 14px 48px;max-width:860px;margin:0 auto;
+  background:#111318;color:#d1d5db;
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+  font-size:16px;line-height:1.7;
+  padding:24px 20px 64px;max-width:900px;margin:0 auto;
 }}
-a{{color:#a78bfa;text-decoration:underline;text-underline-offset:3px;}}
-a:hover{{color:#fff;}}
+a{{color:#818cf8;text-decoration:underline;text-underline-offset:3px;}}
+a:hover{{color:#c7d2fe;}}
 
 /* ── Header ── */
-.header{{padding:20px 0 16px;border-bottom:1px solid #1a1a2a;margin-bottom:20px;}}
-.eyebrow{{font-size:9px;letter-spacing:3px;color:#2e2e46;text-transform:uppercase;margin-bottom:6px;}}
-.brand{{font-size:clamp(22px,4vw,28px);font-weight:800;color:#f8fafc;letter-spacing:-0.5px;}}
-.brand em{{color:#7c3aed;font-style:normal;}}
-.dateline{{font-size:11px;color:#2e2e46;margin-top:4px;}}
-.stats{{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;}}
-.stat{{background:#0d0d17;border:1px solid #1a1a2a;border-radius:6px;padding:6px 12px;min-width:80px;}}
-.stat strong{{font-size:clamp(16px,3vw,20px);font-weight:800;color:#e2e8f0;display:block;line-height:1.2;}}
-.stat span{{font-size:10px;color:#2e2e46;}}
+.header{{padding:28px 0 20px;border-bottom:1px solid #2a2d36;margin-bottom:28px;}}
+.eyebrow{{font-size:11px;letter-spacing:3px;color:#6b7280;text-transform:uppercase;margin-bottom:8px;}}
+.brand{{font-size:clamp(26px,4vw,34px);font-weight:800;color:#f9fafb;letter-spacing:-0.5px;}}
+.brand em{{color:#818cf8;font-style:normal;}}
+.dateline{{font-size:13px;color:#9ca3af;margin-top:6px;}}
+.stats{{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;}}
+.stat{{background:#1a1d24;border:1px solid #2a2d36;border-radius:8px;padding:10px 16px;min-width:90px;}}
+.stat strong{{font-size:clamp(20px,3vw,24px);font-weight:800;color:#f3f4f6;display:block;line-height:1.2;}}
+.stat span{{font-size:11px;color:#9ca3af;}}
 
 /* ── Section ── */
-.section{{margin-bottom:28px;}}
-.sec-title{{font-size:9px;letter-spacing:3px;color:#2e2e46;text-transform:uppercase;
-  margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #1a1a2a;}}
+.section{{margin-bottom:36px;}}
+.sec-title{{font-size:11px;letter-spacing:3px;color:#9ca3af;text-transform:uppercase;font-weight:700;
+  margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid #2a2d36;}}
 
 /* ── Signal card ── */
-.card{{border-radius:10px;padding:14px 16px;margin-bottom:10px;border:1px solid #1a1a2a;}}
-.giant-badges{{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px;}}
-.giant-badge{{font-size:9px;font-weight:700;letter-spacing:0.5px;padding:1px 7px;border-radius:3px;border:1px solid;background:transparent;}}
-.pred-links-block{{margin:10px 0;padding:8px 10px;background:#0d0d17;border-radius:5px;border-left:2px solid #7c3aed;}}
-.pred-links-label{{font-size:8px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#7c3aed;display:block;margin-bottom:4px;}}
-.pred-link{{font-size:11px;color:#4b5563;margin-top:3px;}}
-.sig-title{{font-size:clamp(14px,2.5vw,16px);font-weight:700;color:#f1f5f9;margin-bottom:8px;line-height:1.3;}}
-.sig-title a{{color:#f1f5f9;text-decoration:underline;text-decoration-color:#ffffff18;text-underline-offset:3px;}}
-.sig-title a:hover{{color:#a78bfa;text-decoration-color:#a78bfa;}}
-.ext{{font-size:11px;color:#2e2e46;}}
-.explanation{{color:#7a8799;font-size:clamp(12px,2vw,13px);margin-bottom:10px;line-height:1.6;}}
-.entity{{color:#a78bfa;font-weight:600;}}
+.card{{border-radius:12px;padding:20px 22px;margin-bottom:14px;border:1px solid #2a2d36;}}
+.giant-badges{{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;}}
+.giant-badge{{font-size:10px;font-weight:700;letter-spacing:0.5px;padding:2px 9px;border-radius:4px;border:1px solid;background:transparent;}}
+.pred-links-block{{margin:12px 0;padding:10px 14px;background:#1a1d24;border-radius:6px;border-left:3px solid #818cf8;}}
+.pred-links-label{{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#818cf8;display:block;margin-bottom:6px;}}
+.pred-link{{font-size:13px;color:#9ca3af;margin-top:4px;}}
+.sig-title{{font-size:clamp(16px,2.5vw,18px);font-weight:700;color:#f9fafb;margin-bottom:10px;line-height:1.4;}}
+.sig-title a{{color:#f9fafb;text-decoration:underline;text-decoration-color:#ffffff25;text-underline-offset:3px;}}
+.sig-title a:hover{{color:#818cf8;text-decoration-color:#818cf8;}}
+.ext{{font-size:12px;color:#6b7280;}}
+.explanation{{color:#d1d5db;font-size:15px;margin-bottom:12px;line-height:1.7;}}
+.entity{{color:#a5b4fc;font-weight:600;}}
 .num{{color:#34d399;font-weight:700;}}
-.why-block{{margin:10px 0;}}
-.why-heading{{font-size:8px;font-weight:800;letter-spacing:2px;text-transform:uppercase;
-  color:{WHY_COLOR};display:block;margin-bottom:4px;}}
-.why-text{{font-size:12px;color:#4b5563;line-height:1.55;}}
-.prediction{{font-size:12px;color:#374151;font-style:italic;
-  margin-top:10px;padding-top:10px;border-top:1px solid #1a1a2a;}}
+.why-block{{margin:12px 0;padding:12px 14px;background:#1a1d24;border-radius:6px;}}
+.why-heading{{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;
+  color:{WHY_COLOR};display:block;margin-bottom:6px;}}
+.why-text{{font-size:14px;color:#d1d5db;line-height:1.65;}}
+.prediction{{font-size:14px;color:#9ca3af;font-style:italic;
+  margin-top:12px;padding-top:12px;border-top:1px solid #2a2d36;}}
 
 /* ── Predictions accordion ── */
-.pred-row{{border-bottom:1px solid #12121e;}}
+.pred-row{{border-bottom:1px solid #1f2128;}}
 .pred-summary{{
-  display:flex;align-items:center;gap:8px;
-  padding:8px 4px;cursor:pointer;list-style:none;user-select:none;
+  display:flex;align-items:center;gap:10px;
+  padding:11px 6px;cursor:pointer;list-style:none;user-select:none;
 }}
 .pred-summary::-webkit-details-marker{{display:none;}}
-.pred-status{{font-size:9px;font-weight:800;letter-spacing:1px;flex-shrink:0;width:90px;}}
-.pred-text{{font-size:12px;color:#4b5563;flex:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}}
-.pred-body{{padding:6px 0 10px 24px;}}
-.pred-full{{font-size:13px;color:#8892a4;line-height:1.5;}}
-.pred-note{{font-size:12px;color:#4b5563;margin-top:4px;}}
-.pred-meta{{font-size:10px;color:#2e2e46;margin-top:4px;}}
+.pred-status{{font-size:10px;font-weight:800;letter-spacing:1px;flex-shrink:0;width:100px;}}
+.pred-text{{font-size:14px;color:#9ca3af;flex:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}}
+.pred-body{{padding:8px 0 14px 28px;}}
+.pred-full{{font-size:15px;color:#d1d5db;line-height:1.6;}}
+.pred-note{{font-size:13px;color:#9ca3af;margin-top:6px;}}
+.pred-meta{{font-size:11px;color:#6b7280;margin-top:6px;}}
 
 /* ── Company watch accordion ── */
-.wcat-header{{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:#2e2e46;
-  padding:12px 0 5px;border-bottom:1px solid #1a1a2a;margin-bottom:1px;font-weight:700;}}
-.wrow{{border-bottom:1px solid #0f0f18;}}
+.wcat-header{{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#9ca3af;
+  padding:14px 0 6px;border-bottom:1px solid #2a2d36;margin-bottom:2px;font-weight:700;}}
+.wrow{{border-bottom:1px solid #1a1d24;}}
 .wrow-summary{{
-  display:flex;align-items:center;gap:7px;
-  padding:7px 4px;cursor:pointer;list-style:none;user-select:none;
+  display:flex;align-items:center;gap:8px;
+  padding:9px 6px;cursor:pointer;list-style:none;user-select:none;
 }}
 .wrow-summary::-webkit-details-marker{{display:none;}}
-.wrow-summary:hover .wname{{color:#e2e8f0 !important;}}
-.wdot{{width:6px;height:6px;border-radius:50%;flex-shrink:0;background:transparent;}}
-.wname{{font-size:12px;flex-shrink:0;min-width:110px;}}
-.wcat{{font-size:10px;color:#1e1e2e;flex:1;}}
-.wref{{font-size:9px;color:#7c3aed;margin-left:auto;flex-shrink:0;}}
-.wchev{{font-size:12px;color:#2e2e46;flex-shrink:0;transition:transform 0.12s;}}
+.wrow-summary:hover .wname{{color:#f3f4f6 !important;}}
+.wdot{{width:8px;height:8px;border-radius:50%;flex-shrink:0;background:transparent;}}
+.wname{{font-size:14px;flex-shrink:0;min-width:120px;}}
+.wcat{{font-size:11px;color:#4b5563;flex:1;}}
+.wref{{font-size:10px;color:#818cf8;margin-left:auto;flex-shrink:0;}}
+.wchev{{font-size:14px;color:#6b7280;flex-shrink:0;transition:transform 0.12s;}}
 details[open] .wchev{{transform:rotate(90deg);}}
-.wrow-body{{padding:4px 0 10px 20px;}}
+.wrow-body{{padding:6px 0 12px 24px;}}
 .wlinks{{list-style:none;}}
-.wlinks li{{padding:2px 0;border-bottom:1px solid #0a0a12;}}
+.wlinks li{{padding:3px 0;border-bottom:1px solid #1a1d24;}}
 .wlinks li:last-child{{border-bottom:none;}}
-.wlink{{font-size:11px;color:#475569;text-decoration:none;display:block;line-height:1.4;}}
-.wlink:hover{{color:#a78bfa;}}
-.wno-data{{font-size:10px;color:#1e1e2e;}}
+.wlink{{font-size:13px;color:#9ca3af;text-decoration:none;display:block;line-height:1.5;}}
+.wlink:hover{{color:#a5b4fc;}}
+.wno-data{{font-size:12px;color:#4b5563;}}
 
 /* ── Question ── */
 .q-box{{
-  background:#0d0d17;border:1px solid #2d1b69;
-  border-left:3px solid #7c3aed;border-radius:0 8px 8px 0;
-  padding:14px 18px;font-size:clamp(13px,2.2vw,15px);font-style:italic;
-  color:#a78bfa;line-height:1.6;
+  background:#1a1d24;border:1px solid #312e81;
+  border-left:4px solid #818cf8;border-radius:0 10px 10px 0;
+  padding:18px 22px;font-size:clamp(15px,2.2vw,17px);font-style:italic;
+  color:#c7d2fe;line-height:1.7;
 }}
 
 /* ── Footer ── */
-.footer{{margin-top:32px;padding-top:16px;border-top:1px solid #1a1a2a;
-  font-size:10px;color:#1a1a2a;text-align:center;letter-spacing:0.5px;}}
+.footer{{margin-top:40px;padding-top:20px;border-top:1px solid #2a2d36;
+  font-size:12px;color:#4b5563;text-align:center;letter-spacing:0.5px;}}
 
 /* ── Mobile ── */
 @media(max-width:480px){{
-  body{{padding:12px 10px 40px;}}
-  .stats{{gap:6px;}}
-  .stat{{padding:5px 10px;min-width:70px;}}
-  .card{{padding:12px;}}
-  .wname{{min-width:90px;}}
-  .pred-status{{width:75px;font-size:8px;}}
+  body{{padding:16px 14px 48px;font-size:15px;}}
+  .stats{{gap:8px;}}
+  .stat{{padding:8px 12px;min-width:80px;}}
+  .card{{padding:16px;}}
+  .wname{{min-width:100px;}}
+  .pred-status{{width:85px;}}
+  .explanation{{font-size:14px;}}
 }}
 </style>
 </head>
