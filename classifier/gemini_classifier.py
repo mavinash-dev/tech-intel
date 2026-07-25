@@ -3,8 +3,6 @@ from google import genai
 from config import GEMINI_API_KEY, GEMINI_MODEL
 from db.connection import get_connection
 
-_client = genai.Client(api_key=GEMINI_API_KEY)
-
 BATCH_SIZE = 5
 
 SYSTEM_PROMPT = """You are a signal intelligence analyst classifying tech signals for someone new to the ecosystem.
@@ -36,7 +34,7 @@ Relevance score guide:
 
 
 def _classify_batch(batch: list[dict]) -> list[dict] | None:
-    """Send up to BATCH_SIZE signals to Gemini, return list of classification dicts."""
+    client = genai.Client(api_key=GEMINI_API_KEY)
     lines = []
     for i, s in enumerate(batch, 1):
         body = (s.get("body") or "")[:400]
@@ -45,7 +43,7 @@ def _classify_batch(batch: list[dict]) -> list[dict] | None:
     prompt = SYSTEM_PROMPT + "\n\n" + "\n".join(lines) + "\n\nReturn JSON array only. No preamble."
 
     try:
-        resp = _client.models.generate_content(model=GEMINI_MODEL, contents=prompt)
+        resp = client.models.generate_content(model=GEMINI_MODEL, contents=prompt)
         text = resp.text.strip()
         if text.startswith("```"):
             text = text.split("```")[1]
