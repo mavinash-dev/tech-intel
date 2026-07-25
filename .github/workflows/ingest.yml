@@ -30,3 +30,8 @@ jobs:
           REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
           REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
           GROK_API_KEY: ${{ secrets.GROK_API_KEY }}
+
+  briefing:
+    needs: ingest
+    uses: ./.github/workflows/briefing.yml
+    secrets: inherit
