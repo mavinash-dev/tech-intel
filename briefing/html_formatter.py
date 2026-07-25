@@ -511,13 +511,13 @@ hr{{border:none;border-top:1px solid var(--border-subtle);margin:0;}}
 
 /* ── Signal cards — gradient slab pattern ── */
 .cards-slab{{
-  border-radius:20px;padding:4px;gap:3px;
+  border-radius:20px;padding:5px;gap:4px;
   background:linear-gradient(135deg, var(--green-tint) 0%, var(--green) 100%);
   display:flex;flex-direction:column;
 }}
 .card{{
-  background:var(--elevated);border-radius:16px;
-  padding:24px 26px;color:var(--fg);
+  background:var(--elevated);border-radius:15px;
+  padding:28px 28px;color:var(--fg);
 }}
 .card-meta-row{{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px;}}
 .domain-pill{{
@@ -531,7 +531,7 @@ hr{{border:none;border-top:1px solid var(--border-subtle);margin:0;}}
 .sig-title a{{color:var(--fg);text-decoration:underline;text-decoration-color:rgba(8,15,17,0.2);text-underline-offset:3px;}}
 .sig-title a:hover{{text-decoration-color:var(--fg);}}
 .ext{{font-size:12px;color:var(--fg-muted);}}
-.explanation{{color:var(--fg-body);font-size:15px;margin-bottom:12px;line-height:1.75;}}
+.explanation{{color:var(--fg-body);font-size:15px;margin-bottom:16px;line-height:1.8;}}
 .entity{{color:var(--fg);font-weight:600;border-bottom:1.5px solid var(--green);}}
 .num{{color:#059669;font-weight:700;}}
 .why-block{{
@@ -609,8 +609,8 @@ details[open] .sum-chev{{transform:rotate(90deg);}}
 .wrow{{border-bottom:1px solid var(--border-subtle);}}
 .wrow:last-child{{border-bottom:none;}}
 .wrow-summary{{
-  display:flex;align-items:center;gap:8px;
-  padding:10px 4px;cursor:pointer;list-style:none;user-select:none;
+  display:flex;align-items:center;gap:10px;
+  padding:13px 4px;cursor:pointer;list-style:none;user-select:none;
 }}
 .wrow-summary::-webkit-details-marker{{display:none;}}
 .wrow-summary:hover{{opacity:0.8;}}
@@ -666,15 +666,34 @@ details[open] .wchev{{transform:rotate(90deg);}}
 .footer a:hover{{color:#1ce783;}}
 
 /* ── Mobile ── */
-@media(max-width:480px){{
-  body{{padding:20px 14px 56px;font-size:15px;}}
-  .stats{{gap:7px;}}
-  .stat{{padding:10px 14px;min-width:80px;}}
-  .card{{padding:16px 18px;}}
-  .wname{{min-width:100px;}}
+@media(max-width:600px){{
+  body{{padding:28px 16px 72px;font-size:16px;}}
+  .page-header{{padding:36px 0 28px;margin-bottom:32px;}}
+  .brand{{font-size:30px;}}
+  .stats{{gap:8px;}}
+  .stat{{padding:14px 16px;min-width:0;flex:1;}}
+  .stat strong{{font-size:24px;}}
+  .cards-slab{{border-radius:18px;padding:5px;gap:4px;}}
+  .card{{padding:22px 20px;}}
+  .explanation{{font-size:15px;line-height:1.8;}}
+  .sig-title{{font-size:17px;margin-bottom:12px;}}
+  .section{{margin-bottom:52px;}}
+  .section-head{{margin-bottom:20px;}}
+  .why-block{{padding:14px 16px;margin:16px 0;}}
+  .why-text{{font-size:14px;line-height:1.75;}}
+  .pred-links-block{{padding:12px 14px;margin:14px 0;}}
+  .section-accordion{{margin-bottom:52px;}}
+  .section-accordion > details > summary{{padding:16px 18px;}}
+  .section-accordion-body{{padding:16px 16px;}}
+  .wcat-header{{padding:18px 0 10px;}}
+  .wrow-summary{{padding:13px 4px;}}
+  .wname{{min-width:110px;font-size:15px;}}
+  .wcat{{font-size:11px;}}
   .pred-status{{width:84px;}}
-  .explanation{{font-size:14px;}}
-  .cards-slab{{border-radius:16px;}}
+  .pred-summary{{padding:13px 4px;}}
+  .q-box{{padding:20px 20px;font-size:16px;line-height:1.8;}}
+  .archive-card{{padding:20px 18px;}}
+  .footer{{margin-top:56px;padding:18px 16px;font-size:11px;}}
 }}
 </style>
 </head>
