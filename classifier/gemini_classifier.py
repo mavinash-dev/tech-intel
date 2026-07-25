@@ -33,7 +33,7 @@ Relevance score guide:
   <0.3: Noise"""
 
 
-def _classify_batch(batch: list[dict], batch_num: int) -> list[dict] | None:
+def _classify_batch(batch, batch_num):
     print(f"[gemini] batch {batch_num}: creating client...", flush=True)
     client = genai.Client(api_key=GEMINI_API_KEY)
     print(f"[gemini] batch {batch_num}: client ready, sending to {GEMINI_MODEL}...", flush=True)
