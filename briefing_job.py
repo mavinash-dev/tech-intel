@@ -16,7 +16,11 @@ def _parse_briefing_dt(filename: str):
     """Parse datetime from briefing_YYYYMMDD_HHMM.html"""
     base = os.path.basename(filename).replace("briefing_", "").replace(".html", "")
     try:
-        return datetime.strptime(base, "%Y%m%d_%H%M") + IST
+        dt = datetime.strptime(base, "%Y%m%d_%H%M")
+        # Files before 20260726 were saved in UTC — apply IST offset
+        if dt.date() < datetime(2026, 7, 26).date():
+            dt = dt + IST
+        return dt
     except Exception:
         return None
 
