@@ -217,6 +217,10 @@ def generate_briefing() -> str:
     ).fetchone()[0]
     conn.close()
 
+    briefing_dt = datetime.now(tz=_IST)
+    filename = f"briefing_{briefing_dt.strftime('%Y%m%d_%H%M')}.html"
+    path = os.path.join(BRIEFING_DIR, filename)
+
     html = generate_html(
         signals=signals,
         why_map=why_map,
@@ -224,10 +228,8 @@ def generate_briefing() -> str:
         callbacks=resolutions,
         total_ingested=total_ingested,
         watching_predictions=watching,
+        briefing_dt=briefing_dt,
     )
-
-    filename = f"briefing_{datetime.now(tz=_IST).strftime('%Y%m%d_%H%M')}.html"
-    path = os.path.join(BRIEFING_DIR, filename)
     with open(path, "w") as f:
         f.write(html)
 

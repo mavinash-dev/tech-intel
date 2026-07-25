@@ -452,8 +452,10 @@ def _predictions_accordion_html(callbacks: list, watching: list) -> str:
 
 def generate_html(signals: list, why_map: dict, question: str,
                   callbacks: list, total_ingested: int,
-                  watching_predictions: list = None) -> str:
-    now_str = datetime.now(tz=_IST).strftime("%A, %d %B %Y · %H:%M IST")
+                  watching_predictions: list = None,
+                  briefing_dt=None) -> str:
+    dt = briefing_dt or datetime.now(tz=_IST)
+    now_str = dt.strftime("%A, %d %B %Y · %H:%M IST")
     cards_html = "\n".join(
         _signal_card(i, s, why_map.get(s["id"], ""), watching_predictions or [])
         for i, s in enumerate(signals, 1)
