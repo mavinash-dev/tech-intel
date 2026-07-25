@@ -1,7 +1,9 @@
 import json
 import os
 from groq import Groq
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
+
+_IST = timezone(timedelta(hours=5, minutes=30))
 from db.connection import get_connection
 from config import GROK_API_KEY, GROQ_MODEL, BRIEFING_STYLE
 from briefing.html_formatter import generate_html
@@ -185,14 +187,14 @@ def generate_briefing() -> str:
     signals = _load_top_signals()
     _mark_shown([s["id"] for s in signals])
     if not signals:
-        now_str = datetime.now().strftime("%d %b %Y %H:%M")
+        now_str = datetime.now(tz=_IST).strftime("%d %b %Y %H:%M")
         html = f"""<!DOCTYPE html><html><head><meta charset="UTF-8">
         <style>body{{background:#07070d;color:#6b7280;font-family:sans-serif;
         padding:40px;text-align:center;}}</style></head>
         <body><h2 style="color:#e2e8f0">Tech Intel · {now_str}</h2>
         <p>No new signals in the last 24 hours.<br>
         Check that the ingest workflow is running in GitHub Actions.</p></body></html>"""
-        path = os.path.join(BRIEFING_DIR, f"briefing_{datetime.now().strftime('%Y%m%d_%H%M')}.html")
+        path = os.path.join(BRIEFING_DIR, f"briefing_{datetime.now(tz=_IST).strftime('%Y%m%d_%H%M')}.html")
         with open(path, "w") as f:
             f.write(html)
         return path, []
@@ -224,7 +226,7 @@ def generate_briefing() -> str:
         watching_predictions=watching,
     )
 
-    filename = f"briefing_{datetime.now().strftime('%Y%m%d_%H%M')}.html"
+    filename = f"briefing_{datetime.now(tz=_IST).strftime('%Y%m%d_%H%M')}.html"
     path = os.path.join(BRIEFING_DIR, filename)
     with open(path, "w") as f:
         f.write(html)
