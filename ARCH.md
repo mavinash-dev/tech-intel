@@ -1,7 +1,7 @@
 # Architecture Document
 ## tech-intel
 
-**Version:** 0.2 — Cloud migration (GitHub Actions + Gemini + Turso)
+**Version:** 0.3 — Company Intelligence + Graph (Phase 3 design)
 **Created:** 2026-07-25
 **Updated:** 2026-07-25
 
@@ -9,31 +9,37 @@
 
 ## 1. Tech Stack
 
-### Current (Phase 1b — local Mac, being migrated away from)
+### Current (Phase 2 — fully cloud, live)
 | Layer | Technology | Status |
 |---|---|---|
-| Ingestion daemon | Python + APScheduler on Mac | → replacing with GitHub Actions |
-| Database | SQLite local file | → replacing with Turso |
-| AI classification | Ollama + Llama 3.2 (local) | → replacing with Gemini Flash API |
-| Briefing generation | Ollama + Llama 3.2 (local) | → replacing with Gemini Flash API |
-| Notifications | Telegram Bot API | ✅ keeping |
-| Process management | launchd (macOS) | → dropping entirely |
+| Scheduler / compute | GitHub Actions (cron) | ✅ Live |
+| Database | Turso (libSQL cloud) | ✅ Live |
+| AI — classification | Gemini 2.0 Flash (google-genai SDK) | ✅ Live |
+| AI — briefing gen | Gemini 2.0 Flash | ✅ Live |
+| Notifications | Telegram Bot API | ✅ Live |
+| Briefing publishing | GitHub Pages (docs/index.html) | ✅ Live |
+| Mac | Nothing running | ✅ Zero dependency |
 
-### Target (Phase 2 — fully off Mac)
-| Layer | Technology | Reason |
+### Planned (Phase 3 — company intelligence)
+| Layer | Technology | Status |
 |---|---|---|
-| Scheduler / compute | **GitHub Actions** (cron) | Free unlimited on public repo, no VM to manage, UI logs |
-| Database | **Turso** (libSQL cloud) | SQLite-compatible, free 500MB, minimal code change |
-| AI — classification | **Gemini 2.0 Flash** (Google free tier) | Better quality than Llama 3.2, 1500 req/day free |
-| AI — briefing gen | **Gemini 2.0 Flash** (Google free tier) | Same model, consistent quality |
-| Notifications | Telegram Bot API | Free, unchanged |
-| Mac | Nothing running | Just receives Telegram on phone |
+| Historical seeding | HN Algolia API + Wikipedia API + arXiv API | 🔄 Next |
+| RAG query CLI | ask.py (Turso retrieval → Gemini synthesis) | 🔄 Next |
+| Company HTML profiles | company_page.py → docs/companies/*.html | 🔄 Next |
+| Regional news sources | YourStory, Inc42, TechNode, 36Kr RSS | 🔄 Next |
+
+### Planned (Phase 4 — knowledge graph)
+| Layer | Technology | Status |
+|---|---|---|
+| Graph DB | Neo4j AuraDB free tier (200MB) | Planned |
+| Entity resolution | Canonical name map before graph writes | Planned |
+| Graph queries | Cypher — co-occurring entities, signal chains | Planned |
 
 ---
 
 ## 2. Architecture Overview
 
-### Target Architecture (Phase 2 — fully cloud)
+### Live Architecture (Phase 2)
 ```
 ┌─────────────────────────────────────────────────────────┐
 │                    GITHUB ACTIONS                        │
@@ -41,14 +47,13 @@
 │  ┌─────────────────────────────────────────┐            │
 │  │  ingest.yml  (cron: every 30 min)       │            │
 │  │                                         │            │
-│  │  fetch HN, RSS, GitHub, Dev.to          │            │
+│  │  HN + RSS + GitHub + Dev.to             │            │
 │  │       │                                 │            │
 │  │       ▼                                 │            │
-│  │  Gemini Flash  ←── batch classify ──→   │            │
-│  │  (5 signals per prompt)                 │            │
+│  │  Gemini Flash — batch classify (5/prompt)│           │
 │  │       │                                 │            │
 │  │       ▼                                 │            │
-│  │    Turso DB (libSQL cloud)              │            │
+│  │    Turso (libSQL cloud)                 │            │
 │  └─────────────────────────────────────────┘            │
 │                                                         │
 │  ┌─────────────────────────────────────────┐            │
@@ -57,39 +62,89 @@
 │  │  load top signals from Turso            │            │
 │  │       │                                 │            │
 │  │       ▼                                 │            │
-│  │  Gemini Flash  ←── generate briefing    │            │
-│  │  (why it matters, question, predictions)│            │
+│  │  Gemini Flash — why it matters + question│           │
 │  │       │                                 │            │
 │  │       ▼                                 │            │
-│  │  send HTML to Telegram                  │            │
+│  │  → Telegram (HTML file via sendDocument) │           │
+│  │  → docs/index.html → GitHub Pages       │            │
 │  └─────────────────────────────────────────┘            │
 └─────────────────────────────────────────────────────────┘
 
-GitHub Secrets:
-  GEMINI_API_KEY
-  TURSO_DATABASE_URL
-  TURSO_AUTH_TOKEN
-  TELEGRAM_BOT_TOKEN
-  TELEGRAM_CHAT_ID
-  REDDIT_CLIENT_ID / REDDIT_CLIENT_SECRET  (optional)
+Live URL: https://mavinash-dev.github.io/tech-intel/
 ```
 
-### Previous Architecture (Phase 1b — local Mac, deprecated)
+### Target Architecture (Phase 3 — company intelligence added)
 ```
-Mac Air → APScheduler daemon → Ollama → SQLite → Telegram
+┌────────────────────────────────────────────────┐
+│  seed_company.py "Nvidia"   (run once per co.) │
+│                                                │
+│  Wikipedia API ──► company_facts (Turso)       │
+│  HN Algolia API ─► signals_raw (source=seed_hn)│
+│  arXiv API ──────► signals_raw (source=seed_arxiv)
+│       │                                        │
+│       ▼                                        │
+│  Gemini batch classify → signals_enriched      │
+└────────────────────────────────────────────────┘
+
+┌────────────────────────────────────────────────┐
+│  ask.py "What has Anthropic done on safety?"   │
+│                                                │
+│  Turso: signals_enriched WHERE mentions company│
+│  Turso: company_facts WHERE company = name     │
+│  Turso: predictions WHERE related_entities     │
+│       │                                        │
+│       ▼                                        │
+│  Gemini: synthesize from context only          │
+│       │                                        │
+│       ▼                                        │
+│  Grounded answer with [Signal #3, #7] citations│
+└────────────────────────────────────────────────┘
+
+┌────────────────────────────────────────────────┐
+│  company_page.py "Nvidia"                      │
+│                                                │
+│  Pull facts + signals + predictions from Turso │
+│  Generate HTML profile page                    │
+│  → docs/companies/nvidia.html                  │
+│  → pushed to GitHub Pages                      │
+└────────────────────────────────────────────────┘
+```
+
+### Target Architecture (Phase 4 — knowledge graph added)
+```
+signals_enriched.entities_json
+       │
+       ▼
+  entity resolver (canonicalize names)
+       │
+       ▼
+  Neo4j AuraDB
+  ┌─────────────────────────────────────┐
+  │  (Company)──[SIGNAL]──(Person)      │
+  │      │         │          │         │
+  │  (Country)  domain,    (Technology) │
+  │             date,                   │
+  │             relevance               │
+  └─────────────────────────────────────┘
+       │
+       ▼
+  Cypher queries:
+  "Show all entities co-occurring with Nvidia in last 90 days"
+  "Which companies appear most in Power domain signals?"
+  "Trace: TSMC → chip shortage → which companies are affected?"
 ```
 
 ---
 
 ## 3. Data Model
 
-### Turso (libSQL) — identical schema to SQLite, same queries
+### Turso (libSQL) — live tables
 
 #### signals_raw
 ```sql
 CREATE TABLE IF NOT EXISTS signals_raw (
     id           INTEGER PRIMARY KEY AUTOINCREMENT,
-    source       TEXT NOT NULL,
+    source       TEXT NOT NULL,   -- hn / rss / github / devto / seed_hn / seed_arxiv
     source_id    TEXT NOT NULL,
     title        TEXT NOT NULL,
     url          TEXT,
@@ -106,13 +161,13 @@ CREATE TABLE IF NOT EXISTS signals_raw (
 CREATE TABLE IF NOT EXISTS signals_enriched (
     id                INTEGER PRIMARY KEY AUTOINCREMENT,
     raw_id            INTEGER NOT NULL REFERENCES signals_raw(id),
-    domain            TEXT NOT NULL,
+    domain            TEXT NOT NULL,   -- Capital/Talent/Technology/Power/Infrastructure/Narrative/Security
     relevance_score   REAL NOT NULL,
     plain_explanation TEXT NOT NULL,
-    entities_json     TEXT NOT NULL,
+    entities_json     TEXT NOT NULL,   -- [{"name": "Nvidia", "type": "Company"}, ...]
     prediction        TEXT,
     enriched_at       DATETIME DEFAULT (datetime('now')),
-    last_shown_at     DATETIME   -- NULL until first briefing; 7-day exclusion window prevents repeats
+    last_shown_at     DATETIME         -- 7-day exclusion window
 );
 ```
 
@@ -132,192 +187,268 @@ CREATE TABLE IF NOT EXISTS predictions (
 );
 ```
 
-#### company_facts (planned — Phase 2 Company 360)
+#### company_facts (Phase 3)
 ```sql
 CREATE TABLE IF NOT EXISTS company_facts (
-    id          INTEGER PRIMARY KEY AUTOINCREMENT,
-    company     TEXT NOT NULL,
-    fact_type   TEXT NOT NULL,  -- founding / ceo / hq / product / acquisition / funding
-    value       TEXT NOT NULL,
-    source      TEXT,           -- wikipedia / wikidata / crunchbase_rss
-    as_of       DATE,
-    seeded_at   DATETIME DEFAULT (datetime('now'))
+    id        INTEGER PRIMARY KEY AUTOINCREMENT,
+    company   TEXT NOT NULL,
+    fact_type TEXT NOT NULL,   -- founding/ceo/hq/employees/market_cap/product/acquisition/description
+    value     TEXT NOT NULL,
+    source    TEXT,            -- wikipedia / wikidata / manual
+    as_of     DATE,
+    seeded_at DATETIME DEFAULT (datetime('now'))
 );
+CREATE INDEX IF NOT EXISTS idx_facts_company ON company_facts(company);
+```
+
+### Neo4j AuraDB (Phase 4)
+```
+Nodes:
+  (:Company {name, canonical_name, category})
+  (:Person {name, role})
+  (:Technology {name, type})
+  (:Country {name, region})
+  (:Organization {name, type})
+
+Relationships:
+  (entity1)-[:SIGNAL {
+    signal_id, domain, date, relevance_score,
+    summary, source_url, prediction
+  }]->(entity2)
 ```
 
 ---
 
-## 4. Gemini Flash — Classification Design
+## 4. Gemini Flash — API Budget
 
-### Why Batched Classification
-Gemini Flash free tier: 1,500 requests/day. Single-signal classification would use ~1,440 calls/day (30 signals × 48 runs). Batching 5 signals per prompt drops this to ~288 classification calls/day.
-
+### Classification (batch 5 signals/prompt)
 ```
-Daily budget (1,500 req/day):
-  Classification:  30 signals ÷ 5 per batch = 6 calls × 48 runs = 288 calls
-  Why it matters:  8 calls × 24 briefings   = 192 calls
-  Question gen:    1 call  × 24 briefings   =  24 calls
-  Pred resolution: 1 call  × 24 briefings   =  24 calls
-  ─────────────────────────────────────────────────────
-  Total:                                    = 528 calls/day  (35% of limit)
+Daily budget (1,500 req/day free tier):
+  Classification:     30 signals ÷ 5 per batch = 6 calls × 48 runs = 288 calls
+  Why it matters:      8 calls × 24 briefings                       = 192 calls
+  Question gen:        1 call  × 24 briefings                       =  24 calls
+  Pred resolution:     1 call  × 24 briefings                       =  24 calls
+  ─────────────────────────────────────────────────────────────────────────────
+  Live pipeline total:                                               = 528 calls/day
+  ask.py queries (on demand):                                        = ~5 calls/query
+  seed_company.py (one-time per company):          ~400 signals ÷ 5 = ~80 calls/seed
+  ─────────────────────────────────────────────────────────────────────────────
+  Headroom:                                          972 calls/day remaining
 ```
 
-### Batch Classification Prompt Structure
+### Batch classification prompt structure
 ```
 Classify these 5 signals. Return a JSON array with one object per signal, in order.
 
-Signal 1: <title> — <body>
-Signal 2: <title> — <body>
+Signal 1: <title> — <body[:400]>
+Signal 2: ...
 ...
 
 Each object must have:
   domain: Capital|Talent|Technology|Power|Infrastructure|Narrative|Security
-  relevance_score: float 0-1 (IT sector relevance)
-  plain_explanation: string (1-2 sentences, plain language)
-  entities_json: [{name, type}] array
-  prediction: string (one forward-looking sentence) or null
+  relevance_score: float 0-1
+  plain_explanation: 2-4 sentences plain language
+  entities: [{name, type}] array
+  prediction: one falsifiable forward-looking sentence, or null
 ```
 
 ---
 
-## 5. External APIs & Integrations
+## 5. Company Intelligence — seed_company.py Design
 
-### Live Ingestion (GitHub Actions)
-| Source | Method | Status |
-|---|---|---|
-| Hacker News Firebase API | REST | ✅ Working |
-| Reddit | PRAW OAuth | ⚠️ Needs creds in GitHub Secrets |
-| RSS (TechCrunch, MIT Tech Review, arXiv, TLDR, Crunchbase, YC Blog) | feedparser | ✅ Working |
-| GitHub Trending | BeautifulSoup scrape | ✅ Working |
-| Dev.to API | REST (no key) | ✅ Working |
-| Product Hunt | GraphQL | ❌ 403 — needs replacement |
-| Gemini Flash | google-generativeai SDK | 🔄 Replacing Ollama |
-| Turso | libsql-client Python | 🔄 Replacing SQLite |
-| Telegram Bot API | REST | ✅ Working |
-
-### Historical Seeding (planned — seed_company.py)
-| Source | Purpose | Notes |
-|---|---|---|
-| HN Algolia API | Historical HN discussions per company (2006→now) | Free, no key |
-| Wikipedia API | Structured company facts | Free |
-| Wikidata API | Machine-readable facts with timestamps | Free |
-| arXiv API | Research papers mentioning a company | Free |
-
-### Planned Regional RSS
-| Region | Source | Companies covered |
-|---|---|---|
-| India | YourStory RSS, Inc42 RSS | Zepto, CRED, PhonePe, Razorpay |
-| China | TechNode RSS, 36Kr English | DeepSeek, BYD, CATL, Meituan |
-
----
-
-## 6. Company 360 Intelligence Architecture (Planned — Phase 2)
-
-### RAG Design
-LLM role = synthesis only. All facts retrieved from Turso, never from LLM memory.
-
-```
-Query: "What has Anthropic been doing with safety research?"
-  → retrieve signals mentioning Anthropic from Turso
-  → retrieve company_facts for Anthropic
-  → retrieve predictions related to Anthropic
-  → pass all as context to Gemini Flash
-  → grounded answer with signal citations
-```
-
-### seed_company.py (planned)
+### Flow
 ```
 python3 seed_company.py "Nvidia"
-  1. Wikipedia API → infobox → company_facts table
-  2. HN Algolia API → 2015→now → signals_raw (source="seed_hn")
-  3. Classify historical signals in batches via Gemini
-  Result: 10 years of signal in ~3 minutes
+
+Step 1 — Wikipedia facts
+  GET https://en.wikipedia.org/api/rest_v1/page/summary/Nvidia
+  GET https://en.wikipedia.org/w/api.php?action=query&prop=revisions... (infobox)
+  Extract: founded, hq, ceo, employees, products, subsidiaries, acquisitions
+  → INSERT INTO company_facts (company, fact_type, value, source="wikipedia", as_of)
+
+Step 2 — HN Algolia historical search
+  GET https://hn.algolia.com/api/v1/search_by_date
+      ?query=Nvidia&tags=story&numericFilters=created_at_i>1420070400
+      Paginate with page=0,1,2... until no results
+  → INSERT OR IGNORE INTO signals_raw (source="seed_hn", source_id=hn_id, ...)
+  → Batch classify via Gemini (5/prompt, same classifier)
+  → INSERT INTO signals_enriched
+
+Step 3 — arXiv search (for tech/AI/semiconductor companies)
+  GET http://export.arxiv.org/api/query
+      ?search_query=all:Nvidia&start=0&max_results=200
+  → INSERT OR IGNORE INTO signals_raw (source="seed_arxiv", ...)
+  → Batch classify + store
+
+Output:
+  "Nvidia: 47 facts stored, 1,847 historical signals seeded (2015–2026)"
 ```
 
-### ask.py (planned)
+### Coverage by company type
+| Company type | HN coverage | arXiv coverage | Notes |
+|---|---|---|---|
+| US Big Tech (Apple, Google, Meta) | Excellent (1000+) | Good | Best cold-start results |
+| US AI (OpenAI, Anthropic, xAI) | Very good (500+) | Excellent | AI community heavily on HN |
+| Semiconductors (TSMC, ASML, AMD) | Good (200–500) | Excellent | Technical + papers |
+| Chinese tech (DeepSeek, ByteDance) | Sparse before 2023 | Limited | Need TechNode/36Kr RSS |
+| Indian tech (Zepto, CRED, PhonePe) | Very sparse | None | Need YourStory/Inc42 RSS |
+| European (ASML, Spotify, Revolut) | Mixed | Good for ASML | |
+
+---
+
+## 6. Company Intelligence — ask.py Design (RAG)
+
+**Rule:** LLMs synthesize. They never supply facts from memory. All facts come from Turso.
+
 ```
-python3 ask.py "What signals do we have about TSMC capacity expansion?"
-  → retrieve top 20 relevant signals from Turso
-  → Gemini synthesizes with citations
-  → grounded answer printed to terminal
+python3 ask.py "What has Anthropic been doing with safety research?"
+
+1. Parse: company = "Anthropic", question = full text
+
+2. Retrieve from Turso:
+   - signals_enriched WHERE entities_json LIKE '%Anthropic%'
+     ORDER BY enriched_at DESC LIMIT 25
+   - company_facts WHERE company = 'Anthropic'
+   - predictions WHERE related_entities LIKE '%Anthropic%'
+
+3. Format numbered context:
+   [Signal 1 — 2026-07-20 — Technology]
+   Title: Anthropic releases Claude 4...
+   Explanation: ...
+   Prediction: ...
+
+   [Fact: CEO] Dario Amodei (as of 2026)
+   [Fact: Founded] 2021, San Francisco
+
+4. Gemini prompt:
+   "Based ONLY on the following signals and facts, answer: {question}
+    Cite signal numbers. Do not use outside knowledge."
+
+5. Print grounded answer with citations
 ```
 
 ---
 
-## 7. Key Technical Decisions
+## 7. Knowledge Graph Design (Phase 4)
 
-| Date | Decision | Rationale |
-|---|---|---|
-| 2026-07-25 | SQLite → Turso | libSQL-compatible, free 500MB, zero SQL query changes |
-| 2026-07-25 | Ollama → Gemini Flash | Better classification quality, free 1500 req/day, no local GPU needed |
-| 2026-07-25 | APScheduler daemon → GitHub Actions | Public repo = unlimited free minutes, built-in logs, no VM |
-| 2026-07-25 | Batch 5 signals per Gemini call | Reduces daily API calls from 1,440 to 288 — fits comfortably in free tier |
-| 2026-07-25 | RAG over LLM memory for company facts | LLM training data is frozen — retrieve from grounded sources instead |
-| 2026-07-25 | HN Algolia as historical seed | Free, unlimited, covers 2006→now, searchable by query + date range |
+### Why graph on top of relational?
+Turso answers "what signals mention Nvidia?" — fast and simple.
+Neo4j answers "which entities consistently co-occur with Nvidia, and through which domains, over the last 6 months?" — that requires traversal across entity relationships, not just text search.
+
+### Entity extraction pipeline (Phase 4 addition)
+```
+signals_enriched.entities_json → canonicalize() → Neo4j write
+
+For each signal:
+  entities = parse entities_json  → ["Nvidia", "TSMC", "Jensen Huang"]
+  canonical = [CANONICAL.get(e.lower(), e) for e in entities]
+  For each pair (e1, e2) in combinations(canonical, 2):
+    MERGE (n1:Entity {name: e1})
+    MERGE (n2:Entity {name: e2})
+    CREATE (n1)-[:SIGNAL {domain, date, signal_id, relevance_score}]->(n2)
+```
+
+### Canonical entity resolution (needed before graph write)
+```python
+CANONICAL = {
+    "microsoft corp": "Microsoft",
+    "microsoft corporation": "Microsoft",
+    "msft": "Microsoft",
+    "open ai": "OpenAI",
+    "openai llc": "OpenAI",
+    "alphabet": "Google",
+    "alphabet inc": "Google",
+    "meta platforms": "Meta",
+    "facebook": "Meta",
+    # ... applied at entities_json write time
+}
+```
+
+### Graph queries (Cypher examples)
+```cypher
+// What's co-occurring with Nvidia in the last 90 days?
+MATCH (nvidia:Entity {name: "Nvidia"})-[s:SIGNAL]-(other)
+WHERE s.date > date() - duration({days: 90})
+RETURN other.name, s.domain, count(s) as signal_count
+ORDER BY signal_count DESC
+
+// Trace a supply chain: TSMC → who is affected?
+MATCH path = (tsmc:Entity {name: "TSMC"})-[:SIGNAL*1..3]-(downstream)
+WHERE ALL(r IN relationships(path) WHERE r.domain IN ['Infrastructure', 'Capital'])
+RETURN downstream.name, length(path) as hops
+```
 
 ---
 
-## 8. GitHub Actions Workflow Design
+## 8. GitHub Actions Workflows
 
-### .github/workflows/ingest.yml
+### ingest.yml (every 30 min)
 ```yaml
-name: Signal Ingestion
 on:
-  schedule:
-    - cron: '*/30 * * * *'   # every 30 minutes
-  workflow_dispatch:           # manual trigger button in GitHub UI
-
+  schedule: [{cron: '*/30 * * * *'}]
+  workflow_dispatch:
 jobs:
   ingest:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with: { python-version: '3.11' }
-      - run: pip install -r requirements.txt
-      - run: python ingest_job.py
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          TURSO_DATABASE_URL: ${{ secrets.TURSO_DATABASE_URL }}
-          TURSO_AUTH_TOKEN: ${{ secrets.TURSO_AUTH_TOKEN }}
+      - checkout + setup-python@3.11 + pip install
+      - python ingest_job.py
+    env: GEMINI_API_KEY, TURSO_DATABASE_URL, TURSO_AUTH_TOKEN
 ```
 
-### .github/workflows/briefing.yml
+### briefing.yml (every 1 hour)
 ```yaml
-name: Briefing Generation
 on:
-  schedule:
-    - cron: '0 * * * *'      # every hour
+  schedule: [{cron: '0 * * * *'}]
   workflow_dispatch:
-
+permissions:
+  contents: write   # needed to push docs/index.html to GitHub Pages
 jobs:
   briefing:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with: { python-version: '3.11' }
-      - run: pip install -r requirements.txt
-      - run: python briefing_job.py
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          TURSO_DATABASE_URL: ${{ secrets.TURSO_DATABASE_URL }}
-          TURSO_AUTH_TOKEN: ${{ secrets.TURSO_AUTH_TOKEN }}
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      - checkout + setup-python@3.11 + pip install
+      - python briefing_job.py   # generates HTML, copies to docs/index.html
+      - git commit docs/index.html + git push
+    env: GEMINI_API_KEY, TURSO_DATABASE_URL, TURSO_AUTH_TOKEN, TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID
 ```
-
-Note: daemon.py (APScheduler) is replaced by two separate job scripts:
-- `ingest_job.py` — single ingestion + classification run (no scheduler loop)
-- `briefing_job.py` — single briefing generation + send run (no scheduler loop)
 
 ---
 
-## 9. Open Technical Questions
+## 9. Source Coverage
 
-- [ ] Turso free tier resets monthly — do we need a migration plan if we exceed 500MB?
-- [ ] Should seed_company.py classify historical signals (Gemini cost) or store raw only (free)?
-- [ ] For ask.py — keyword search (free) or vector similarity search (needs embedding API)?
-- [ ] How to canonicalize entity names ("Microsoft" vs "Microsoft Corp") before graph write?
-- [ ] Should company_facts be seeded for all 157 watchlist companies at once or on-demand?
-- [ ] Add YourStory/Inc42/TechNode RSS feeds before or after cloud migration?
+### Live (GitHub Actions, every 30 min)
+| Source | Method | Status |
+|---|---|---|
+| Hacker News Firebase API | REST | ✅ Working |
+| Reddit | PRAW OAuth | ⚠️ Needs creds in GitHub Secrets |
+| RSS (TechCrunch, MIT Tech Review, arXiv, TLDR, Crunchbase, YC Blog, 7 feeds) | feedparser | ✅ Working |
+| GitHub Trending | BeautifulSoup scrape | ✅ Working |
+| Dev.to API | REST (no key) | ✅ Working |
+| Product Hunt | GraphQL | ❌ 403 — needs replacement |
+
+### Historical Seeding (seed_company.py, run once per company)
+| Source | Purpose | Notes |
+|---|---|---|
+| HN Algolia API | All HN discussions mentioning company (2006→now) | Free, no key, paginated |
+| Wikipedia REST API | Company summary + infobox | Free |
+| arXiv API | Research papers mentioning company | Free, max 200/query |
+
+### Planned Regional RSS (3-line additions in ingestion/rss.py)
+| Region | Feed | Companies unlocked |
+|---|---|---|
+| India | YourStory, Inc42 | Zepto, CRED, PhonePe, Razorpay |
+| China | TechNode, 36Kr English | DeepSeek, BYD, CATL, Meituan |
+| SE Asia | Tech in Asia | Grab, GoTo, Sea Group |
+
+---
+
+## 10. Open Technical Questions
+
+- [ ] seed_company.py: classify historical signals (Gemini cost) or store raw only and classify on-demand?
+- [ ] ask.py: keyword search (free, current) or vector embeddings (better recall, needs embedding API)?
+- [ ] company_page.py: generate on-demand per CLI call, or auto-generate for all 157 companies on a schedule?
+- [ ] Neo4j AuraDB free tier is 200MB — how many entities before we hit the limit? (estimate: ~5000 entities × relationships ≈ enough for 2-3 years)
+- [ ] Canonical entity resolution: build manually or use Gemini to normalize entity names at extraction time?
+- [ ] Product Hunt replacement: Lobste.rs API, BetaList RSS, or IndieHackers RSS?
+- [ ] company_facts: seed all 157 watchlist companies at once or on-demand when asked?

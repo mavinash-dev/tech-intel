@@ -5,105 +5,119 @@
 name: tech-intel
 slug: tech-intel
 status: Active
-phase: Phase 2
+phase: Phase 3
 started: 2026-07-25
 last_updated: 2026-07-25
-summary: Cloud migration in progress — moving from local Mac daemon (Ollama + SQLite) to GitHub Actions + Gemini Flash + Turso. Zero Mac dependency on completion.
-current_focus: Cloud migration — Gemini swap → Turso DB → GitHub Actions workflows
+summary: Cloud pipeline live — GitHub Actions + Gemini Flash + Turso. Briefing publishes to GitHub Pages every hour. Next: per-company history mining and knowledge graph.
+current_focus: Company 360 Intelligence — seed_company.py (HN history + Wikipedia facts) and ask.py (RAG query CLI)
 -->
 
 ---
 
 ## Current Phase
-**Phase 2** — Cloud migration. Moving entire pipeline off Mac Air.
+**Phase 3** — Company Intelligence. Per-company history mining + RAG query interface.
 
 ## Status
-`Active — migration in progress`
+`Active — cloud pipeline live, company intelligence next`
 
 ---
 
 ## Current Focus
-Migrating from local Mac stack to fully cloud-hosted pipeline:
-1. Replace Ollama → Gemini 2.0 Flash API (batch classification)
-2. Replace SQLite → Turso (libSQL-compatible cloud DB)
-3. Replace APScheduler daemon → GitHub Actions cron workflows
-4. Replace ingest_job.py + briefing_job.py as standalone scripts (no scheduler loop)
+Build per-company intelligence on top of the live pipeline:
+1. `seed_company.py` — cold-start a company: Wikipedia facts + HN Algolia history (2015→now) → Turso
+2. `ask.py` — RAG CLI: retrieve signals from Turso → Gemini synthesis → grounded cited answer
+3. `company_page.py` — per-company HTML profile → published to GitHub Pages
+4. Regional RSS feeds — India (YourStory, Inc42), China (TechNode, 36Kr)
+5. Neo4j AuraDB — entity graph (Phase 4, after company intelligence is stable)
 
 ---
 
-## What's Built (Phase 1b — complete, running on Mac)
+## What's Built
 
-### Core Pipeline ✅
-- APScheduler daemon — ingestion every 30min, briefing every 1h
-- 6 ingestion sources: HackerNews, Reddit (needs creds), RSS (7 feeds), GitHub Trending, Dev.to, Product Hunt (403 — broken)
-- Ollama + Llama3.2 local classification — domain, relevance_score, plain_explanation, entities_json, prediction
-- SQLite schema: signals_raw, signals_enriched, predictions — WAL mode, dedup via UNIQUE(source, source_id)
-- `last_shown_at` column — 7-day exclusion window prevents signal repetition
+### Phase 1b — Core Pipeline ✅ (complete, deprecated on Mac)
+- APScheduler daemon — ingestion every 30min, briefing every 1h (replaced by GitHub Actions)
+- 6 ingestion sources: HackerNews, Reddit, RSS (7 feeds), GitHub Trending, Dev.to
+- Ollama + Llama3.2 local classification (replaced by Gemini Flash)
+- SQLite schema: signals_raw, signals_enriched, predictions (replaced by Turso)
+- `last_shown_at` — 7-day exclusion window prevents signal repetition
 - Diversity selection — pool of 60, greedy company-rotation picks 8 per briefing
 
-### HTML Briefing UI ✅
-- Dark theme (#07070d), responsive with clamp() font sizes, mobile breakpoint at 480px
-- Signal cards: domain-colored left border, entity/number highlights, company brand badges, prediction cross-reference
+### Phase 1b — HTML Briefing UI ✅
+- Dark theme (#07070d), responsive with clamp() font sizes, 480px mobile breakpoint
+- Signal cards: domain-colored left border, entity highlights, company brand badges
 - Predictions accordion: resolved (✅/❌) + watching (⏳) — collapsible <details> rows
-- Company Watch accordion: 157 companies across 14 categories, click → 5 real DB signal links per company
+- Company Watch accordion: 157 companies across 14 categories, 5 real DB signal links per company
 
-### Company Watch ✅
-- 157 companies across 14 categories: US Big Tech, AI/LLM, Cloud/Infra, DevOps/Platform, Observability, Security, Data/Analytics, SaaS/Enterprise, Fintech/Crypto, Hardware/Transport, China, Korea/Taiwan/Japan, Europe, India, Semiconductor
+### Phase 2 — Cloud Migration ✅ (complete, fully off Mac)
+- **Gemini 2.0 Flash** replacing Ollama — batch 5 signals/prompt, ~288 API calls/day (free tier: 1500/day)
+- **Turso** (libSQL cloud) replacing SQLite — HTTP API wrapper, zero SQL query changes
+- **GitHub Actions** replacing APScheduler daemon:
+  - `ingest.yml` — cron every 30min → `ingest_job.py`
+  - `briefing.yml` — cron every 1h → `briefing_job.py`
+- **GitHub Pages** — briefing auto-published to `mavinash-dev.github.io/tech-intel/` after every run
+- Mac Air: zero processes running — only receives Telegram on phone
 
----
-
-## Phase 2 Migration — Task List
-
-### Step 1 — Gemini Flash swap 🔄 (next)
-- [ ] Add `google-generativeai` to requirements.txt
-- [ ] Rewrite `classifier/gemini_classifier.py` — batch 5 signals per prompt
-- [ ] Update `briefing/generator.py` — replace `_ollama()` with `_gemini()`
-- [ ] Update `config.py` — GEMINI_API_KEY instead of OLLAMA_HOST/MODEL
-- [ ] Test locally with real Gemini API key before touching DB
-
-### Step 2 — Turso DB swap
-- [ ] Create Turso account + database
-- [ ] Add `libsql-client` to requirements.txt
-- [ ] Rewrite `db/connection.py` — libsql HTTP client instead of sqlite3
-- [ ] Run `db/schema.py` against Turso to create tables
-- [ ] Migrate existing local signals to Turso (optional — can start fresh)
-- [ ] Verify all SQL queries work unchanged
-
-### Step 3 — GitHub Actions workflows
-- [ ] Create `ingest_job.py` — single ingestion + classification run (no scheduler)
-- [ ] Create `briefing_job.py` — single briefing gen + Telegram send (no scheduler)
-- [ ] Create `.github/workflows/ingest.yml` — cron every 30min
-- [ ] Create `.github/workflows/briefing.yml` — cron every 1h
-- [ ] Add all secrets to GitHub repo settings:
-  - GEMINI_API_KEY
-  - TURSO_DATABASE_URL
-  - TURSO_AUTH_TOKEN
-  - TELEGRAM_BOT_TOKEN
-  - TELEGRAM_CHAT_ID
-- [ ] Test manual workflow_dispatch trigger
-- [ ] Verify end-to-end: ingest → classify → Turso → briefing → Telegram
-
-### Step 4 — Cleanup
-- [ ] Stop local daemon on Mac
-- [ ] Archive daemon.py (keep for reference)
-- [ ] Remove Ollama dependency from requirements.txt
-- [ ] Update README with new setup instructions (no Ollama, no local DB)
+### Schema ✅
+- `signals_raw` — source, source_id (dedup), title, url, body, published_at, processed
+- `signals_enriched` — domain, relevance_score, plain_explanation, entities_json, prediction, last_shown_at
+- `predictions` — prediction_text, domain, status (watching/confirmed/wrong/expired), signal_id
+- `company_facts` — company, fact_type, value, source, as_of (seeded by seed_company.py)
 
 ---
 
-## Pending (Post-Migration)
+## Phase 3 — Company Intelligence Task List
 
-### Company 360 Intelligence
-- [ ] `seed_company.py` — HN Algolia (2015→now) + Wikipedia facts → Turso
-- [ ] `ask.py` — RAG CLI: retrieve signals → Gemini synthesis → cited answer
-- [ ] Expand sources: YourStory/Inc42 (India), TechNode (China)
-- [ ] Replace Product Hunt (403) with alternative
+### Step 1 — seed_company.py 🔄 (next)
+- [ ] Wikipedia API → infobox extraction → company_facts table
+- [ ] HN Algolia API → paginate 2015→now for company name → signals_raw (source="seed_hn")
+- [ ] arXiv API → papers mentioning company → signals_raw (source="seed_arxiv")
+- [ ] Batch-classify historical signals via Gemini (same classifier, same schema)
+- [ ] CLI: `python3 seed_company.py "Nvidia"`
+- [ ] Output: "Nvidia: 47 facts stored, 1,847 historical signals seeded (2015–2026)"
+
+### Step 2 — ask.py
+- [ ] Parse company name + question from CLI args
+- [ ] Retrieve from Turso: top 25 signals mentioning company + company_facts + predictions
+- [ ] Format numbered context block
+- [ ] Send to Gemini: "answer only from these signals, cite signal numbers"
+- [ ] Print grounded answer with citations
+- [ ] CLI: `python3 ask.py "What has Anthropic been doing with safety research?"`
+
+### Step 3 — company_page.py
+- [ ] Generate per-company HTML profile page
+- [ ] Sections: Facts, Signal Timeline, Domain Breakdown, Co-occurring Entities, Prediction History, Strategic Question
+- [ ] Output: `docs/companies/{slug}.html`
+- [ ] Published automatically to GitHub Pages
+- [ ] Company Watch accordion in briefing links to this page when it exists
+
+### Step 4 — Regional RSS feeds
+- [ ] YourStory RSS (`yourstory.com/feed`) — India
+- [ ] Inc42 RSS (`inc42.com/feed`) — India
+- [ ] TechNode RSS (`technode.com/feed`) — China
+- [ ] 36Kr English RSS — China
+- [ ] 3-line addition in `ingestion/rss.py` per feed
+
+### Step 5 — Replace Product Hunt (broken)
+- [ ] Product Hunt GraphQL returns 403
+- [ ] Candidates: Lobste.rs API, IndieHackers RSS, BetaList RSS
+
+---
+
+## Phase 4 — Knowledge Graph (planned)
+
+### Neo4j AuraDB (free tier: 200MB)
+- [ ] Nodes: Company, Person, Technology, Country, Organization
+- [ ] Relationships: SIGNAL (type, date, domain, summary, source_url)
+- [ ] Write entities from entities_json → Neo4j on each classification
+- [ ] Query: "show me everything connected to Nvidia in the last 90 days"
+- [ ] Canonical entity resolution needed first (see ARCH.md §9)
+
+---
+
+## Pending (Post-Phase 3)
 
 ### Phase 1c — Web UI (Next.js)
-- [ ] Not started — deprioritised until cloud migration complete
-
-### Phase 1d — Neo4j Graph
-- [ ] Not started — may become cloud Neo4j AuraDB (free tier: 200MB)
+- [ ] Not started — deprioritised until company intelligence complete
 
 ---
 
@@ -131,21 +145,39 @@ Migrating from local Mac stack to fully cloud-hosted pipeline:
 - Responsive UI: clamp() font sizes, 480px mobile breakpoint
 - send_now.py now runs ingestion before briefing
 
-### 2026-07-25 — Session 5: Cloud Migration Design
+### 2026-07-25 — Session 5: Cloud Migration Design + Docs
 - Decision: move entire pipeline off Mac
 - Chose GitHub Actions (public repo = unlimited free minutes) over Fly.io/Railway
 - Chose Gemini 2.0 Flash over Groq/Llama — better quality, 1500 req/day free
 - Batch classification design: 5 signals/prompt → 288 calls/day (vs 1,440 single)
-- Chose Turso over Supabase — libSQL compatible, zero SQL query changes
+- Chose Turso over Supabase — libSQL dialect = zero SQL query changes from SQLite
 - Documented full migration plan in ARCH.md v0.2
+- docs/company-intelligence.md created — RAG design, seed_company.py, ask.py protocol
+
+### 2026-07-25 — Session 6: Cloud Migration Build
+- Gemini 2.0 Flash classifier: classifier/gemini_classifier.py (batch 5/prompt)
+- Turso HTTP API wrapper: db/connection.py (libsql:// → https://, sqlite3-compatible interface)
+- briefing/generator.py: _ollama() → _gemini() using google.genai SDK
+- ingest_job.py + briefing_job.py: standalone single-run scripts for GitHub Actions
+- .github/workflows/ingest.yml (cron */30) + briefing.yml (cron 0 *)
+- GitHub Pages: briefing auto-published to mavinash-dev.github.io/tech-intel/ each run
+- db/schema.py: executescript() → per-statement execute() for Turso compat
+- Fixed: libsql:// URL scheme, google.generativeai → google.genai (deprecated SDK)
+- requirements.txt: removed APScheduler + ollama, added google-genai
 
 ---
 
 ## Blockers
-- Reddit creds not in .env (minor — Reddit is optional)
+- Reddit creds not in GitHub Secrets (minor — Reddit is optional)
 - Product Hunt: 403 (needs replacement source)
-- Gemini API key: need to create at aistudio.google.com
-- Turso: need to create account at turso.tech
+- Need to enable GitHub Pages in repo settings (Settings → Pages → main / /docs)
+
+---
+
+## Live URLs
+- **Briefing:** https://mavinash-dev.github.io/tech-intel/ (updates every hour)
+- **Repo:** https://github.com/mavinash-dev/tech-intel
+- **Actions:** https://github.com/mavinash-dev/tech-intel/actions
 
 ---
 
@@ -158,6 +190,7 @@ Migrating from local Mac stack to fully cloud-hosted pipeline:
 | 2026-07-25 | UI iteration | 2h | 7h |
 | 2026-07-25 | Company watch + intelligence design | 2h | 9h |
 | 2026-07-25 | Cloud migration design + docs | 1h | 10h |
+| 2026-07-25 | Cloud migration build + fixes | 2h | 12h |
 
 ---
 
@@ -174,3 +207,6 @@ Migrating from local Mac stack to fully cloud-hosted pipeline:
 | 2026-07-25 | Batch 5 signals per Gemini call | Reduces daily API calls 5x — fits easily in free tier |
 | 2026-07-25 | Turso over Supabase | libSQL dialect = zero SQL query changes from SQLite |
 | 2026-07-25 | RAG over LLM memory for company facts | Grounded retrieval beats hallucination-prone training data |
+| 2026-07-25 | GitHub Pages for briefing | Permanent shareable URL, no auth needed, auto-updates every hour |
+| 2026-07-25 | google.genai over google.generativeai | Old SDK deprecated July 2025, new SDK is google-genai package |
+| 2026-07-25 | Turso HTTP API over libsql-client | requests already in deps, no SDK version churn, same reliability |

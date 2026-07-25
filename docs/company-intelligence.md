@@ -1,7 +1,7 @@
 # Company Intelligence Protocol
 ## tech-intel
 
-> How we build, store, and query 360° intelligence on any company in the watchlist.
+> How we build, store, and query 360° intelligence on any company in the watchlist — and how that connects to the knowledge graph.
 
 ---
 
@@ -12,7 +12,7 @@ Asking an LLM "tell me everything about Nvidia" is unreliable:
 - LLMs hallucinate specifics (funding amounts, leadership changes, product timelines)
 - No citations — you can't verify what it says
 
-**The rule:** LLMs synthesize. They never supply facts from memory. All facts come from sources we control, stored in our DB, passed as context.
+**The rule:** LLMs synthesize. They never supply facts from memory. All facts come from sources we control, stored in Turso, passed as context.
 
 ---
 
@@ -37,9 +37,11 @@ Layer 2 — Historical signals (back-window seed, one-time per company)
 Layer 3 — Live signals (ongoing, automated)
   Source: existing ingestion pipeline (HN, RSS, GitHub, Dev.to)
   What: real-time news and discussion as it happens
-  Stored in: signals_raw → signals_enriched (same pipeline)
-  When: every 30 min via GitHub Actions
+  Stored in: signals_raw → signals_enriched (same pipeline, same schema)
+  When: every 30 min via GitHub Actions ingest.yml
 ```
+
+**Layers 2 and 3 share the same schema** — seed_hn signals and live signals are both in `signals_raw` + `signals_enriched`. The only difference is the `source` field (`seed_hn` vs `hn`). `ask.py` queries both seamlessly.
 
 ---
 
@@ -65,10 +67,10 @@ Step 1 — Wikipedia structured facts
 
 Step 2 — HN Algolia historical search
   GET https://hn.algolia.com/api/v1/search_by_date
-      ?query={company}&dateRange=2015-01-01,{today}&hitsPerPage=200
-  Paginate through all results
+      ?query={company}&tags=story&numericFilters=created_at_i>1420070400
+  Paginate through all results (page=0, 1, 2... until empty)
   → INSERT OR IGNORE INTO signals_raw (source="seed_hn", source_id=hn_id, ...)
-  → Classify in batches of 5 via Gemini Flash (same classifier)
+  → Classify in batches of 5 via Gemini Flash (same classifier as live pipeline)
   → INSERT INTO signals_enriched
 
 Step 3 — arXiv search (for tech/AI/semiconductor companies)
@@ -88,11 +90,11 @@ Output:
 | US Big Tech (Apple, Google, Meta) | Excellent (1000+ items) | Good | Best cold-start results |
 | US AI (OpenAI, Anthropic, xAI) | Very good (500+ items) | Excellent | AI community heavily on HN |
 | Semiconductors (TSMC, ASML, AMD) | Good (200–500 items) | Excellent | Technical discussion + papers |
-| Chinese tech (DeepSeek, ByteDance) | Sparse before 2023 | Limited | Need TechNode/36Kr RSS |
-| Indian tech (Zepto, CRED, PhonePe) | Very sparse | None | Need YourStory/Inc42 RSS |
+| Chinese tech (DeepSeek, ByteDance) | Sparse before 2023 | Limited | Need TechNode/36Kr RSS first |
+| Indian tech (Zepto, CRED, PhonePe) | Very sparse | None | Need YourStory/Inc42 RSS first |
 | European (ASML, Spotify, Revolut) | Mixed | Good for ASML | |
 
-**Action:** for companies with weak HN coverage, add regional RSS feeds before seeding.
+**Action:** for companies with weak HN coverage, add regional RSS feeds before seeding so live Layer 3 fills the gap.
 
 ---
 
@@ -141,8 +143,9 @@ python3 ask.py "What predictions did we make about OpenAI and were they right?"
 |---|---|
 | Answers grounded in real signals | Anything not in our DB |
 | Citations: "Signal #3, #7 support this" | Hallucinated company facts |
-| Trends visible in our ingestion window | Events before 2015 seed |
-| Prediction history + outcomes | Real-time news from last 30min |
+| Trends visible across our full history | Events before 2015 seed |
+| Prediction history + outcomes | Real-time news from last 30 min |
+| Both seed (historical) + live signals | Context from other companies unless overlapping |
 
 ---
 
@@ -155,7 +158,7 @@ CREATE TABLE IF NOT EXISTS company_facts (
     fact_type   TEXT NOT NULL,        -- see fact types below
     value       TEXT NOT NULL,        -- the fact value as plain text
     source      TEXT,                 -- wikipedia / wikidata / manual
-    as_of       DATE,                 -- when this fact was true (important for CEO changes etc.)
+    as_of       DATE,                 -- when this fact was true (CEO changes etc.)
     seeded_at   DATETIME DEFAULT (datetime('now'))
 );
 
@@ -180,13 +183,12 @@ ipo             — "1999, NASDAQ: NVDA"
 
 ---
 
-## Per-Company HTML Profile (Planned)
-
-When we have enough signals per company, generate a dedicated company page.
+## Per-Company HTML Profile — company_page.py (Planned)
 
 ```bash
 python3 company_page.py "Nvidia"
-→ generates companies/nvidia.html
+→ generates docs/companies/nvidia.html
+→ published to GitHub Pages: mavinash-dev.github.io/tech-intel/companies/nvidia.html
 ```
 
 ### Page sections
@@ -201,21 +203,53 @@ The company watch accordion in the briefing will link to this page when it exist
 
 ---
 
+## Knowledge Graph — How Company Intelligence Feeds Phase 4
+
+The same signals and entities used by `ask.py` are the raw material for the Neo4j knowledge graph.
+
+```
+signals_enriched.entities_json
+  [{"name": "Nvidia", "type": "Company"},
+   {"name": "TSMC", "type": "Company"},
+   {"name": "Jensen Huang", "type": "Person"}]
+          │
+          ▼
+  canonicalize() — normalize name variants
+          │
+          ▼
+  Neo4j AuraDB write:
+    MERGE (nvidia:Company {name: "Nvidia"})
+    MERGE (tsmc:Company {name: "TSMC"})
+    CREATE (nvidia)-[:SIGNAL {domain: "Infrastructure", date: ..., signal_id: ...}]->(tsmc)
+```
+
+### What the graph unlocks that Turso can't do
+
+| Question | Turso (text search) | Neo4j (graph traversal) |
+|---|---|---|
+| "What signals mention Nvidia?" | ✅ Fast LIKE query | ✅ Node lookup |
+| "Who co-occurs with Nvidia most?" | ⚠️ Need to parse entities_json per row | ✅ Single MATCH query |
+| "Which companies are downstream of TSMC?" | ❌ Can't traverse relationships | ✅ Variable-depth MATCH |
+| "How does a US export ban reach Chinese AI labs?" | ❌ Requires manual analysis | ✅ Path query |
+| "Which entities appear in both Power + Capital signals?" | ⚠️ Multi-query + Python join | ✅ MATCH with WHERE clause |
+
+**The graph is a lens on the same data, not a replacement.** Turso stays the source of truth. Neo4j is an index for relationship queries.
+
+---
+
 ## Regional Source Coverage Plan
 
 The quality of any company's intelligence is only as good as the sources covering it.
 
-### Needed additions (planned)
+### Needed additions (planned — 3-line change each in ingestion/rss.py)
 
-| Region | RSS Sources to add | Companies it unlocks |
+| Region | RSS Sources | Companies unlocked |
 |---|---|---|
 | India | YourStory (`yourstory.com/feed`), Inc42 (`inc42.com/feed`) | Zepto, CRED, PhonePe, Razorpay, Meesho, Zomato |
 | China | TechNode (`technode.com/feed`), 36Kr English (`36kr.com/en/feed`) | DeepSeek, CATL, BYD, Meituan, SenseTime |
 | Southeast Asia | Tech in Asia (`techinasia.com/feed`) | Grab, GoTo, Sea Group |
-| Korea | Korea Herald Tech (`koreaherald.com/feed`) | Kakao, Naver, SK Hynix detail |
+| Korea | Korea Herald Tech | Kakao, Naver, SK Hynix detail |
 | Israel | CTech (`calcalistech.com/feed`) | Wiz, Check Point, CyberArk |
-
-Adding each is a 3-line change in `ingestion/rss.py`.
 
 ---
 
@@ -225,9 +259,9 @@ The same company can appear as:
 - "Microsoft" / "Microsoft Corp" / "Microsoft Corporation" / "MSFT"
 - "OpenAI" / "Open AI" / "OpenAI LLC"
 
-Before writing to Neo4j (Phase 1d) and for `ask.py` retrieval to work correctly, we need a canonical name map.
+This matters for both `ask.py` (LIKE search misses variants) and Neo4j (creates duplicate nodes).
 
-### Resolution strategy (planned)
+### Resolution strategy (planned — applied at entities_json write time)
 
 ```python
 CANONICAL = {
@@ -236,36 +270,39 @@ CANONICAL = {
     "msft": "Microsoft",
     "open ai": "OpenAI",
     "openai llc": "OpenAI",
-    # ... etc
+    "alphabet": "Google",
+    "alphabet inc": "Google",
+    "meta platforms": "Meta",
+    "facebook": "Meta",
+    # ...
 }
 
 def canonicalize(name: str) -> str:
     return CANONICAL.get(name.lower().strip(), name)
 ```
 
-Applied at entity extraction time in the classifier — before storing entities_json.
+Applied in `classifier/gemini_classifier.py` before writing `entities_json` — fixes both ask.py retrieval and Neo4j deduplication in one place.
 
 ---
 
 ## Priority Order for Building
 
-1. **seed_company.py** — unlocks history for every company, makes ask.py useful
+1. **seed_company.py** — unlocks history for every company, makes ask.py immediately useful
 2. **ask.py** — the query interface; needs seed data to be meaningful
 3. **Regional RSS feeds** — 3-line additions, big coverage unlock for non-US companies
 4. **company_page.py** — HTML profile; needs enough signals per company first
 5. **Canonical entity resolution** — needed before Neo4j graph write
+6. **Neo4j AuraDB (Phase 4)** — relationship queries on top of the same entity data
 
 ---
 
-## Example: What a full Nvidia 360 looks like
-
-After running `seed_company.py "Nvidia"`:
+## Example: Full Nvidia 360 After Seeding
 
 ```
 company_facts:    12 facts (founding, CEO, products, acquisitions, market cap)
-signals_enriched: 1,847 historical + ongoing live signals
+signals_enriched: 1,847 historical (seed_hn) + ongoing live signals
 
-ask.py "Summarise Nvidia's trajectory from 2020 to now":
+python3 ask.py "Summarise Nvidia's trajectory from 2020 to now"
 
   Based on 23 retrieved signals:
 
