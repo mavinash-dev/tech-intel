@@ -1,12 +1,12 @@
 import json
 import os
-from google import genai
+from groq import Groq
 from datetime import datetime
 from db.connection import get_connection
-from config import GEMINI_API_KEY, GEMINI_MODEL, BRIEFING_STYLE
+from config import GROK_API_KEY, GROQ_MODEL, BRIEFING_STYLE
 from briefing.html_formatter import generate_html
 
-_gemini_client = genai.Client(api_key=GEMINI_API_KEY)
+_groq_client = Groq(api_key=GROK_API_KEY)
 
 TOP_SIGNALS_LIMIT = 8
 SIGNAL_POOL_SIZE = 60   # fetch wider pool, then diversity-select 8
@@ -14,13 +14,19 @@ SINCE_HOURS = 24        # look back 24h so pool has enough variety
 BRIEFING_DIR = "briefings"
 
 
-def _gemini(prompt: str, system: str = "") -> str:
-    full = f"{system}\n\n{prompt}" if system else prompt
+def _groq(prompt: str, system: str = "") -> str:
     try:
-        resp = _gemini_client.models.generate_content(model=GEMINI_MODEL, contents=full)
-        return resp.text.strip()
+        resp = _groq_client.chat.completions.create(
+            model=GROQ_MODEL,
+            messages=[
+                {"role": "system", "content": system or "You are a helpful assistant."},
+                {"role": "user", "content": prompt},
+            ],
+            temperature=0.3,
+        )
+        return resp.choices[0].message.content.strip()
     except Exception as e:
-        print(f"[briefing] Gemini error: {e}")
+        print(f"[briefing] Groq error: {e}")
         return ""
 
 
@@ -103,7 +109,7 @@ def _resolve_predictions(watching: list, signals: list) -> list:
     predictions_block = "\n".join(
         f"[ID:{p['id']} | {p['briefing_date']}] {p['prediction_text']}" for p in watching
     )
-    raw = _gemini(
+    raw = _groq(
         f"Today's signals:\n{signals_summary}\n\nWatching predictions:\n{predictions_block}\n\n"
         'For each prediction: confirmed / wrong / still_watching. '
         'JSON only: [{"id": <int>, "status": "...", "note": "<one sentence>"}]',
@@ -135,7 +141,7 @@ def _apply_resolutions(resolutions: list):
 
 
 def _why_it_matters(title: str, explanation: str, domain: str) -> str:
-    raw = _gemini(
+    raw = _groq(
         f"Signal: {title}\nDomain: {domain}\nExplanation: {explanation}\n\n"
         "2 sentences explaining why this matters to someone new to the tech ecosystem. "
         "Start directly with 'Why it matters:' — no preamble.",
@@ -149,7 +155,7 @@ def _why_it_matters(title: str, explanation: str, domain: str) -> str:
 
 def _generate_question(signals: list) -> str:
     summary = "\n".join(f"- [{s['domain']}] {s['title']}" for s in signals)
-    return _gemini(
+    return _groq(
         f"Signals:\n{summary}\n\n"
         "One sharp strategic question across these signals. "
         "About how power, money, or technology is shifting. One sentence. No preamble.",
