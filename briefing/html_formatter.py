@@ -524,6 +524,17 @@ details[open] .wchev{{transform:rotate(90deg);}}
   color:#c7d2fe;line-height:1.7;
 }}
 
+/* ── Archive card ── */
+.archive-card{{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 20px;background:#1a1d24;border:1px solid #2a2d36;
+  border-radius:10px;text-decoration:none;transition:border-color 0.15s;
+}}
+.archive-card:hover{{border-color:#818cf8;}}
+.archive-card-title{{font-size:16px;font-weight:700;color:#f9fafb;}}
+.archive-card-sub{{font-size:13px;color:#9ca3af;margin-top:3px;}}
+.archive-card-arrow{{font-size:20px;color:#818cf8;}}
+
 /* ── Footer ── */
 .footer{{margin-top:40px;padding-top:20px;border-top:1px solid #2a2d36;
   font-size:12px;color:#4b5563;text-align:center;letter-spacing:0.5px;}}
@@ -571,6 +582,16 @@ details[open] .wchev{{transform:rotate(90deg);}}
   <div class="q-box">{_h(question)}</div>
 </section>
 
-<div class="footer">tech-intel · {now_str} · <a href="archive.html" style="color:#818cf8;">Archive →</a></div>
+<section class="section">
+  <h3 class="sec-title">Past Briefings</h3>
+  <a href="archive.html" class="archive-card">
+    <div class="archive-card-left">
+      <div class="archive-card-title">Briefing Archive</div>
+      <div class="archive-card-sub">Every briefing ever — grouped by date</div>
+    </div>
+    <span class="archive-card-arrow">→</span>
+  </a>
+</section>
+<div class="footer">tech-intel · {now_str}</div>
 </body>
 </html>"""
